@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sweat Belt Pro — Advanced Slimming Belt | COD Available</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#e85d04;
+  --orange-dark:#c94e00;
+  --orange-light:#ff7a2f;
+  --black:#1a1a1a;
+  --dark:#111;
+  --gray:#f5f5f5;
+  --text:#333;
+  --white:#fff;
+}
+body{font-family:'Nunito',sans-serif;color:var(--black);background:#fff;overflow-x:hidden}
+
+/* ANNOUNCEMENT BAR */
+.announce{background:var(--orange);color:#fff;text-align:center;padding:10px 16px;font-weight:800;font-size:14px;letter-spacing:.3px}
+.announce span{margin:0 8px}
+
+/* NAVBAR */
+.navbar{background:var(--black);padding:12px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.logo{color:#fff;font-size:22px;font-weight:900;letter-spacing:-0.5px}
+.logo span{color:var(--orange)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 50%,#1a1a1a 100%);padding:40px 20px 50px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:var(--orange);border-radius:50%;opacity:.08}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-30px;width:250px;height:250px;background:var(--orange);border-radius:50%;opacity:.06}
+.hero-badge{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:800;padding:6px 16px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.hero h1{color:#fff;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.15;margin-bottom:10px}
+.hero h1 span{color:var(--orange)}
+.hero-tagline-hindi{color:var(--orange);font-size:clamp(18px,4vw,26px);font-weight:800;margin-bottom:6px}
+.hero-tagline-en{color:#ccc;font-size:15px;font-weight:600;margin-bottom:28px}
+.hero-img-wrap{position:relative;display:inline-block;margin:20px auto}
+.hero-img{width:min(320px,80vw);border-radius:20px;box-shadow:0 20px 60px rgba(232,93,4,.3);border:3px solid var(--orange)}
+.discount-badge{position:absolute;top:-12px;right:-12px;background:var(--orange);color:#fff;width:70px;height:70px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:11px;line-height:1.2;box-shadow:0 4px 16px rgba(232,93,4,.5)}
+.discount-badge b{font-size:18px}
+.price-wrap{margin:24px 0 10px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.price-now{color:var(--orange);font-size:42px;font-weight:900}
+.price-mrp{color:#888;font-size:22px;text-decoration:line-through;font-weight:600}
+.price-save{background:#1a3a00;color:#6dff4e;font-size:13px;font-weight:800;padding:5px 12px;border-radius:20px}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;background:var(--orange);color:#fff;font-size:18px;font-weight:900;padding:18px 40px;border-radius:50px;border:none;cursor:pointer;margin:16px 0;transition:all .2s;box-shadow:0 8px 32px rgba(232,93,4,.4);text-decoration:none}
+.hero-btn:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 12px 40px rgba(232,93,4,.5)}
+.hero-btn-icon{font-size:22px}
+.trust-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#ddd;font-size:12px;font-weight:700;padding:8px 14px;border-radius:30px;display:flex;align-items:center;gap:6px}
+.badge-icon{font-size:15px}
+
+/* SECTION COMMON */
+section{padding:56px 20px}
+.section-title{text-align:center;font-size:clamp(22px,5vw,32px);font-weight:900;margin-bottom:8px}
+.section-subtitle{text-align:center;color:#666;font-size:15px;margin-bottom:36px;font-weight:600}
+.orange{color:var(--orange)}
+
+/* BENEFITS */
+.benefits-section{background:var(--gray)}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;max-width:900px;margin:0 auto}
+.benefit-card{background:#fff;border-radius:16px;padding:24px 16px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.06);border-bottom:3px solid var(--orange);transition:transform .2s}
+.benefit-card:hover{transform:translateY(-4px)}
+.benefit-icon{font-size:36px;margin-bottom:12px}
+.benefit-title{font-size:13px;font-weight:800;color:var(--black);line-height:1.4}
+
+/* HOW IT WORKS */
+.how-section{background:#fff}
+.steps{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:900px;margin:0 auto}
+.step{flex:1;min-width:220px;max-width:280px;text-align:center;padding:28px 20px;background:var(--gray);border-radius:20px;position:relative}
+.step-num{width:48px;height:48px;background:var(--orange);color:#fff;border-radius:50%;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.step-icon{font-size:32px;margin-bottom:10px}
+.step h3{font-size:16px;font-weight:800;margin-bottom:8px;color:var(--black)}
+.step p{font-size:13px;color:#666;line-height:1.6;font-weight:600}
+
+/* SIZE GUIDE */
+.size-section{background:linear-gradient(135deg,#1a1a1a,#2d2d2d)}
+.size-section .section-title{color:#fff}
+.size-section .section-subtitle{color:#aaa}
+.size-table-wrap{overflow-x:auto;max-width:600px;margin:0 auto}
+.size-table{width:100%;border-collapse:collapse;font-size:14px}
+.size-table th{background:var(--orange);color:#fff;padding:12px 16px;text-align:left;font-weight:800}
+.size-table td{padding:12px 16px;border-bottom:1px solid #333;color:#ddd;font-weight:600}
+.size-table tr:last-child td{border-bottom:none}
+.size-table tr:hover td{background:rgba(232,93,4,.08)}
+
+/* REVIEWS */
+.reviews-section{background:#fff}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:900px;margin:0 auto}
+.review-card{background:var(--gray);border-radius:16px;padding:24px;border-left:4px solid var(--orange)}
+.review-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.review-avatar{width:48px;height:48px;background:var(--orange);color:#fff;border-radius:50%;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.review-name{font-weight:800;font-size:15px;color:var(--black)}
+.review-loc{font-size:12px;color:#888;font-weight:600}
+.stars{color:#f59e0b;font-size:16px;margin-bottom:8px}
+.review-text{font-size:14px;color:#555;line-height:1.6;font-weight:600}
+.verified{color:var(--orange);font-size:11px;font-weight:800;margin-top:8px;display:flex;align-items:center;gap:4px}
+
+/* FAQ */
+.faq-section{background:var(--gray)}
+.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.faq-q{padding:18px 20px;font-weight:800;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
+.faq-q:hover{background:#fff8f5}
+.faq-toggle{color:var(--orange);font-size:20px;font-weight:900;transition:transform .3s}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px;font-size:14px;color:#555;line-height:1.7;font-weight:600}
+.faq-item.open .faq-a{max-height:200px;padding:0 20px 18px}
+.faq-item.open .faq-toggle{transform:rotate(45deg)}
+
+/* FOOTER */
+footer{background:var(--black);color:#fff;padding:30px 20px;text-align:center}
+.footer-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:20px}
+.footer-badge{display:flex;align-items:center;gap:8px;color:#ccc;font-size:13px;font-weight:700}
+.footer-badge span{font-size:20px}
+footer p{color:#666;font-size:13px;font-weight:600}
+
+/* STICKY BUY BTN */
+.sticky-buy{position:fixed;bottom:0;left:0;right:0;background:var(--orange);z-index:99;padding:14px 20px;display:none;justify-content:center;align-items:center;box-shadow:0 -4px 20px rgba(0,0,0,.3)}
+.sticky-buy.show{display:flex}
+.sticky-buy-btn{color:#fff;font-size:16px;font-weight:900;border:none;background:none;cursor:pointer;display:flex;align-items:center;gap:10px;letter-spacing:.3px}
+
+/* MODAL OVERLAY */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;width:100%;max-width:520px;border-radius:24px 24px 0 0;max-height:92vh;overflow-y:auto;padding:28px 24px 40px}
+@media(min-width:600px){
+  .modal-overlay{align-items:center}
+  .modal{border-radius:24px;max-height:88vh}
+}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.modal-header h2{font-size:20px;font-weight:900;color:var(--black)}
+.modal-close{background:none;border:none;font-size:26px;cursor:pointer;color:#999;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s}
+.modal-close:hover{background:#f0f0f0}
+
+/* FORM */
+.form-group{margin-bottom:18px}
+.form-label{font-size:13px;font-weight:800;color:var(--black);margin-bottom:6px;display:block}
+.form-input{width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:600;transition:border .2s;outline:none;color:var(--black)}
+.form-input:focus{border-color:var(--orange)}
+.form-input.error{border-color:#ef4444}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pincode-wrap{position:relative}
+.pincode-status{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700}
+
+/* QTY + SIZE */
+.qty-size-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qty-input-wrap{display:flex;align-items:center;border:2px solid #e0e0e0;border-radius:10px;overflow:hidden}
+.qty-btn{background:#f5f5f5;border:none;width:44px;height:48px;font-size:22px;font-weight:700;cursor:pointer;transition:background .2s}
+.qty-btn:hover{background:var(--orange);color:#fff}
+.qty-val{flex:1;text-align:center;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;border:none;outline:none;color:var(--black)}
+.size-select{width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;cursor:pointer;color:var(--black);background:#fff}
+.size-select:focus{border-color:var(--orange)}
+
+/* ORDER SUMMARY */
+.order-summary{background:var(--gray);border-radius:14px;padding:18px;margin:20px 0}
+.order-summary h3{font-size:14px;font-weight:800;color:var(--black);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.summary-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:#555;margin-bottom:8px}
+.summary-row.total{font-size:18px;font-weight:900;color:var(--black);border-top:2px solid #e0e0e0;padding-top:12px;margin-top:4px}
+.summary-row.total span:last-child{color:var(--orange)}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;background:var(--orange);color:#fff;font-size:17px;font-weight:900;padding:17px;border:none;border-radius:50px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;font-family:'Nunito',sans-serif}
+.submit-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
+.submit-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
+
+/* SUCCESS SCREEN */
+.success-screen{text-align:center;padding:20px 0}
+.success-icon{font-size:80px;margin-bottom:16px}
+.success-screen h2{font-size:24px;font-weight:900;color:var(--black);margin-bottom:8px}
+.success-hindi{color:var(--orange);font-size:20px;font-weight:800;margin-bottom:16px}
+.order-id-box{background:var(--gray);border-radius:12px;padding:16px;margin:16px 0;border-left:4px solid var(--orange)}
+.order-id-label{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px}
+.order-id-val{font-size:20px;font-weight:900;color:var(--black);margin-top:4px;word-break:break-all}
+.success-note{font-size:14px;color:#666;font-weight:600;line-height:1.6;margin-top:12px}
+.success-close-btn{margin-top:20px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;padding:14px 32px;border:none;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:700;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:480px){
+  .form-row{grid-template-columns:1fr}
+  .qty-size-row{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce">
+  🚚 FREE Shipping<span>|</span>💳 COD Available<span>|</span>⚡ Limited Stock — Order Now!
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">SWEAT<span>BELT</span> PRO</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🔥 #1 Slimming Belt in India</div>
+  <h1>Sweat Belt Pro<br><span>Advanced Slimming Belt</span></h1>
+  <div class="hero-tagline-hindi">पेट कम करो, आत्मविश्वास बढ़ाओ</div>
+  <div class="hero-tagline-en">Reduce belly fat, Boost your confidence</div>
+  <div class="hero-img-wrap">
+    <img class="hero-img" src="https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg" alt="Sweat Belt Pro Slimming Belt" onerror="this.src='https://via.placeholder.com/320x320/e85d04/ffffff?text=Sweat+Belt+Pro'"/>
+    <div class="discount-badge"><b>54%</b>OFF</div>
+  </div>
+  <div class="price-wrap">
+    <div class="price-now">₹599</div>
+    <div class="price-mrp">₹1299</div>
+    <div class="price-save">Save ₹700</div>
+  </div>
+  <button class="hero-btn" onclick="openModal()">
+    <span class="hero-btn-icon">🛒</span> Order Now — COD
+  </button>
+  <div class="trust-badges">
+    <div class="badge"><span class="badge-icon">💵</span>Cash on Delivery</div>
+    <div class="badge"><span class="badge-icon">🚚</span>Free Shipping</div>
+    <div class="badge"><span class="badge-icon">📅</span>30-Day Results</div>
+    <div class="badge"><span class="badge-icon">🏆</span>Premium Neoprene</div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits-section">
+  <h2 class="section-title">Why Choose <span class="orange">Sweat Belt Pro?</span></h2>
+  <p class="section-subtitle">6 powerful benefits that make it India's favourite slimming belt</p>
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <div class="benefit-icon">🔥</div>
+      <div class="benefit-title">Burns Belly Fat & Reduces Waist Inches</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">💧</div>
+      <div class="benefit-title">Boosts Core Sweating for Faster Results</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🦴</div>
+      <div class="benefit-title">Supports Lower Back & Corrects Posture</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">😌</div>
+      <div class="benefit-title">Premium Neoprene — Ultra Comfortable</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">🏃</div>
+      <div class="benefit-title">Wear During Workout, Walk or Daily Use</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon">📈</div>
+      <div class="benefit-title">Visible Results in Just 2–4 Weeks</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <h2 class="section-title">How to <span class="orange">Use It?</span></h2>
+  <p class="section-subtitle">3 simple steps to start your transformation</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-icon">📦</div>
+      <h3>Unbox & Adjust</h3>
+      <p>Unwrap your Sweat Belt Pro and adjust the velcro straps to fit your waist size comfortably.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-icon">🎯</div>
+      <h3>Wrap & Wear</h3>
+      <p>Wrap tightly around your belly/waist area. Wear for 45–60 minutes during exercise or daily activities.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-icon">✨</div>
+      <h3>See Results</h3>
+      <p>Use daily consistently. Start seeing visible inch reduction and slimmer waist in just 2–4 weeks!</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIZE GUIDE -->
+<section class="size-section">
+  <h2 class="section-title" style="color:#fff">Size <span class="orange">Guide</span></h2>
+  <p class="section-subtitle">Find your perfect fit — one size fits all body types</p>
+  <div class="size-table-wrap">
+    <table class="size-table">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Waist (inches)</th>
+          <th>Waist (cm)</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><b>S</b></td><td>26″ – 30″</td><td>66–76 cm</td><td>Slim/Regular</td></tr>
+        <tr><td><b>M</b></td><td>30″ – 34″</td><td>76–86 cm</td><td>Regular/Average</td></tr>
+        <tr><td><b>L</b></td><td>34″ – 38″</td><td>86–97 cm</td><td>Plus/Curvy</td></tr>
+        <tr><td><b>XL</b></td><td>38″ – 44″</td><td>97–112 cm</td><td>Extra Plus</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <h2 class="section-title">What Our <span class="orange">Customers Say</span></h2>
+  <p class="section-subtitle">Real results from real people across India</p>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">P</div>
+        <div>
+          <div class="review-name">Priya Sharma</div>
+          <div class="review-loc">📍 Mumbai, Maharashtra</div>
+        </div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"3 हफ्ते में 2 इंच कम हुआ! बहुत खुश हूँ। रोज़ वर्कआउट के साथ पहनती हूँ, पसीना बहुत आता है — results बहुत अच्छे हैं। Highly recommended!"</p>
+      <div class="verified">✅ Verified Purchase</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">R</div>
+        <div>
+          <div class="review-name">Rahul Verma</div>
+          <div class="review-loc">📍 Delhi, NCR</div>
+        </div>
+      </div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Amazing product! I was skeptical at first but after using it for a month, I've lost almost 3 inches from my waist. The quality is excellent and it's very comfortable to wear. Worth every rupee!"</p>
+      <div class="verified">✅ Verified Purchase</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">A</div>
+        <div>
+          <div class="review-name">Anjali Patel</div>
+          <div class="review-loc">📍 Ahmedabad, Gujarat</div>
+        </div>
+      </div>
+      <div class="stars">★★★★☆</div>
+      <p class="review-text">"बेल्ट की quality बहुत अच्छी है। पीठ दर्द में भी काफी relief मिला। Morning walk के time पहनती हूँ, 4 weeks में पेट visible कम हुआ। COD से order किया था — smooth delivery!"</p>
+      <div class="verified">✅ Verified Purchase</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2 class="section-title">Frequently Asked <span class="orange">Questions</span></h2>
+  <p class="section-subtitle">Everything you need to know before ordering</p>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        क्या यह belt safe है? (Is this belt safe to use?)
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">हाँ, Sweat Belt Pro 100% safe है। यह premium neoprene material से बना है जो skin-friendly है। इसे रोज़ 45–60 minutes तक wear करें। अगर कोई skin problem हो तो डॉक्टर से consult करें।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        कितने समय में results दिखेंगे? (When will I see results?)
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">Regular use और proper diet के साथ, most customers 2–4 weeks में visible results देखते हैं। Best results के लिए daily workout या brisk walk के साथ use करें।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        क्या Cash on Delivery (COD) available है?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">हाँ! हम COD (Cash on Delivery) offer करते हैं — पूरे India में। Order करें, delivery पर cash दें। कोई advance payment नहीं।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Delivery कितने दिन में होगी?
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">हम India के सभी cities/towns में deliver करते हैं। सामान्यतः 4–7 business days में delivery हो जाती है। Metro cities में 3–5 days में।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        मेरा size क्या होगा? (How to choose the right size?)
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-a">अपनी waist को measure करें: 26-30" = S, 30-34" = M, 34-38" = L, 38-44" = XL। Sweat Belt adjustable velcro से आता है, इसलिए थोड़ा tight रखना ज़रूरी है — यही sweating बढ़ाता है।</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-badges">
+    <div class="footer-badge"><span>💵</span> Cash on Delivery</div>
+    <div class="footer-badge"><span>🚚</span> Free Shipping Pan-India</div>
+    <div class="footer-badge"><span>↩️</span> Easy Returns</div>
+    <div class="footer-badge"><span>🔒</span> Secure Order</div>
+  </div>
+  <p>© 2024 SweatBelt Pro. All rights reserved. | Made with ❤️ in India</p>
+</footer>
+
+<!-- STICKY BUY BUTTON -->
+<div class="sticky-buy" id="stickyBuy">
+  <button class="sticky-buy-btn" onclick="openModal()">
+    🛒 Order Now — COD | ₹599 <span style="text-decoration:line-through;opacity:.7;font-size:13px">₹1299</span>
+  </button>
+</div>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="orderModal">
+    <!-- FORM VIEW -->
+    <div id="formView">
+      <div class="modal-header">
+        <h2>🛒 Place Your Order</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input class="form-input" id="f_name" type="text" placeholder="Enter your full name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number *</label>
+        <input class="form-input" id="f_phone" type="tel" placeholder="10-digit mobile number" maxlength="10"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pincode *</label>
+        <div class="pincode-wrap">
+          <input class="form-input" id="f_pincode" type="text" placeholder="Enter 6-digit pincode" maxlength="6"/>
+          <span class="pincode-status" id="pincodeStatus"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">City</label>
+          <input class="form-input" id="f_city" type="text" placeholder="Auto-filled" readonly/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <input class="form-input" id="f_state" type="text" placeholder="Auto-filled" readonly/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Full Address *</label>
+        <input class="form-input" id="f_address" type="text" placeholder="House/Flat No, Street, Area, Landmark"/>
+      </div>
+
+      <div class="qty-size-row">
+        <div class="form-group">
+          <label class="form-label">Quantity</label>
+          <div class="qty-input-wrap">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-val" id="f_qty" type="number" value="1" min="1" max="5" readonly/>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Size</label>
+          <select class="size-select" id="f_size" onchange="updateSummary()">
+            <option value="S">S (26–30 inch)</option>
+            <option value="M" selected>M (30–34 inch)</option>
+            <option value="L">L (34–38 inch)</option>
+            <option value="XL">XL (38–44 inch)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span id="sum_product">Sweat Belt Pro (M × 1)</span>
+          <span>₹599</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span style="color:green;font-weight:800">FREE</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total (COD)</span>
+          <span id="sum_total">₹599</span>
+        </div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitOrder()">
+        🚀 Confirm Order — Pay on Delivery
+      </button>
+    </div>
+
+    <!-- SUCCESS VIEW -->
+    <div id="successView" style="display:none">
+      <div class="success-screen">
+        <div class="success-icon">🎉</div>
+        <h2>Order Placed Successfully!</h2>
+        <div class="success-hindi">बधाई हो! आपका ऑर्डर हो गया है 🙏</div>
+        <div class="order-id-box">
+          <div class="order-id-label">Your Order ID</div>
+          <div class="order-id-val" id="successOrderId">—</div>
+        </div>
+        <p class="success-note">
+          आपको जल्द ही call आएगा। <br/>
+          4–7 दिनों में delivery होगी।<br/>
+          <b>Delivery पर cash payment करें।</b>
+        </p>
+        <button class="success-close-btn" onclick="closeModal()">Done ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = 'REPLACE_WITH_BACKEND_URL';
+const PRICE = 599;
+
+// ─── Meta Pixel ───────────────────────────────────────────────────────────────
+async function loadMetaPixel() {
+  try {
+    const r = await fetch(API_BASE + '/api/meta');
+    const d = await r.json();
+    if (d.success && d.metaPixel) {
+      const s = document.createElement('script');
+      s.textContent = `
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+        (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init','${d.metaPixel}');fbq('track','PageView');
+      `;
+      document.head.appendChild(s);
+      window._pixelLoaded = true;
+    }
+  } catch(e) {}
+}
+function firePixel(event, data) {
+  if (window.fbq) { window.fbq('track', event, data || {}); }
+}
+loadMetaPixel();
+
+// ─── Sticky button on scroll ──────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const el = document.getElementById('stickyBuy');
+  if (window.scrollY > 400) el.classList.add('show');
+  else el.classList.remove('show');
+});
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('formView').style.display = 'block';
+  document.getElementById('successView').style.display = 'none';
+  firePixel('InitiateCheckout');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+// ─── Qty ─────────────────────────────────────────────────────────────────────
+function changeQty(d) {
+  const el = document.getElementById('f_qty');
+  let v = parseInt(el.value) + d;
+  if (v < 1) v = 1;
+  if (v > 5) v = 5;
+  el.value = v;
+  updateSummary();
+}
+
+// ─── Summary ──────────────────────────────────────────────────────────────────
+function updateSummary() {
+  const qty  = parseInt(document.getElementById('f_qty').value) || 1;
+  const size = document.getElementById('f_size').value;
+  const total = PRICE * qty;
+  document.getElementById('sum_product').textContent = `Sweat Belt Pro (${size} × ${qty})`;
+  document.getElementById('sum_total').textContent = '₹' + total;
+}
+
+// ─── Pincode auto-fetch ───────────────────────────────────────────────────────
+let pincodeTimer = null;
+document.getElementById('f_pincode').addEventListener('input', function() {
+  clearTimeout(pincodeTimer);
+  const pin = this.value.trim();
+  if (pin.length === 6 && /^\d{6}$/.test(pin)) {
+    document.getElementById('pincodeStatus').textContent = '⏳';
+    pincodeTimer = setTimeout(() => fetchPincode(pin), 500);
+  } else {
+    document.getElementById('pincodeStatus').textContent = '';
+    document.getElementById('f_city').value = '';
+    document.getElementById('f_state').value = '';
+  }
+});
+
+async function fetchPincode(pin) {
+  try {
+    const r = await fetch(API_BASE + '/api/pincode/' + pin);
+    const d = await r.json();
+    if (d.success && d.data && d.data[0] && d.data[0].Status === 'Success') {
+      const po = d.data[0].PostOffice[0];
+      document.getElementById('f_city').value  = po.District || po.Name;
+      document.getElementById('f_state').value = po.State;
+      document.getElementById('pincodeStatus').textContent = '✅';
+    } else {
+      document.getElementById('pincodeStatus').textContent = '❌';
+    }
+  } catch(e) {
+    document.getElementById('pincodeStatus').textContent = '❌';
+  }
+}
+
+// ─── Validation ───────────────────────────────────────────────────────────────
+function validate() {
+  const name    = document.getElementById('f_name').value.trim();
+  const phone   = document.getElementById('f_phone').value.trim();
+  const pincode = document.getElementById('f_pincode').value.trim();
+  const address = document.getElementById('f_address').value.trim();
+  if (!name)                          { showToast('Please enter your name'); return false; }
+  if (!/^\d{10}$/.test(phone))        { showToast('Enter valid 10-digit phone number'); return false; }
+  if (!/^\d{6}$/.test(pincode))       { showToast('Enter valid 6-digit pincode'); return false; }
+  if (!address)                       { showToast('Please enter your address'); return false; }
+  return true;
+}
+
+// ─── Submit Order ─────────────────────────────────────────────────────────────
+async function submitOrder() {
+  if (!validate()) return;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Placing order...';
+
+  const qty   = parseInt(document.getElementById('f_qty').value) || 1;
+  const price = PRICE;
+  const total = price * qty;
+  const payload = {
+    name:        document.getElementById('f_name').value.trim(),
+    phone:       document.getElementById('f_phone').value.trim(),
+    address:     document.getElementById('f_address').value.trim(),
+    pincode:     document.getElementById('f_pincode').value.trim(),
+    city:        document.getElementById('f_city').value.trim(),
+    state:       document.getElementById('f_state').value.trim(),
+    size:        document.getElementById('f_size').value,
+    quantity:    qty,
+    price:       price,
+    totalAmount: total,
+    product:     'Sweat Belt Pro',
+    productName: 'Sweat Belt Pro — Advanced Slimming Belt',
+    status:      'new'
+  };
+
+  try {
+    const r = await fetch(API_BASE + '/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const d = await r.json();
+    if (d.success) {
+      document.getElementById('successOrderId').textContent = d.orderId;
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+      firePixel('Purchase', { value: total, currency: 'INR' });
+    } else {
+      showToast('Order failed: ' + (d.error || 'Unknown error'));
+    }
+  } catch(e) {
+    showToast('Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🚀 Confirm Order — Pay on Delivery';
+  }
+}
+
+// ─── FAQ toggle ───────────────────────────────────────────────────────────────
+function toggleFaq(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
