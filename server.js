@@ -9,6 +9,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ─── Live Visitor Store (in-memory) ──────────────────────────────────────────
+const visitors = new Map(); // visitorId → lastSeen (ms timestamp)
+
+// Auto-expire stale sessions every 30s
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, ts] of visitors) {
+    if (now - ts > 60000) visitors.delete(id); // expire after 60s of silence
+  }
+}, 30000);
+
 // ─── MongoDB Connection ────────────────────────────────────────────────────────
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
@@ -71,9 +82,25 @@ function fetchUrl(url) {
 // ORDERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// POST /api/orders — Create order
+// POST /api/orders — Create order (with duplicate phone check)
 app.post('/api/orders', async (req, res) => {
   try {
+    const phone = (req.body.phone || '').trim();
+
+    // ── Duplicate phone check ──────────────────────────────────────────────
+    if (phone) {
+      const existing = await Order.findOne({ phone });
+      if (existing) {
+        return res.status(409).json({
+          success: false,
+          duplicate: true,
+          error: 'An order with this phone number already exists.',
+          existingOrderId: existing._id
+        });
+      }
+    }
+    // ──────────────────────────────────────────────────────────────────────
+
     const order = new Order(req.body);
     await order.save();
     res.json({ success: true, orderId: order._id });
@@ -327,6 +354,31 @@ app.post('/api/meta', async (req, res) => {
   } catch (e) {
     res.status(500).json({ success: false, error: e.message });
   }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LIVE VISITORS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// POST /api/visitors/ping — client sends arrive / heartbeat / leave
+app.post('/api/visitors/ping', (req, res) => {
+  const { visitorId, action } = req.body;
+  if (!visitorId) return res.json({ success: false });
+  if (action === 'leave') {
+    visitors.delete(visitorId);
+  } else {
+    visitors.set(visitorId, Date.now());
+  }
+  res.json({ success: true, count: visitors.size });
+});
+
+// GET /api/visitors/count — admin polls this for real live count
+app.get('/api/visitors/count', (req, res) => {
+  const now = Date.now();
+  for (const [id, ts] of visitors) {
+    if (now - ts > 60000) visitors.delete(id);
+  }
+  res.json({ success: true, count: visitors.size });
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
