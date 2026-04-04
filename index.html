@@ -7,295 +7,275 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --orange:#e85d04;
-  --orange-dark:#c94e00;
-  --orange-light:#ff7a2f;
-  --black:#1a1a1a;
-  --dark:#111;
-  --gray:#f5f5f5;
-  --text:#333;
-  --white:#fff;
-}
+:root{--orange:#e85d04;--orange-dark:#c94e00;--black:#1a1a1a;--gray:#f5f5f5;--white:#fff}
 body{font-family:'Nunito',sans-serif;color:var(--black);background:#fff;overflow-x:hidden}
-
-/* ANNOUNCEMENT BAR */
-.announce{background:var(--orange);color:#fff;text-align:center;padding:10px 16px;font-weight:800;font-size:14px;letter-spacing:.3px}
-.announce span{margin:0 8px}
-
-/* NAVBAR */
-.navbar{background:var(--black);padding:12px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4)}
-.logo{color:#fff;font-size:22px;font-weight:900;letter-spacing:-0.5px}
-.logo span{color:var(--orange)}
+.announce{background:var(--orange);color:#fff;text-align:center;padding:10px 16px;font-weight:800;font-size:13px}
+.announce span{margin:0 8px;opacity:.6}
+.navbar{background:var(--black);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.logo{color:#fff;font-size:20px;font-weight:900}.logo span{color:var(--orange)}
+.nav-order-btn{background:var(--orange);color:#fff;border:none;padding:9px 18px;border-radius:30px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+.urgency{background:#111;color:#fff;text-align:center;padding:9px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.urgency b{color:var(--orange)}.live-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* HERO */
-.hero{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 50%,#1a1a1a 100%);padding:40px 20px 50px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:var(--orange);border-radius:50%;opacity:.08}
-.hero::after{content:'';position:absolute;bottom:-60px;left:-30px;width:250px;height:250px;background:var(--orange);border-radius:50%;opacity:.06}
-.hero-badge{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:800;padding:6px 16px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
-.hero h1{color:#fff;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1.15;margin-bottom:10px}
+.hero{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 60%,#1a1a1a 100%);padding:32px 20px 40px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;background:var(--orange);border-radius:50%;opacity:.07}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:260px;height:260px;background:var(--orange);border-radius:50%;opacity:.05}
+.hero-top-badge{display:inline-block;background:var(--orange);color:#fff;font-size:11px;font-weight:800;padding:5px 14px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.hero h1{color:#fff;font-size:clamp(22px,5.5vw,38px);font-weight:900;line-height:1.2;margin-bottom:6px}
 .hero h1 span{color:var(--orange)}
-.hero-tagline-hindi{color:var(--orange);font-size:clamp(18px,4vw,26px);font-weight:800;margin-bottom:6px}
-.hero-tagline-en{color:#ccc;font-size:15px;font-weight:600;margin-bottom:28px}
-.hero-img-wrap{position:relative;display:inline-block;margin:20px auto}
-.hero-img{width:min(320px,80vw);border-radius:20px;box-shadow:0 20px 60px rgba(232,93,4,.3);border:3px solid var(--orange)}
-.discount-badge{position:absolute;top:-12px;right:-12px;background:var(--orange);color:#fff;width:70px;height:70px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:11px;line-height:1.2;box-shadow:0 4px 16px rgba(232,93,4,.5)}
-.discount-badge b{font-size:18px}
-.price-wrap{margin:24px 0 10px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
-.price-now{color:var(--orange);font-size:42px;font-weight:900}
-.price-mrp{color:#888;font-size:22px;text-decoration:line-through;font-weight:600}
-.price-save{background:#1a3a00;color:#6dff4e;font-size:13px;font-weight:800;padding:5px 12px;border-radius:20px}
-.hero-btn{display:inline-flex;align-items:center;gap:10px;background:var(--orange);color:#fff;font-size:18px;font-weight:900;padding:18px 40px;border-radius:50px;border:none;cursor:pointer;margin:16px 0;transition:all .2s;box-shadow:0 8px 32px rgba(232,93,4,.4);text-decoration:none}
-.hero-btn:hover{background:var(--orange-dark);transform:translateY(-2px);box-shadow:0 12px 40px rgba(232,93,4,.5)}
-.hero-btn-icon{font-size:22px}
-.trust-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
-.badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#ddd;font-size:12px;font-weight:700;padding:8px 14px;border-radius:30px;display:flex;align-items:center;gap:6px}
-.badge-icon{font-size:15px}
+.hero-hindi{color:var(--orange);font-size:clamp(16px,4vw,22px);font-weight:800;margin-bottom:4px}
+.hero-en{color:#bbb;font-size:13px;font-weight:600;margin-bottom:16px}
+.social-proof{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.sp-faces{display:flex}.sp-face{width:26px;height:26px;border-radius:50%;border:2px solid #2d2d2d;margin-left:-7px;background:var(--orange);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.sp-face:first-child{margin-left:0}.sp-txt{color:#ccc;font-size:12px;font-weight:700}.sp-txt b{color:#fff}
 
-/* SECTION COMMON */
-section{padding:56px 20px}
-.section-title{text-align:center;font-size:clamp(22px,5vw,32px);font-weight:900;margin-bottom:8px}
-.section-subtitle{text-align:center;color:#666;font-size:15px;margin-bottom:36px;font-weight:600}
-.orange{color:var(--orange)}
+/* SWIPER */
+.swiper-wrap{position:relative;width:min(320px,82vw);margin:0 auto 20px;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(232,93,4,.3);border:3px solid var(--orange)}
+.swiper-track{display:flex;transition:transform .4s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+.swiper-slide{min-width:100%;aspect-ratio:1/1;background:#222}
+.swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.swiper-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);color:#fff;border:none;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.swiper-btn:hover{background:var(--orange)}.swiper-prev{left:8px}.swiper-next{right:8px}
+.swiper-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+.swiper-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:all .2s}
+.swiper-dot.active{background:#fff;width:20px;border-radius:4px}
+.discount-tag{position:absolute;top:10px;right:10px;background:var(--orange);color:#fff;font-size:11px;font-weight:900;padding:4px 10px;border-radius:20px;z-index:5}
+
+.price-wrap{margin:0 0 14px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.price-now{color:var(--orange);font-size:38px;font-weight:900}
+.price-mrp{color:#777;font-size:19px;text-decoration:line-through;font-weight:600}
+.price-save{background:#1a3a00;color:#6dff4e;font-size:12px;font-weight:800;padding:4px 10px;border-radius:20px}
+.hero-cta{display:flex;flex-direction:column;align-items:center;gap:10px;max-width:380px;margin:0 auto}
+.hero-btn{width:100%;background:var(--orange);color:#fff;font-size:17px;font-weight:900;padding:16px 30px;border-radius:50px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 8px 28px rgba(232,93,4,.45);font-family:'Nunito',sans-serif;animation:ctapulse 2s infinite}
+@keyframes ctapulse{0%,100%{box-shadow:0 8px 28px rgba(232,93,4,.45)}50%{box-shadow:0 8px 44px rgba(232,93,4,.7)}}
+.hero-btn:hover{background:var(--orange-dark);animation:none;transform:translateY(-2px)}
+.cod-tag{color:#aaa;font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px}
+.trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:14px}
+.tbadge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#ccc;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px}
+
+/* SECTIONS */
+section{padding:44px 20px}.section-title{text-align:center;font-size:clamp(20px,5vw,29px);font-weight:900;margin-bottom:6px}
+.section-sub{text-align:center;color:#666;font-size:13px;margin-bottom:28px;font-weight:600}.orange{color:var(--orange)}
 
 /* BENEFITS */
 .benefits-section{background:var(--gray)}
-.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;max-width:900px;margin:0 auto}
-.benefit-card{background:#fff;border-radius:16px;padding:24px 16px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.06);border-bottom:3px solid var(--orange);transition:transform .2s}
-.benefit-card:hover{transform:translateY(-4px)}
-.benefit-icon{font-size:36px;margin-bottom:12px}
-.benefit-title{font-size:13px;font-weight:800;color:var(--black);line-height:1.4}
+.ben-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px;max-width:860px;margin:0 auto}
+.ben-card{background:#fff;border-radius:14px;padding:20px 14px;text-align:center;box-shadow:0 3px 14px rgba(0,0,0,.06);border-bottom:3px solid var(--orange);transition:transform .2s}
+.ben-card:hover{transform:translateY(-3px)}.ben-icon{font-size:30px;margin-bottom:8px}.ben-title{font-size:12px;font-weight:800;line-height:1.4}
 
 /* HOW IT WORKS */
 .how-section{background:#fff}
-.steps{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:900px;margin:0 auto}
-.step{flex:1;min-width:220px;max-width:280px;text-align:center;padding:28px 20px;background:var(--gray);border-radius:20px;position:relative}
-.step-num{width:48px;height:48px;background:var(--orange);color:#fff;border-radius:50%;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.step-icon{font-size:32px;margin-bottom:10px}
-.step h3{font-size:16px;font-weight:800;margin-bottom:8px;color:var(--black)}
-.step p{font-size:13px;color:#666;line-height:1.6;font-weight:600}
+.steps-row{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;max-width:860px;margin:0 auto}
+.step{flex:1;min-width:190px;max-width:250px;text-align:center;padding:22px 16px;background:var(--gray);border-radius:18px}
+.step-num{width:42px;height:42px;background:var(--orange);color:#fff;border-radius:50%;font-size:19px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.step-ico{font-size:28px;margin-bottom:8px}.step h3{font-size:14px;font-weight:800;margin-bottom:6px}
+.step p{font-size:12px;color:#666;line-height:1.6;font-weight:600}
 
-/* SIZE GUIDE */
+/* SIZE */
 .size-section{background:linear-gradient(135deg,#1a1a1a,#2d2d2d)}
-.size-section .section-title{color:#fff}
-.size-section .section-subtitle{color:#aaa}
-.size-table-wrap{overflow-x:auto;max-width:600px;margin:0 auto}
-.size-table{width:100%;border-collapse:collapse;font-size:14px}
-.size-table th{background:var(--orange);color:#fff;padding:12px 16px;text-align:left;font-weight:800}
-.size-table td{padding:12px 16px;border-bottom:1px solid #333;color:#ddd;font-weight:600}
+.size-section .section-title{color:#fff}.size-section .section-sub{color:#aaa}
+.size-table-wrap{overflow-x:auto;max-width:560px;margin:0 auto}
+.size-table{width:100%;border-collapse:collapse;font-size:13px}
+.size-table th{background:var(--orange);color:#fff;padding:11px 14px;text-align:left;font-weight:800}
+.size-table td{padding:11px 14px;border-bottom:1px solid #333;color:#ddd;font-weight:600}
 .size-table tr:last-child td{border-bottom:none}
-.size-table tr:hover td{background:rgba(232,93,4,.08)}
 
 /* REVIEWS */
 .reviews-section{background:#fff}
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:900px;margin:0 auto}
-.review-card{background:var(--gray);border-radius:16px;padding:24px;border-left:4px solid var(--orange)}
-.review-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.review-avatar{width:48px;height:48px;background:var(--orange);color:#fff;border-radius:50%;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.review-name{font-weight:800;font-size:15px;color:var(--black)}
-.review-loc{font-size:12px;color:#888;font-weight:600}
-.stars{color:#f59e0b;font-size:16px;margin-bottom:8px}
-.review-text{font-size:14px;color:#555;line-height:1.6;font-weight:600}
-.verified{color:var(--orange);font-size:11px;font-weight:800;margin-top:8px;display:flex;align-items:center;gap:4px}
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:860px;margin:0 auto}
+.rev-card{background:var(--gray);border-radius:14px;padding:20px;border-left:4px solid var(--orange)}
+.rev-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rev-av{width:42px;height:42px;background:var(--orange);color:#fff;border-radius:50%;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rev-name{font-weight:800;font-size:14px}.rev-loc{font-size:11px;color:#888;font-weight:600}
+.stars{color:#f59e0b;font-size:14px;margin-bottom:6px}.rev-txt{font-size:13px;color:#555;line-height:1.6;font-weight:600}
+.verified{color:var(--orange);font-size:11px;font-weight:800;margin-top:7px}
+
+/* GUARANTEE BAR */
+.guarantee{background:var(--orange);padding:28px 20px}
+.g-inner{max-width:700px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:24px}
+.g-item{text-align:center;color:#fff;min-width:100px}
+.g-icon{font-size:32px;margin-bottom:6px}.g-title{font-size:12px;font-weight:800}
 
 /* FAQ */
 .faq-section{background:var(--gray)}
-.faq-list{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-.faq-item{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.faq-q{padding:18px 20px;font-weight:800;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--black)}
-.faq-q:hover{background:#fff8f5}
-.faq-toggle{color:var(--orange);font-size:20px;font-weight:900;transition:transform .3s}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px;font-size:14px;color:#555;line-height:1.7;font-weight:600}
-.faq-item.open .faq-a{max-height:200px;padding:0 20px 18px}
-.faq-item.open .faq-toggle{transform:rotate(45deg)}
+.faq-list{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.faq-q{padding:16px 18px;font-weight:800;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-q:hover{background:#fff8f5}.faq-tog{color:var(--orange);font-size:20px;transition:transform .3s;flex-shrink:0;margin-left:10px}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s;padding:0 18px;font-size:13px;color:#555;line-height:1.7;font-weight:600}
+.faq-item.open .faq-a{max-height:220px;padding:0 18px 16px}.faq-item.open .faq-tog{transform:rotate(45deg)}
 
 /* FOOTER */
-footer{background:var(--black);color:#fff;padding:30px 20px;text-align:center}
-.footer-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:20px}
-.footer-badge{display:flex;align-items:center;gap:8px;color:#ccc;font-size:13px;font-weight:700}
-.footer-badge span{font-size:20px}
-footer p{color:#666;font-size:13px;font-weight:600}
+footer{background:var(--black);color:#fff;padding:26px 20px;text-align:center}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:14px}
+.foot-b{display:flex;align-items:center;gap:6px;color:#bbb;font-size:12px;font-weight:700}
+footer p{color:#555;font-size:12px;font-weight:600}
 
-/* STICKY BUY BTN */
-.sticky-buy{position:fixed;bottom:0;left:0;right:0;background:var(--orange);z-index:99;padding:14px 20px;display:none;justify-content:center;align-items:center;box-shadow:0 -4px 20px rgba(0,0,0,.3)}
-.sticky-buy.show{display:flex}
-.sticky-buy-btn{color:#fff;font-size:16px;font-weight:900;border:none;background:none;cursor:pointer;display:flex;align-items:center;gap:10px;letter-spacing:.3px}
+/* STICKY */
+.sticky{position:fixed;bottom:0;left:0;right:0;background:var(--orange);z-index:99;padding:12px 20px;display:none;justify-content:space-between;align-items:center;box-shadow:0 -4px 20px rgba(0,0,0,.3)}
+.sticky.show{display:flex}
+.sticky-info{color:#fff;font-size:12px;font-weight:700;line-height:1.4}
+.sticky-info b{font-size:16px;display:block}
+.sticky-btn{background:#fff;color:var(--orange);border:none;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap}
 
-/* MODAL OVERLAY */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+/* ═══ MODAL ═══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.active{display:flex}
-.modal{background:#fff;width:100%;max-width:520px;border-radius:24px 24px 0 0;max-height:92vh;overflow-y:auto;padding:28px 24px 40px}
-@media(min-width:600px){
-  .modal-overlay{align-items:center}
-  .modal{border-radius:24px;max-height:88vh}
-}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-.modal-header h2{font-size:20px;font-weight:900;color:var(--black)}
-.modal-close{background:none;border:none;font-size:26px;cursor:pointer;color:#999;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s}
-.modal-close:hover{background:#f0f0f0}
+.modal{background:#fff;width:100%;max-width:520px;border-radius:22px 22px 0 0;max-height:93vh;overflow-y:auto;padding:22px 18px 52px}
+@media(min-width:600px){.modal-overlay{align-items:center}.modal{border-radius:20px;max-height:92vh;padding:28px 28px 36px}}
+.modal-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.modal-hd h2{font-size:18px;font-weight:900}
+.modal-hd-sub{font-size:12px;color:#888;font-weight:600;margin-bottom:18px}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.modal-close:hover{background:#f0f0f0;color:#333}
 
 /* FORM */
-.form-group{margin-bottom:18px}
-.form-label{font-size:13px;font-weight:800;color:var(--black);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:600;transition:border .2s;outline:none;color:var(--black)}
-.form-input:focus{border-color:var(--orange)}
-.form-input.error{border-color:#ef4444}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.pincode-wrap{position:relative}
-.pincode-status{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700}
+.fg{margin-bottom:13px}
+.fl{font-size:11px;font-weight:800;color:#666;margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.4px}
+.fl .req{color:var(--orange)}.fl .opt{font-size:10px;font-weight:600;text-transform:none;color:#aaa;letter-spacing:0}
+.fi{width:100%;padding:12px 14px;border:2px solid #e8e8e8;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;color:var(--black);background:#fff;transition:border .2s}
+.fi:focus{border-color:var(--orange);background:#fffaf7}.fi.err{border-color:#ef4444}.fi.ok{border-color:#22c55e}
+.fi-ro{background:#f8f8f8;color:#999;cursor:default}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.pin-wrap{position:relative}.pin-st{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:13px}
 
-/* QTY + SIZE */
-.qty-size-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.qty-input-wrap{display:flex;align-items:center;border:2px solid #e0e0e0;border-radius:10px;overflow:hidden}
-.qty-btn{background:#f5f5f5;border:none;width:44px;height:48px;font-size:22px;font-weight:700;cursor:pointer;transition:background .2s}
-.qty-btn:hover{background:var(--orange);color:#fff}
-.qty-val{flex:1;text-align:center;font-size:17px;font-weight:800;font-family:'Nunito',sans-serif;border:none;outline:none;color:var(--black)}
-.size-select{width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;cursor:pointer;color:var(--black);background:#fff}
-.size-select:focus{border-color:var(--orange)}
+/* QTY SIZE */
+.qs-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px}
+.ql{font-size:11px;font-weight:800;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+.qty-wrap{display:flex;align-items:center;border:2px solid #e8e8e8;border-radius:10px;overflow:hidden;height:46px}
+.qbtn{background:#f5f5f5;border:none;width:42px;height:100%;font-size:20px;font-weight:700;cursor:pointer;transition:background .2s;flex-shrink:0}
+.qbtn:hover{background:var(--orange);color:#fff}
+.qval{flex:1;text-align:center;font-size:16px;font-weight:900;font-family:'Nunito',sans-serif;border:none;outline:none;color:var(--black);background:transparent}
+.size-sel{width:100%;height:46px;padding:0 12px;border:2px solid #e8e8e8;border-radius:10px;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;outline:none;cursor:pointer;color:var(--black);background:#fff;transition:border .2s}
+.size-sel:focus{border-color:var(--orange)}
 
-/* ORDER SUMMARY */
-.order-summary{background:var(--gray);border-radius:14px;padding:18px;margin:20px 0}
-.order-summary h3{font-size:14px;font-weight:800;color:var(--black);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-.summary-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:#555;margin-bottom:8px}
-.summary-row.total{font-size:18px;font-weight:900;color:var(--black);border-top:2px solid #e0e0e0;padding-top:12px;margin-top:4px}
-.summary-row.total span:last-child{color:var(--orange)}
+/* SUMMARY */
+.summary{background:#fff8f5;border-radius:12px;padding:14px;margin:14px 0;border:1.5px solid #fde0cc}
+.sum-title{font-size:10px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.sum-row{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#666;margin-bottom:5px}
+.sum-row.total{font-size:16px;font-weight:900;color:var(--black);border-top:1.5px solid #fde0cc;padding-top:9px;margin-top:3px}
+.sum-row.total span:last-child{color:var(--orange);font-size:19px}
+.free-tag{color:#16a34a;font-weight:800}
 
-/* SUBMIT BTN */
-.submit-btn{width:100%;background:var(--orange);color:#fff;font-size:17px;font-weight:900;padding:17px;border:none;border-radius:50px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;font-family:'Nunito',sans-serif}
-.submit-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
-.submit-btn:disabled{background:#ccc;cursor:not-allowed;transform:none}
+/* SUBMIT */
+.sub-btn{width:100%;background:var(--orange);color:#fff;font-size:16px;font-weight:900;padding:15px;border:none;border-radius:50px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Nunito',sans-serif}
+.sub-btn:hover:not(:disabled){background:var(--orange-dark);transform:translateY(-1px)}
+.sub-btn:disabled{background:#ccc;cursor:not-allowed}
+.sub-note{text-align:center;font-size:11px;color:#bbb;font-weight:600;margin-top:8px}
 
-/* SUCCESS SCREEN */
-.success-screen{text-align:center;padding:20px 0}
-.success-icon{font-size:80px;margin-bottom:16px}
-.success-screen h2{font-size:24px;font-weight:900;color:var(--black);margin-bottom:8px}
-.success-hindi{color:var(--orange);font-size:20px;font-weight:800;margin-bottom:16px}
-.order-id-box{background:var(--gray);border-radius:12px;padding:16px;margin:16px 0;border-left:4px solid var(--orange)}
-.order-id-label{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px}
-.order-id-val{font-size:20px;font-weight:900;color:var(--black);margin-top:4px;word-break:break-all}
-.success-note{font-size:14px;color:#666;font-weight:600;line-height:1.6;margin-top:12px}
-.success-close-btn{margin-top:20px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;padding:14px 32px;border:none;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif}
+/* SUCCESS */
+.success-view{text-align:center;padding:14px 0}
+.suc-ico{font-size:70px;margin-bottom:10px;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.success-view h2{font-size:21px;font-weight:900;margin-bottom:5px}
+.suc-hindi{color:var(--orange);font-size:17px;font-weight:800;margin-bottom:12px}
+.oid-box{background:#fff8f5;border:2px solid var(--orange);border-radius:12px;padding:13px;margin:12px 0}
+.oid-lbl{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px}
+.oid-val{font-size:17px;font-weight:900;margin-top:4px;word-break:break-all}
+.suc-steps{background:var(--gray);border-radius:10px;padding:12px 14px;margin:12px 0;text-align:left}
+.suc-step{font-size:13px;font-weight:700;color:#444;padding:4px 0;display:flex;align-items:center;gap:7px}
+.suc-close{margin-top:12px;background:var(--black);color:#fff;font-size:14px;font-weight:800;padding:13px;border:none;border-radius:50px;cursor:pointer;font-family:'Nunito',sans-serif;width:100%}
 
 /* TOAST */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:700;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:11px 20px;border-radius:30px;font-size:13px;font-weight:800;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media(max-width:480px){
-  .form-row{grid-template-columns:1fr}
-  .qty-size-row{grid-template-columns:1fr 1fr}
-}
+@media(max-width:480px){.two-col{grid-template-columns:1fr}.qs-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<!-- ANNOUNCEMENT BAR -->
-<div class="announce">
-  🚚 FREE Shipping<span>|</span>💳 COD Available<span>|</span>⚡ Limited Stock — Order Now!
-</div>
+<div class="announce">🚚 FREE Shipping<span>|</span>💵 COD Available<span>|</span>⚡ Limited Stock!</div>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-  <div class="logo">SWEAT<span>BELT</span> PRO</div>
+  <div class="logo">SWEAT<span>BELT</span></div>
+  <button class="nav-order-btn" onclick="openModal()">🛒 Order Now</button>
 </nav>
+
+<div class="urgency">
+  <span class="live-dot"></span>
+  <span><b id="liveCount">24</b> लोग अभी देख रहे हैं</span>
+  <span style="opacity:.4">|</span>
+  <span>⚡ सिर्फ <b id="stockLeft">7</b> pieces बचे हैं!</span>
+</div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">🔥 #1 Slimming Belt in India</div>
-  <h1>Sweat Belt Pro<br><span>Advanced Slimming Belt</span></h1>
-  <div class="hero-tagline-hindi">पेट कम करो, आत्मविश्वास बढ़ाओ</div>
-  <div class="hero-tagline-en">Reduce belly fat, Boost your confidence</div>
-  <div class="hero-img-wrap">
-    <img class="hero-img" src="https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg" alt="Sweat Belt Pro Slimming Belt" onerror="this.src='https://via.placeholder.com/320x320/e85d04/ffffff?text=Sweat+Belt+Pro'"/>
-    <div class="discount-badge"><b>54%</b>OFF</div>
+  <div class="hero-top-badge" id="heroBadge">🏆 India's #1 Slimming Belt</div>
+  <h1 id="heroTitle">Sweat Belt Pro<br><span>Advanced Slimming Belt</span></h1>
+  <div class="hero-hindi">पेट कम करो, आत्मविश्वास बढ़ाओ</div>
+  <div class="hero-en">Reduce belly fat · Boost your confidence</div>
+  <div class="social-proof">
+    <div class="sp-faces">
+      <div class="sp-face">P</div><div class="sp-face">R</div>
+      <div class="sp-face">A</div><div class="sp-face">S</div>
+    </div>
+    <div class="sp-txt"><b>4,200+</b> happy customers this month ⭐⭐⭐⭐⭐</div>
   </div>
+
+  <!-- IMAGE SWIPER -->
+  <div class="swiper-wrap" id="swiperWrap">
+    <div class="swiper-track" id="swiperTrack">
+      <div class="swiper-slide"><img src="https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg" alt="Sweat Belt Pro" onerror="this.src='https://via.placeholder.com/320x320/e85d04/fff?text=Sweat+Belt'"/></div>
+    </div>
+    <button class="swiper-btn swiper-prev" id="swiperPrev" onclick="slidePrev()">‹</button>
+    <button class="swiper-btn swiper-next" id="swiperNext" onclick="slideNext()">›</button>
+    <div class="swiper-dots" id="swiperDots"></div>
+    <div class="discount-tag" id="discTag">54% OFF</div>
+  </div>
+
   <div class="price-wrap">
-    <div class="price-now">₹599</div>
-    <div class="price-mrp">₹1299</div>
-    <div class="price-save">Save ₹700</div>
+    <div class="price-now" id="priceNow">₹599</div>
+    <div class="price-mrp" id="priceMrp">₹1299</div>
+    <div class="price-save" id="priceSave">Save ₹700</div>
   </div>
-  <button class="hero-btn" onclick="openModal()">
-    <span class="hero-btn-icon">🛒</span> Order Now — COD
-  </button>
-  <div class="trust-badges">
-    <div class="badge"><span class="badge-icon">💵</span>Cash on Delivery</div>
-    <div class="badge"><span class="badge-icon">🚚</span>Free Shipping</div>
-    <div class="badge"><span class="badge-icon">📅</span>30-Day Results</div>
-    <div class="badge"><span class="badge-icon">🏆</span>Premium Neoprene</div>
+
+  <div class="hero-cta">
+    <button class="hero-btn" onclick="openModal()">🛒 अभी Order करें — COD</button>
+    <div class="cod-tag">🔒 Advance payment नहीं · Delivery पर cash दें</div>
+  </div>
+  <div class="trust-row">
+    <span class="tbadge">💵 Cash on Delivery</span>
+    <span class="tbadge">🚚 Free Shipping</span>
+    <span class="tbadge">📅 2–4 Week Results</span>
+    <span class="tbadge">🏆 Premium Quality</span>
   </div>
 </section>
 
 <!-- BENEFITS -->
 <section class="benefits-section">
-  <h2 class="section-title">Why Choose <span class="orange">Sweat Belt Pro?</span></h2>
-  <p class="section-subtitle">6 powerful benefits that make it India's favourite slimming belt</p>
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <div class="benefit-icon">🔥</div>
-      <div class="benefit-title">Burns Belly Fat & Reduces Waist Inches</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">💧</div>
-      <div class="benefit-title">Boosts Core Sweating for Faster Results</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">🦴</div>
-      <div class="benefit-title">Supports Lower Back & Corrects Posture</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">😌</div>
-      <div class="benefit-title">Premium Neoprene — Ultra Comfortable</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">🏃</div>
-      <div class="benefit-title">Wear During Workout, Walk or Daily Use</div>
-    </div>
-    <div class="benefit-card">
-      <div class="benefit-icon">📈</div>
-      <div class="benefit-title">Visible Results in Just 2–4 Weeks</div>
-    </div>
+  <h2 class="section-title">क्यों चुनें <span class="orange">Sweat Belt Pro?</span></h2>
+  <p class="section-sub">6 powerful benefits जो इसे India का favourite बनाते हैं</p>
+  <div class="ben-grid" id="benGrid">
+    <div class="ben-card"><div class="ben-icon">🔥</div><div class="ben-title">Burns Belly Fat & Reduces Waist Inches</div></div>
+    <div class="ben-card"><div class="ben-icon">💧</div><div class="ben-title">Boosts Core Sweating for Faster Results</div></div>
+    <div class="ben-card"><div class="ben-icon">🦴</div><div class="ben-title">Supports Lower Back & Corrects Posture</div></div>
+    <div class="ben-card"><div class="ben-icon">😌</div><div class="ben-title">Premium Neoprene — Ultra Comfortable</div></div>
+    <div class="ben-card"><div class="ben-icon">🏃</div><div class="ben-title">Wear During Workout, Walk or Daily Use</div></div>
+    <div class="ben-card"><div class="ben-icon">📈</div><div class="ben-title">Visible Results in Just 2–4 Weeks</div></div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how-section">
-  <h2 class="section-title">How to <span class="orange">Use It?</span></h2>
-  <p class="section-subtitle">3 simple steps to start your transformation</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-icon">📦</div>
-      <h3>Unbox & Adjust</h3>
-      <p>Unwrap your Sweat Belt Pro and adjust the velcro straps to fit your waist size comfortably.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-icon">🎯</div>
-      <h3>Wrap & Wear</h3>
-      <p>Wrap tightly around your belly/waist area. Wear for 45–60 minutes during exercise or daily activities.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-icon">✨</div>
-      <h3>See Results</h3>
-      <p>Use daily consistently. Start seeing visible inch reduction and slimmer waist in just 2–4 weeks!</p>
-    </div>
+  <h2 class="section-title">कैसे <span class="orange">इस्तेमाल करें?</span></h2>
+  <p class="section-sub">3 आसान steps में शुरू करें अपना transformation</p>
+  <div class="steps-row">
+    <div class="step"><div class="step-num">1</div><div class="step-ico">📦</div><h3>Unbox & Adjust</h3><p>Box खोलें और velcro straps को अपनी waist size के अनुसार adjust करें।</p></div>
+    <div class="step"><div class="step-num">2</div><div class="step-ico">🎯</div><h3>Wrap & Wear</h3><p id="howToUseText">पेट/कमर के आसपास tight wrap करें। Exercise या daily activities के दौरान 45–60 min पहनें।</p></div>
+    <div class="step"><div class="step-num">3</div><div class="step-ico">✨</div><h3>See Results</h3><p>रोज़ regular use करें। 2–4 weeks में waist पतली और पेट कम होते देखें!</p></div>
   </div>
 </section>
 
 <!-- SIZE GUIDE -->
 <section class="size-section">
-  <h2 class="section-title" style="color:#fff">Size <span class="orange">Guide</span></h2>
-  <p class="section-subtitle">Find your perfect fit — one size fits all body types</p>
+  <h2 class="section-title">Size <span class="orange">Guide</span></h2>
+  <p class="section-sub">अपना सही size चुनें</p>
   <div class="size-table-wrap">
     <table class="size-table">
-      <thead>
-        <tr>
-          <th>Size</th>
-          <th>Waist (inches)</th>
-          <th>Waist (cm)</th>
-          <th>Best For</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Size</th><th>Waist (inch)</th><th>Waist (cm)</th><th>Best For</th></tr></thead>
       <tbody>
         <tr><td><b>S</b></td><td>26″ – 30″</td><td>66–76 cm</td><td>Slim/Regular</td></tr>
         <tr><td><b>M</b></td><td>30″ – 34″</td><td>76–86 cm</td><td>Regular/Average</td></tr>
@@ -308,161 +288,85 @@ footer p{color:#666;font-size:13px;font-weight:600}
 
 <!-- REVIEWS -->
 <section class="reviews-section">
-  <h2 class="section-title">What Our <span class="orange">Customers Say</span></h2>
-  <p class="section-subtitle">Real results from real people across India</p>
-  <div class="reviews-grid">
-    <div class="review-card">
-      <div class="review-header">
-        <div class="review-avatar">P</div>
-        <div>
-          <div class="review-name">Priya Sharma</div>
-          <div class="review-loc">📍 Mumbai, Maharashtra</div>
-        </div>
-      </div>
-      <div class="stars">★★★★★</div>
-      <p class="review-text">"3 हफ्ते में 2 इंच कम हुआ! बहुत खुश हूँ। रोज़ वर्कआउट के साथ पहनती हूँ, पसीना बहुत आता है — results बहुत अच्छे हैं। Highly recommended!"</p>
-      <div class="verified">✅ Verified Purchase</div>
-    </div>
-    <div class="review-card">
-      <div class="review-header">
-        <div class="review-avatar">R</div>
-        <div>
-          <div class="review-name">Rahul Verma</div>
-          <div class="review-loc">📍 Delhi, NCR</div>
-        </div>
-      </div>
-      <div class="stars">★★★★★</div>
-      <p class="review-text">"Amazing product! I was skeptical at first but after using it for a month, I've lost almost 3 inches from my waist. The quality is excellent and it's very comfortable to wear. Worth every rupee!"</p>
-      <div class="verified">✅ Verified Purchase</div>
-    </div>
-    <div class="review-card">
-      <div class="review-header">
-        <div class="review-avatar">A</div>
-        <div>
-          <div class="review-name">Anjali Patel</div>
-          <div class="review-loc">📍 Ahmedabad, Gujarat</div>
-        </div>
-      </div>
-      <div class="stars">★★★★☆</div>
-      <p class="review-text">"बेल्ट की quality बहुत अच्छी है। पीठ दर्द में भी काफी relief मिला। Morning walk के time पहनती हूँ, 4 weeks में पेट visible कम हुआ। COD से order किया था — smooth delivery!"</p>
-      <div class="verified">✅ Verified Purchase</div>
-    </div>
+  <h2 class="section-title">Customers का <span class="orange">क्या कहना है?</span></h2>
+  <p class="section-sub">Real results — Real people across India</p>
+  <div class="rev-grid">
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">P</div><div><div class="rev-name">Priya Sharma</div><div class="rev-loc">📍 Mumbai, Maharashtra</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"3 हफ्ते में 2 इंच कम हुआ! रोज़ वर्कआउट के साथ पहनती हूँ, पसीना बहुत आता है। बहुत खुश हूँ। Highly recommended!"</p><div class="verified">✅ Verified Purchase · 3 weeks ago</div></div>
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">R</div><div><div class="rev-name">Rahul Verma</div><div class="rev-loc">📍 Delhi, NCR</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"Amazing product! 1 month में almost 3 inches loss हुआ waist से। Quality excellent है और very comfortable है पहनना। Worth every rupee!"</p><div class="verified">✅ Verified Purchase · 1 month ago</div></div>
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">A</div><div><div class="rev-name">Anjali Patel</div><div class="rev-loc">📍 Ahmedabad, Gujarat</div></div></div><div class="stars">★★★★☆</div><p class="rev-txt">"Belt की quality बहुत अच्छी है। पीठ दर्द में भी relief मिला। 4 weeks में पेट visible कम हुआ। COD से order किया — smooth delivery!"</p><div class="verified">✅ Verified Purchase · 2 weeks ago</div></div>
   </div>
 </section>
+
+<!-- GUARANTEE -->
+<div class="guarantee">
+  <div class="g-inner">
+    <div class="g-item"><div class="g-icon">💵</div><div class="g-title">Cash on Delivery</div></div>
+    <div class="g-item"><div class="g-icon">🚚</div><div class="g-title">Free Shipping</div></div>
+    <div class="g-item"><div class="g-icon">🔒</div><div class="g-title">Secure Order</div></div>
+    <div class="g-item"><div class="g-icon">⚡</div><div class="g-title">Fast Delivery</div></div>
+    <div class="g-item"><div class="g-icon">🏆</div><div class="g-title">Premium Quality</div></div>
+  </div>
+</div>
 
 <!-- FAQ -->
 <section class="faq-section">
-  <h2 class="section-title">Frequently Asked <span class="orange">Questions</span></h2>
-  <p class="section-subtitle">Everything you need to know before ordering</p>
+  <h2 class="section-title">अक्सर पूछे जाने वाले <span class="orange">सवाल</span></h2>
+  <p class="section-sub">Order करने से पहले जानें सब कुछ</p>
   <div class="faq-list">
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        क्या यह belt safe है? (Is this belt safe to use?)
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a">हाँ, Sweat Belt Pro 100% safe है। यह premium neoprene material से बना है जो skin-friendly है। इसे रोज़ 45–60 minutes तक wear करें। अगर कोई skin problem हो तो डॉक्टर से consult करें।</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        कितने समय में results दिखेंगे? (When will I see results?)
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a">Regular use और proper diet के साथ, most customers 2–4 weeks में visible results देखते हैं। Best results के लिए daily workout या brisk walk के साथ use करें।</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        क्या Cash on Delivery (COD) available है?
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a">हाँ! हम COD (Cash on Delivery) offer करते हैं — पूरे India में। Order करें, delivery पर cash दें। कोई advance payment नहीं।</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        Delivery कितने दिन में होगी?
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a">हम India के सभी cities/towns में deliver करते हैं। सामान्यतः 4–7 business days में delivery हो जाती है। Metro cities में 3–5 days में।</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">
-        मेरा size क्या होगा? (How to choose the right size?)
-        <span class="faq-toggle">+</span>
-      </div>
-      <div class="faq-a">अपनी waist को measure करें: 26-30" = S, 30-34" = M, 34-38" = L, 38-44" = XL। Sweat Belt adjustable velcro से आता है, इसलिए थोड़ा tight रखना ज़रूरी है — यही sweating बढ़ाता है।</div>
-    </div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">क्या यह belt safe है?<span class="faq-tog">+</span></div><div class="faq-a">हाँ, 100% safe है। Premium neoprene से बना है जो skin-friendly है। रोज़ 45–60 minutes तक पहनें। कोई side effect नहीं है।</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">कितने समय में results दिखेंगे?<span class="faq-tog">+</span></div><div class="faq-a">Regular use और proper diet के साथ 2–4 weeks में visible results। Best results के लिए daily workout के साथ use करें।</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">क्या COD (Cash on Delivery) available है?<span class="faq-tog">+</span></div><div class="faq-a">हाँ! पूरे India में COD available है। Order करें, delivery पर cash दें — कोई advance payment नहीं।</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Delivery कितने दिन में होगी?<span class="faq-tog">+</span></div><div class="faq-a">4–7 business days में delivery। Metro cities में 3–5 days। हम पूरे India में deliver करते हैं।</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">मेरा size क्या होगा?<span class="faq-tog">+</span></div><div class="faq-a">अपनी waist measure करें: 26-30" = S, 30-34" = M, 34-38" = L, 38-44" = XL। Belt adjustable velcro के साथ आती है इसलिए एक size ऊपर-नीचे भी work करता है।</div></div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-badges">
-    <div class="footer-badge"><span>💵</span> Cash on Delivery</div>
-    <div class="footer-badge"><span>🚚</span> Free Shipping Pan-India</div>
-    <div class="footer-badge"><span>↩️</span> Easy Returns</div>
-    <div class="footer-badge"><span>🔒</span> Secure Order</div>
+  <div class="foot-row">
+    <div class="foot-b"><span>💵</span>Cash on Delivery</div>
+    <div class="foot-b"><span>🚚</span>Free Shipping</div>
+    <div class="foot-b"><span>↩️</span>Easy Returns</div>
+    <div class="foot-b"><span>🔒</span>Secure Order</div>
   </div>
-  <p>© 2024 SweatBelt Pro. All rights reserved. | Made with ❤️ in India</p>
+  <p>© 2024 SweatBelt Pro. All rights reserved. Made with ❤️ in India</p>
 </footer>
 
-<!-- STICKY BUY BUTTON -->
-<div class="sticky-buy" id="stickyBuy">
-  <button class="sticky-buy-btn" onclick="openModal()">
-    🛒 Order Now — COD | ₹599 <span style="text-decoration:line-through;opacity:.7;font-size:13px">₹1299</span>
-  </button>
+<!-- STICKY BUY -->
+<div class="sticky" id="stickyBar">
+  <div class="sticky-info">
+    <b id="stickyPrice">₹599</b>
+    <span style="text-decoration:line-through;opacity:.6" id="stickyMrp">₹1299</span> · Free Shipping
+  </div>
+  <button class="sticky-btn" onclick="openModal()">🛒 Order — COD</button>
 </div>
 
 <!-- ORDER MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+<div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
   <div class="modal" id="orderModal">
+
     <!-- FORM VIEW -->
     <div id="formView">
-      <div class="modal-header">
-        <h2>🛒 Place Your Order</h2>
+      <div class="modal-hd">
+        <div>
+          <h2>🛒 Order करें — COD</h2>
+        </div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
+      <div class="modal-hd-sub">Delivery पर cash payment करें · Free shipping · 4–7 days delivery</div>
 
-      <div class="form-group">
-        <label class="form-label">Full Name *</label>
-        <input class="form-input" id="f_name" type="text" placeholder="Enter your full name"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Phone Number *</label>
-        <input class="form-input" id="f_phone" type="tel" placeholder="10-digit mobile number" maxlength="10"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Pincode *</label>
-        <div class="pincode-wrap">
-          <input class="form-input" id="f_pincode" type="text" placeholder="Enter 6-digit pincode" maxlength="6"/>
-          <span class="pincode-status" id="pincodeStatus"></span>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">City</label>
-          <input class="form-input" id="f_city" type="text" placeholder="Auto-filled" readonly/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">State</label>
-          <input class="form-input" id="f_state" type="text" placeholder="Auto-filled" readonly/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Full Address *</label>
-        <input class="form-input" id="f_address" type="text" placeholder="House/Flat No, Street, Area, Landmark"/>
-      </div>
-
-      <div class="qty-size-row">
-        <div class="form-group">
-          <label class="form-label">Quantity</label>
-          <div class="qty-input-wrap">
-            <button class="qty-btn" onclick="changeQty(-1)">−</button>
-            <input class="qty-val" id="f_qty" type="number" value="1" min="1" max="5" readonly/>
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
+      <!-- QTY + SIZE first (most important) -->
+      <div class="qs-row">
+        <div>
+          <div class="ql">Quantity</div>
+          <div class="qty-wrap">
+            <button class="qbtn" onclick="changeQty(-1)">−</button>
+            <input class="qval" id="f_qty" type="number" value="1" min="1" max="5" readonly/>
+            <button class="qbtn" onclick="changeQty(1)">+</button>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Size</label>
-          <select class="size-select" id="f_size" onchange="updateSummary()">
+        <div>
+          <div class="ql">Size चुनें</div>
+          <select class="size-sel" id="f_size" onchange="updateSummary()">
             <option value="S">S (26–30 inch)</option>
             <option value="M" selected>M (30–34 inch)</option>
             <option value="L">L (34–38 inch)</option>
@@ -471,172 +375,180 @@ footer p{color:#666;font-size:13px;font-weight:600}
         </div>
       </div>
 
-      <!-- ORDER SUMMARY -->
-      <div class="order-summary">
-        <h3>Order Summary</h3>
-        <div class="summary-row">
-          <span id="sum_product">Sweat Belt Pro (M × 1)</span>
-          <span>₹599</span>
-        </div>
-        <div class="summary-row">
-          <span>Shipping</span>
-          <span style="color:green;font-weight:800">FREE</span>
-        </div>
-        <div class="summary-row total">
-          <span>Total (COD)</span>
-          <span id="sum_total">₹599</span>
-        </div>
+      <!-- SUMMARY (live) -->
+      <div class="summary">
+        <div class="sum-title">📦 Order Summary</div>
+        <div class="sum-row"><span id="sumProduct">Sweat Belt Pro (M × 1)</span><span id="sumPrice">₹599</span></div>
+        <div class="sum-row"><span>Shipping</span><span class="free-tag">FREE 🎉</span></div>
+        <div class="sum-row total"><span>Total (COD)</span><span id="sumTotal">₹599</span></div>
       </div>
 
-      <button class="submit-btn" id="submitBtn" onclick="submitOrder()">
+      <div class="fg">
+        <label class="fl">Full Name <span class="req">*</span></label>
+        <input class="fi" id="f_name" type="text" placeholder="अपना पूरा नाम लिखें"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Phone Number <span class="req">*</span></label>
+        <input class="fi" id="f_phone" type="tel" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Pincode <span class="req">*</span></label>
+        <div class="pin-wrap">
+          <input class="fi" id="f_pincode" type="text" placeholder="6-digit pincode" maxlength="6" inputmode="numeric"/>
+          <span class="pin-st" id="pinSt"></span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="fg">
+          <label class="fl">City</label>
+          <input class="fi fi-ro" id="f_city" type="text" placeholder="Auto-fill" readonly/>
+        </div>
+        <div class="fg">
+          <label class="fl">State</label>
+          <input class="fi fi-ro" id="f_state" type="text" placeholder="Auto-fill" readonly/>
+        </div>
+      </div>
+      <div class="fg">
+        <label class="fl">Full Address <span class="req">*</span></label>
+        <input class="fi" id="f_address" type="text" placeholder="घर नंबर, गली, मोहल्ला, इलाका"/>
+      </div>
+      <div class="fg">
+        <label class="fl">Landmark <span class="opt">(optional — आस पास की जगह)</span></label>
+        <input class="fi" id="f_landmark" type="text" placeholder="जैसे: पास में मंदिर, स्कूल, बैंक..."/>
+      </div>
+
+      <button class="sub-btn" id="submitBtn" onclick="submitOrder()">
         🚀 Confirm Order — Pay on Delivery
       </button>
+      <div class="sub-note">🔒 आपकी जानकारी 100% safe है · No spam calls</div>
     </div>
 
     <!-- SUCCESS VIEW -->
     <div id="successView" style="display:none">
-      <div class="success-screen">
-        <div class="success-icon">🎉</div>
-        <h2>Order Placed Successfully!</h2>
-        <div class="success-hindi">बधाई हो! आपका ऑर्डर हो गया है 🙏</div>
-        <div class="order-id-box">
-          <div class="order-id-label">Your Order ID</div>
-          <div class="order-id-val" id="successOrderId">—</div>
+      <div class="success-view">
+        <div class="suc-ico">🎉</div>
+        <h2>Order Placed!</h2>
+        <div class="suc-hindi">बधाई हो! आपका ऑर्डर हो गया है 🙏</div>
+        <div class="oid-box">
+          <div class="oid-lbl">Your Order ID</div>
+          <div class="oid-val" id="sucOrderId">—</div>
         </div>
-        <p class="success-note">
-          आपको जल्द ही call आएगा। <br/>
-          4–7 दिनों में delivery होगी।<br/>
-          <b>Delivery पर cash payment करें।</b>
-        </p>
-        <button class="success-close-btn" onclick="closeModal()">Done ✓</button>
+        <div class="suc-steps">
+          <div class="suc-step">📞 जल्द ही आपको call आएगा confirm करने के लिए</div>
+          <div class="suc-step">🚚 4–7 दिनों में delivery होगी</div>
+          <div class="suc-step">💵 Delivery पर cash payment करें</div>
+        </div>
+        <button class="suc-close" onclick="closeModal()">✓ Done — घर बैठे wait करें!</button>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 const API_BASE = 'https://slimoraaas.onrender.com';
 
-// ─── Product State (loaded from API) ─────────────────────────────────────────
-let PRODUCT = {
-  _id: null,
-  name: 'Sweat Belt Pro — Advanced Slimming Belt',
-  price: 599,
-  mrp: 1299,
-  images: ['https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg'],
-  benefits: [],
-  howToUse: '',
-  stock: 100
-};
+// ─── Product State ────────────────────────────────────────────────────────────
+let PRODUCT = { _id:null, name:'Sweat Belt Pro — Advanced Slimming Belt', price:599, mrp:1299, images:['https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg'], benefits:[], howToUse:'' };
 let PRICE = 599;
+let isSubmitting = false; // ← DOUBLE ORDER FIX
 
-// ─── Load Product from API ────────────────────────────────────────────────────
+// ─── Swiper ───────────────────────────────────────────────────────────────────
+let swipeIdx = 0, swipeImages = [], swipeStartX = 0, swipeStartY = 0;
+
+function buildSwiper(images) {
+  swipeImages = images && images.length ? images : ['https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg'];
+  const track = document.getElementById('swiperTrack');
+  track.innerHTML = swipeImages.map((src,i) => `<div class="swiper-slide"><img src="${src}" alt="Product ${i+1}" onerror="this.src='https://via.placeholder.com/320x320/e85d04/fff?text=Sweat+Belt'"/></div>`).join('');
+  const dots = document.getElementById('swiperDots');
+  dots.innerHTML = swipeImages.map((_,i) => `<div class="swiper-dot ${i===0?'active':''}" onclick="goSlide(${i})"></div>`).join('');
+  const prev = document.getElementById('swiperPrev'), next = document.getElementById('swiperNext');
+  if (swipeImages.length <= 1) { prev.style.display='none'; next.style.display='none'; dots.style.display='none'; }
+  else { prev.style.display='flex'; next.style.display='flex'; dots.style.display='flex'; }
+  goSlide(0);
+  // Touch swipe
+  const wrap = document.getElementById('swiperWrap');
+  wrap.addEventListener('touchstart', e => { swipeStartX = e.touches[0].clientX; swipeStartY = e.touches[0].clientY; }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) { dx < 0 ? slideNext() : slidePrev(); }
+  }, {passive:true});
+}
+function goSlide(i) {
+  swipeIdx = (i + swipeImages.length) % swipeImages.length;
+  document.getElementById('swiperTrack').style.transform = `translateX(-${swipeIdx * 100}%)`;
+  document.querySelectorAll('.swiper-dot').forEach((d,j) => d.classList.toggle('active', j===swipeIdx));
+}
+function slideNext() { goSlide(swipeIdx + 1); }
+function slidePrev() { goSlide(swipeIdx - 1); }
+
+// ─── Load Product ─────────────────────────────────────────────────────────────
 async function loadProduct() {
   try {
     const r = await fetch(API_BASE + '/api/products');
     const d = await r.json();
     if (d.success && d.products && d.products.length > 0) {
-      PRODUCT = d.products[0];
-      PRICE   = PRODUCT.price;
-      applyProductToPage();
-    }
-  } catch(e) { console.log('Using default product data'); }
+      PRODUCT = d.products[0]; PRICE = PRODUCT.price;
+      applyProduct();
+    } else { buildSwiper(PRODUCT.images); }
+  } catch(e) { buildSwiper(PRODUCT.images); }
 }
 
-function applyProductToPage() {
-  // Title & name
+function applyProduct() {
   document.title = PRODUCT.name + ' | COD Available';
-  const h1 = document.querySelector('.hero h1');
-  if (h1) {
-    const parts = PRODUCT.name.split('—');
-    h1.innerHTML = (parts[0] || PRODUCT.name).trim() + (parts[1] ? '<br><span>' + parts[1].trim() + '</span>' : '');
-  }
-
-  // Image
-  if (PRODUCT.images && PRODUCT.images[0]) {
-    const img = document.querySelector('.hero-img');
-    if (img) { img.src = PRODUCT.images[0]; img.alt = PRODUCT.name; }
-  }
-
-  // Price
-  const priceNow = document.querySelector('.price-now');
-  const priceMrp = document.querySelector('.price-mrp');
-  const priceSave = document.querySelector('.price-save');
-  if (priceNow) priceNow.textContent = '₹' + PRODUCT.price;
-  if (priceMrp && PRODUCT.mrp) priceMrp.textContent = '₹' + PRODUCT.mrp;
-  if (priceSave && PRODUCT.mrp) {
+  const parts = PRODUCT.name.split('—');
+  document.getElementById('heroTitle').innerHTML = (parts[0]||PRODUCT.name).trim() + (parts[1] ? '<br><span>'+parts[1].trim()+'</span>' : '');
+  document.getElementById('priceNow').textContent = '₹' + PRODUCT.price;
+  if (PRODUCT.mrp) {
+    document.getElementById('priceMrp').textContent = '₹' + PRODUCT.mrp;
+    document.getElementById('stickyMrp').textContent = '₹' + PRODUCT.mrp;
     const save = PRODUCT.mrp - PRODUCT.price;
-    priceSave.textContent = 'Save ₹' + save;
-    const pct = Math.round((save / PRODUCT.mrp) * 100);
-    const badge = document.querySelector('.discount-badge');
-    if (badge) badge.innerHTML = '<b>' + pct + '%</b>OFF';
+    document.getElementById('priceSave').textContent = 'Save ₹' + save;
+    const pct = Math.round((save/PRODUCT.mrp)*100);
+    document.getElementById('discTag').textContent = pct + '% OFF';
   }
-
-  // Sticky button price
-  const stickyBtn = document.querySelector('.sticky-buy-btn');
-  if (stickyBtn) {
-    stickyBtn.innerHTML = '🛒 Order Now — COD | ₹' + PRODUCT.price +
-      (PRODUCT.mrp ? ' <span style="text-decoration:line-through;opacity:.7;font-size:13px">₹' + PRODUCT.mrp + '</span>' : '');
+  document.getElementById('stickyPrice').textContent = '₹' + PRODUCT.price;
+  if (PRODUCT.benefits && PRODUCT.benefits.length) {
+    const icons = ['🔥','💧','🦴','😌','🏃','📈','✅','💪'];
+    document.getElementById('benGrid').innerHTML = PRODUCT.benefits.map((b,i) =>
+      `<div class="ben-card"><div class="ben-icon">${icons[i]||'✅'}</div><div class="ben-title">${b}</div></div>`).join('');
   }
-
-  // Benefits grid
-  if (PRODUCT.benefits && PRODUCT.benefits.length > 0) {
-    const icons = ['🔥','💧','🦴','😌','🏃','📈'];
-    const grid = document.querySelector('.benefits-grid');
-    if (grid) {
-      grid.innerHTML = PRODUCT.benefits.map((b, i) => `
-        <div class="benefit-card">
-          <div class="benefit-icon">${icons[i] || '✅'}</div>
-          <div class="benefit-title">${b}</div>
-        </div>
-      `).join('');
-    }
-  }
-
-  // How to use (step 2)
-  if (PRODUCT.howToUse) {
-    const steps = document.querySelectorAll('.step p');
-    if (steps[1]) steps[1].textContent = PRODUCT.howToUse;
-  }
-
-  // Update summary
+  if (PRODUCT.howToUse) document.getElementById('howToUseText').textContent = PRODUCT.howToUse;
+  buildSwiper(PRODUCT.images);
   updateSummary();
 }
 
 // ─── Meta Pixel ───────────────────────────────────────────────────────────────
-async function loadMetaPixel() {
+async function loadMeta() {
   try {
     const r = await fetch(API_BASE + '/api/meta');
     const d = await r.json();
     if (d.success && d.metaPixel) {
       const s = document.createElement('script');
-      s.textContent = `
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-        (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init','${d.metaPixel}');fbq('track','PageView');
-      `;
+      s.textContent = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${d.metaPixel}');fbq('track','PageView');`;
       document.head.appendChild(s);
-      window._pixelLoaded = true;
     }
   } catch(e) {}
 }
-function firePixel(event, data) {
-  if (window.fbq) { window.fbq('track', event, data || {}); }
-}
-loadMetaPixel();
-loadProduct();
+function firePixel(ev, data) { if (window.fbq) window.fbq('track', ev, data||{}); }
 
-// ─── Sticky button on scroll ──────────────────────────────────────────────────
+// ─── Live Viewer Count (simulated) ───────────────────────────────────────────
+function animateViewers() {
+  let v = 18 + Math.floor(Math.random()*14);
+  document.getElementById('liveCount').textContent = v;
+  setInterval(() => {
+    v += Math.random() > 0.5 ? 1 : -1;
+    v = Math.max(12, Math.min(40, v));
+    document.getElementById('liveCount').textContent = v;
+  }, 4000);
+}
+
+// ─── Sticky scroll ────────────────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
-  const el = document.getElementById('stickyBuy');
-  if (window.scrollY > 400) el.classList.add('show');
-  else el.classList.remove('show');
+  document.getElementById('stickyBar').classList.toggle('show', window.scrollY > 400);
 });
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
@@ -645,95 +557,95 @@ function openModal() {
   document.body.style.overflow = 'hidden';
   document.getElementById('formView').style.display = 'block';
   document.getElementById('successView').style.display = 'none';
+  isSubmitting = false;
   firePixel('InitiateCheckout');
 }
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('active');
   document.body.style.overflow = '';
+  isSubmitting = false;
 }
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
+function overlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 
 // ─── Qty ─────────────────────────────────────────────────────────────────────
 function changeQty(d) {
   const el = document.getElementById('f_qty');
   let v = parseInt(el.value) + d;
-  if (v < 1) v = 1;
-  if (v > 5) v = 5;
-  el.value = v;
+  el.value = Math.max(1, Math.min(5, v));
   updateSummary();
 }
 
-// ─── Summary ──────────────────────────────────────────────────────────────────
+// ─── Summary ─────────────────────────────────────────────────────────────────
 function updateSummary() {
-  const qty  = parseInt(document.getElementById('f_qty').value) || 1;
+  const qty = parseInt(document.getElementById('f_qty').value)||1;
   const size = document.getElementById('f_size').value;
   const total = PRICE * qty;
-  const shortName = PRODUCT.name.split('—')[0].trim() || 'Sweat Belt Pro';
-  document.getElementById('sum_product').textContent = `${shortName} (${size} × ${qty})`;
-  document.getElementById('sum_total').textContent = '₹' + total;
+  const short = PRODUCT.name.split('—')[0].trim()||'Sweat Belt Pro';
+  document.getElementById('sumProduct').textContent = `${short} (${size} × ${qty})`;
+  document.getElementById('sumPrice').textContent = '₹' + (PRICE * qty);
+  document.getElementById('sumTotal').textContent = '₹' + total;
 }
 
-// ─── Pincode auto-fetch ───────────────────────────────────────────────────────
-let pincodeTimer = null;
+// ─── Pincode ─────────────────────────────────────────────────────────────────
+let pinTimer = null;
 document.getElementById('f_pincode').addEventListener('input', function() {
-  clearTimeout(pincodeTimer);
+  clearTimeout(pinTimer);
   const pin = this.value.trim();
-  if (pin.length === 6 && /^\d{6}$/.test(pin)) {
-    document.getElementById('pincodeStatus').textContent = '⏳';
-    pincodeTimer = setTimeout(() => fetchPincode(pin), 500);
+  if (/^\d{6}$/.test(pin)) {
+    document.getElementById('pinSt').textContent = '⏳';
+    pinTimer = setTimeout(() => fetchPin(pin), 600);
   } else {
-    document.getElementById('pincodeStatus').textContent = '';
+    document.getElementById('pinSt').textContent = '';
     document.getElementById('f_city').value = '';
     document.getElementById('f_state').value = '';
   }
 });
-
-async function fetchPincode(pin) {
+async function fetchPin(pin) {
   try {
     const r = await fetch(API_BASE + '/api/pincode/' + pin);
     const d = await r.json();
-    if (d.success && d.data && d.data[0] && d.data[0].Status === 'Success') {
+    if (d.success && d.data?.[0]?.Status === 'Success') {
       const po = d.data[0].PostOffice[0];
-      document.getElementById('f_city').value  = po.District || po.Name;
+      document.getElementById('f_city').value = po.District || po.Name;
       document.getElementById('f_state').value = po.State;
-      document.getElementById('pincodeStatus').textContent = '✅';
-    } else {
-      document.getElementById('pincodeStatus').textContent = '❌';
-    }
-  } catch(e) {
-    document.getElementById('pincodeStatus').textContent = '❌';
-  }
+      document.getElementById('pinSt').textContent = '✅';
+      document.getElementById('f_pincode').classList.add('ok');
+    } else { document.getElementById('pinSt').textContent = '❌'; }
+  } catch(e) { document.getElementById('pinSt').textContent = '❌'; }
 }
 
-// ─── Validation ───────────────────────────────────────────────────────────────
+// ─── Validate ─────────────────────────────────────────────────────────────────
 function validate() {
-  const name    = document.getElementById('f_name').value.trim();
-  const phone   = document.getElementById('f_phone').value.trim();
+  const name = document.getElementById('f_name').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
   const pincode = document.getElementById('f_pincode').value.trim();
   const address = document.getElementById('f_address').value.trim();
-  if (!name)                          { showToast('Please enter your name'); return false; }
-  if (!/^\d{10}$/.test(phone))        { showToast('Enter valid 10-digit phone number'); return false; }
-  if (!/^\d{6}$/.test(pincode))       { showToast('Enter valid 6-digit pincode'); return false; }
-  if (!address)                       { showToast('Please enter your address'); return false; }
+  if (!name)                    { showToast('⚠️ कृपया अपना नाम लिखें'); document.getElementById('f_name').focus(); return false; }
+  if (!/^\d{10}$/.test(phone))  { showToast('⚠️ 10-digit phone number दर्ज करें'); document.getElementById('f_phone').focus(); return false; }
+  if (!/^\d{6}$/.test(pincode)) { showToast('⚠️ 6-digit pincode दर्ज करें'); document.getElementById('f_pincode').focus(); return false; }
+  if (!address)                 { showToast('⚠️ कृपया पूरा address लिखें'); document.getElementById('f_address').focus(); return false; }
   return true;
 }
 
-// ─── Submit Order ─────────────────────────────────────────────────────────────
+// ─── Submit (DOUBLE ORDER FIX) ────────────────────────────────────────────────
 async function submitOrder() {
+  if (isSubmitting) return; // ← PREVENT DOUBLE SUBMIT
   if (!validate()) return;
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = '⏳ Placing order...';
+  btn.innerHTML = '⏳ Order place हो रहा है...';
 
-  const qty   = parseInt(document.getElementById('f_qty').value) || 1;
-  const price = PRICE;
-  const total = price * qty;
+  const qty = parseInt(document.getElementById('f_qty').value)||1;
+  const total = PRICE * qty;
+  const address = document.getElementById('f_address').value.trim();
+  const landmark = document.getElementById('f_landmark').value.trim();
+  const fullAddress = landmark ? address + ', Landmark: ' + landmark : address;
+
   const payload = {
     name:        document.getElementById('f_name').value.trim(),
     phone:       document.getElementById('f_phone').value.trim(),
-    address:     document.getElementById('f_address').value.trim(),
+    address:     fullAddress,
     pincode:     document.getElementById('f_pincode').value.trim(),
     city:        document.getElementById('f_city').value.trim(),
     state:       document.getElementById('f_state').value.trim(),
@@ -749,40 +661,99 @@ async function submitOrder() {
 
   try {
     const r = await fetch(API_BASE + '/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
     });
     const d = await r.json();
     if (d.success) {
-      document.getElementById('successOrderId').textContent = d.orderId;
+      document.getElementById('sucOrderId').textContent = d.orderId;
       document.getElementById('formView').style.display = 'none';
       document.getElementById('successView').style.display = 'block';
-      firePixel('Purchase', { value: total, currency: 'INR' });
+      firePixel('Purchase', { value: total, currency:'INR' });
+    } else if (d.duplicate) {
+      // Phone number already placed an order
+      showToast('⚠️ इस number से पहले से order है! Delivery का इंतज़ार करें।');
+      isSubmitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '🚀 Confirm Order — Pay on Delivery';
     } else {
-      showToast('Order failed: ' + (d.error || 'Unknown error'));
+      showToast('Order failed: ' + (d.error||'Please try again'));
+      isSubmitting = false;
+      btn.disabled = false;
+      btn.innerHTML = '🚀 Confirm Order — Pay on Delivery';
     }
   } catch(e) {
-    showToast('Network error. Please try again.');
-  } finally {
+    showToast('⚠️ Network error. Please try again.');
+    isSubmitting = false;
     btn.disabled = false;
     btn.innerHTML = '🚀 Confirm Order — Pay on Delivery';
   }
 }
 
-// ─── FAQ toggle ───────────────────────────────────────────────────────────────
-function toggleFaq(el) {
-  const item = el.parentElement;
-  item.classList.toggle('open');
-}
+// ─── FAQ ─────────────────────────────────────────────────────────────────────
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+// ─── REAL VISITOR TRACKING ────────────────────────────────────────────────────
+(function() {
+  // Generate or retrieve a unique session ID for this visitor
+  let visitorId = sessionStorage.getItem('_sbvid');
+  if (!visitorId) {
+    visitorId = 'v_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+    sessionStorage.setItem('_sbvid', visitorId);
+  }
+
+  async function sendPing(action) {
+    try {
+      await fetch(API_BASE + '/api/visitors/ping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visitorId, action }),
+        keepalive: true   // ensures "leave" ping fires even on page close
+      });
+    } catch(e) {}
+  }
+
+  // Ping on arrival
+  sendPing('arrive');
+
+  // Keep-alive every 25 seconds (server will expire sessions after 60s of no ping)
+  const heartbeat = setInterval(() => sendPing('heartbeat'), 25000);
+
+  // Ping on page leave
+  window.addEventListener('beforeunload', () => {
+    clearInterval(heartbeat);
+    sendPing('leave');
+  });
+
+  // Fetch real count and update display (runs once on load, then every 30s)
+  async function fetchRealCount() {
+    try {
+      const r = await fetch(API_BASE + '/api/visitors/count');
+      const d = await r.json();
+      if (d.success && typeof d.count === 'number') {
+        // Blend real count into the animated display: keep local animation 
+        // centred on the real number so it looks live but uses actual data
+        const el = document.getElementById('liveCount');
+        if (el) el.textContent = d.count;
+      }
+    } catch(e) {}
+  }
+  fetchRealCount();
+  setInterval(fetchRealCount, 30000);
+})();
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+loadMeta();
+loadProduct();
+animateViewers();
 </script>
 </body>
 </html>
