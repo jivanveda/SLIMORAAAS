@@ -519,7 +519,92 @@ footer p{color:#666;font-size:13px;font-weight:600}
 
 <script>
 const API_BASE = 'https://slimoraaas.onrender.com';
-const PRICE = 599;
+
+// ─── Product State (loaded from API) ─────────────────────────────────────────
+let PRODUCT = {
+  _id: null,
+  name: 'Sweat Belt Pro — Advanced Slimming Belt',
+  price: 599,
+  mrp: 1299,
+  images: ['https://m.media-amazon.com/images/I/61VH6ksMYXL._SY741_.jpg'],
+  benefits: [],
+  howToUse: '',
+  stock: 100
+};
+let PRICE = 599;
+
+// ─── Load Product from API ────────────────────────────────────────────────────
+async function loadProduct() {
+  try {
+    const r = await fetch(API_BASE + '/api/products');
+    const d = await r.json();
+    if (d.success && d.products && d.products.length > 0) {
+      PRODUCT = d.products[0];
+      PRICE   = PRODUCT.price;
+      applyProductToPage();
+    }
+  } catch(e) { console.log('Using default product data'); }
+}
+
+function applyProductToPage() {
+  // Title & name
+  document.title = PRODUCT.name + ' | COD Available';
+  const h1 = document.querySelector('.hero h1');
+  if (h1) {
+    const parts = PRODUCT.name.split('—');
+    h1.innerHTML = (parts[0] || PRODUCT.name).trim() + (parts[1] ? '<br><span>' + parts[1].trim() + '</span>' : '');
+  }
+
+  // Image
+  if (PRODUCT.images && PRODUCT.images[0]) {
+    const img = document.querySelector('.hero-img');
+    if (img) { img.src = PRODUCT.images[0]; img.alt = PRODUCT.name; }
+  }
+
+  // Price
+  const priceNow = document.querySelector('.price-now');
+  const priceMrp = document.querySelector('.price-mrp');
+  const priceSave = document.querySelector('.price-save');
+  if (priceNow) priceNow.textContent = '₹' + PRODUCT.price;
+  if (priceMrp && PRODUCT.mrp) priceMrp.textContent = '₹' + PRODUCT.mrp;
+  if (priceSave && PRODUCT.mrp) {
+    const save = PRODUCT.mrp - PRODUCT.price;
+    priceSave.textContent = 'Save ₹' + save;
+    const pct = Math.round((save / PRODUCT.mrp) * 100);
+    const badge = document.querySelector('.discount-badge');
+    if (badge) badge.innerHTML = '<b>' + pct + '%</b>OFF';
+  }
+
+  // Sticky button price
+  const stickyBtn = document.querySelector('.sticky-buy-btn');
+  if (stickyBtn) {
+    stickyBtn.innerHTML = '🛒 Order Now — COD | ₹' + PRODUCT.price +
+      (PRODUCT.mrp ? ' <span style="text-decoration:line-through;opacity:.7;font-size:13px">₹' + PRODUCT.mrp + '</span>' : '');
+  }
+
+  // Benefits grid
+  if (PRODUCT.benefits && PRODUCT.benefits.length > 0) {
+    const icons = ['🔥','💧','🦴','😌','🏃','📈'];
+    const grid = document.querySelector('.benefits-grid');
+    if (grid) {
+      grid.innerHTML = PRODUCT.benefits.map((b, i) => `
+        <div class="benefit-card">
+          <div class="benefit-icon">${icons[i] || '✅'}</div>
+          <div class="benefit-title">${b}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  // How to use (step 2)
+  if (PRODUCT.howToUse) {
+    const steps = document.querySelectorAll('.step p');
+    if (steps[1]) steps[1].textContent = PRODUCT.howToUse;
+  }
+
+  // Update summary
+  updateSummary();
+}
 
 // ─── Meta Pixel ───────────────────────────────────────────────────────────────
 async function loadMetaPixel() {
@@ -545,6 +630,7 @@ function firePixel(event, data) {
   if (window.fbq) { window.fbq('track', event, data || {}); }
 }
 loadMetaPixel();
+loadProduct();
 
 // ─── Sticky button on scroll ──────────────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -584,7 +670,8 @@ function updateSummary() {
   const qty  = parseInt(document.getElementById('f_qty').value) || 1;
   const size = document.getElementById('f_size').value;
   const total = PRICE * qty;
-  document.getElementById('sum_product').textContent = `Sweat Belt Pro (${size} × ${qty})`;
+  const shortName = PRODUCT.name.split('—')[0].trim() || 'Sweat Belt Pro';
+  document.getElementById('sum_product').textContent = `${shortName} (${size} × ${qty})`;
   document.getElementById('sum_total').textContent = '₹' + total;
 }
 
@@ -652,10 +739,11 @@ async function submitOrder() {
     state:       document.getElementById('f_state').value.trim(),
     size:        document.getElementById('f_size').value,
     quantity:    qty,
-    price:       price,
+    price:       PRICE,
     totalAmount: total,
-    product:     'Sweat Belt Pro',
-    productName: 'Sweat Belt Pro — Advanced Slimming Belt',
+    product:     PRODUCT.name,
+    productName: PRODUCT.name,
+    productId:   PRODUCT._id,
     status:      'new'
   };
 
