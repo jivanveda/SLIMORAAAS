@@ -1,4 +1,6 @@
 require('dotenv').config();
+// node-fetch v2 for server-side requests (npm install node-fetch@2)
+const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -351,6 +353,52 @@ app.post('/api/meta', async (req, res) => {
       await setting.save();
     }
     res.json({ success: true, metaPixel: setting.metaPixel });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SELLOSHIP PROXY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// POST /api/selloship/create-shipment — proxy to avoid CORS from browser
+app.post('/api/selloship/create-shipment', async (req, res) => {
+  const { apiKey, order } = req.body;
+  if (!apiKey) return res.status(400).json({ success: false, error: 'API key required' });
+  try {
+    // Selloship shipment creation endpoint
+    const response = await fetch('https://api.selloship.com/api/v1/shipments', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(order)
+    });
+    const data = await response.json();
+    if (response.ok && (data.status === 'success' || data.data)) {
+      const awb = data.data?.awb_number || data.awb || '';
+      res.json({ success: true, awb, raw: data });
+    } else {
+      res.json({ success: false, error: data.message || 'Selloship error', raw: data });
+    }
+  } catch (e) {
+    res.status(500).json({ success: false, error: 'Proxy error: ' + e.message });
+  }
+});
+
+// GET /api/selloship/account — test connection via proxy
+app.get('/api/selloship/account', async (req, res) => {
+  const apiKey = req.headers['x-selloship-key'];
+  if (!apiKey) return res.status(400).json({ success: false, error: 'API key required in x-selloship-key header' });
+  try {
+    const response = await fetch('https://api.selloship.com/api/v1/account', {
+      headers: { 'Authorization': 'Bearer ' + apiKey, 'Accept': 'application/json' }
+    });
+    const data = await response.json();
+    res.json({ success: response.ok, data });
   } catch (e) {
     res.status(500).json({ success: false, error: e.message });
   }
