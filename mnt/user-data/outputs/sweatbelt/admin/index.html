@@ -217,6 +217,51 @@ textarea.finput{min-height:72px;resize:vertical}
 .snd-vol-row input[type=range]{flex:1;accent-color:var(--orange)}
 .snd-vol-val{font-size:12px;font-weight:800;color:var(--orange);width:32px;text-align:right}
 
+
+/* ADDRESS SCORE BADGE */
+.score-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.score-hi{background:#f0fdf4;color:#16a34a}
+.score-md{background:#fefce8;color:#92400e}
+.score-lo{background:#fef2f2;color:#dc2626}
+.score-dots{display:inline-flex;gap:2px;margin-left:2px}
+.score-dot{width:5px;height:5px;border-radius:50%;background:#ddd}
+.score-dot.on{background:currentColor}
+
+/* ORDER TIME */
+.order-time{font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap}
+.time-hi{color:#16a34a;font-weight:800}
+.time-pm{color:#e85d04;font-weight:800}
+
+/* AI FIX BUTTON */
+.btn-ai{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:3px}
+.btn-ai:hover{opacity:.85}
+.btn-ai:disabled{opacity:.5;cursor:not-allowed}
+
+/* DASHBOARD EXTRA STATS ROW */
+.insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.ins-card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.05);text-align:center}
+.ins-ico{font-size:24px;margin-bottom:6px}
+.ins-lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ins-val{font-size:22px;font-weight:900;color:var(--black)}
+.ins-sub{font-size:10px;font-weight:600;color:var(--muted);margin-top:3px}
+
+/* JUNK CLEAN */
+.junk-card{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);border-radius:14px;padding:20px;margin-bottom:18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.junk-info{flex:1;min-width:180px}
+.junk-info h3{color:#fff;font-size:14px;font-weight:900;margin-bottom:4px}
+.junk-info p{color:#888;font-size:11px;font-weight:600;line-height:1.6}
+.btn-junk{background:var(--orange);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
+.btn-junk:hover{background:var(--orange-dark)}
+.junk-result{background:#111;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:11px;font-weight:700;color:#22c55e;display:none;width:100%;line-height:1.8}
+
+/* DATE FILTER */
+.date-filter-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.date-filter-row label{font-size:11px;font-weight:800;color:var(--muted)}
+
+/* CONVERSION WIDGET */
+.conv-bar-wrap{height:8px;background:#f0f0f0;border-radius:4px;margin:8px 0;overflow:hidden}
+.conv-bar{height:100%;background:linear-gradient(90deg,var(--orange),#f97316);border-radius:4px;transition:width .6s ease}
+
 /* TOAST */
 .toast{position:fixed;bottom:22px;right:22px;background:#1a1a1a;color:#fff;padding:11px 18px;border-radius:12px;font-size:12px;font-weight:700;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;max-width:300px}
 .toast.show{opacity:1}.toast.success{background:#16a34a}.toast.error{background:#dc2626}
@@ -294,6 +339,35 @@ textarea.finput{min-height:72px;resize:vertical}
           <div class="stat-card purple"><div class="stat-ico">💰</div><div class="stat-lbl">Revenue</div><div class="stat-val" id="st-revenue">—</div></div>
         </div>
 
+        <!-- INSIGHTS ROW -->
+        <div class="insights-grid">
+          <div class="ins-card">
+            <div class="ins-ico">⏱️</div>
+            <div class="ins-lbl">Avg Order Time</div>
+            <div class="ins-val" id="ins-avgtime">—</div>
+            <div class="ins-sub">peak hour of day</div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-ico">🌙</div>
+            <div class="ins-lbl">After 12 PM Orders</div>
+            <div class="ins-val" id="ins-pm">—</div>
+            <div class="ins-sub" id="ins-pm-pct">of total orders</div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-ico">📈</div>
+            <div class="ins-lbl">Conversion Rate</div>
+            <div class="ins-val" id="ins-conv">—</div>
+            <div class="conv-bar-wrap"><div class="conv-bar" id="convBar" style="width:0%"></div></div>
+            <div class="ins-sub">visitors → orders</div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-ico">⭐</div>
+            <div class="ins-lbl">Avg Address Score</div>
+            <div class="ins-val" id="ins-adrscore">—</div>
+            <div class="ins-sub">delivery confidence</div>
+          </div>
+        </div>
+
         <div class="sec-hdr"><h2>Latest Orders</h2><button class="btn btn-orange btn-sm" onclick="showTab('orders')">View All →</button></div>
         <div class="card"><div class="tbl-wrap">
           <table><thead><tr><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
@@ -303,9 +377,14 @@ textarea.finput{min-height:72px;resize:vertical}
 
       <!-- ORDERS -->
       <div id="tab-orders" style="display:none">
-        <div class="sec-hdr"><h2>All Orders</h2><button class="btn btn-orange" onclick="exportCsv()">⬇️ Export CSV</button></div>
+        <div class="sec-hdr"><h2>All Orders</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-out btn-sm" onclick="filterPM()">🌙 After 12PM</button>
+            <button class="btn btn-orange" onclick="exportCsv()">⬇️ Export CSV</button>
+          </div>
+        </div>
         <div class="filters">
-          <input class="fi" id="srchInput" placeholder="🔍 Name or phone..." oninput="renderOrders()"/>
+          <input class="fi" id="srchInput" placeholder="🔍 Name, phone or #..." oninput="renderOrders()"/>
           <select class="fi" id="stFilter" onchange="renderOrders()">
             <option value="">All Status</option>
             <option value="new">New</option>
@@ -315,13 +394,21 @@ textarea.finput{min-height:72px;resize:vertical}
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
+        <div class="date-filter-row">
+          <label>📅 From:</label>
+          <input class="fi" type="date" id="dateFrom" style="width:auto;padding:7px 10px" onchange="renderOrders()"/>
+          <label>To:</label>
+          <input class="fi" type="date" id="dateTo" style="width:auto;padding:7px 10px" onchange="renderOrders()"/>
+          <button class="btn btn-out btn-sm" onclick="clearDateFilter()">✕ Clear</button>
+          <button class="btn btn-out btn-sm" onclick="setToday()">Today</button>
+        </div>
         <div class="dup-banner" id="dupBanner">
           <span>⚠️</span>
           <div class="dup-banner-txt"><span id="dupCount">0</span> duplicate orders found (same phone number). Keep the latest, delete the rest.</div>
           <button class="btn-clean" onclick="clearDuplicates()">🧹 Clear Duplicates</button>
         </div>
         <div class="card"><div class="tbl-wrap">
-          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
           <tbody id="ordersBody"><tr><td colspan="10"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
         </div></div>
       </div>
@@ -347,6 +434,24 @@ textarea.finput{min-height:72px;resize:vertical}
             <div class="ev-item"><div class="ev-dot"></div>InitiateCheckout — when order form opens</div>
             <div class="ev-item"><div class="ev-dot"></div>Purchase — on successful order with ₹ value</div>
           </div>
+        </div>
+
+        <!-- OPENAI KEY -->
+        <div class="set-card">
+          <h3>🤖 OpenAI API Key (Address AI)</h3>
+          <p>Used to auto-fix & score delivery addresses using ChatGPT. Orders with messy addresses will get cleaned and scored for delivery confidence.</p>
+          <div class="fg"><label class="fl">OpenAI API Key</label><input class="finput" id="openaiKey" type="password" placeholder="sk-..."/></div>
+          <button class="btn btn-orange" onclick="saveOpenAiKey()">💾 Save Key</button>
+        </div>
+
+        <!-- JUNK CLEANER -->
+        <div class="junk-card">
+          <div class="junk-info">
+            <h3>🧹 Junk Cleaner</h3>
+            <p>Removes orphaned visitor sessions, trims whitespace & junk from order fields, and flushes stale in-memory data. Keeps your server lean and fast.</p>
+          </div>
+          <button class="btn-junk" onclick="runJunkClean()">🧹 Clean Now</button>
+          <div class="junk-result" id="junkResult"></div>
         </div>
       </div>
 
@@ -513,6 +618,42 @@ async function loadStats(){
       document.getElementById('st-revenue').textContent='₹'+(d.revenue||0).toLocaleString('en-IN');
     }
   }catch(e){}
+  computeInsights();
+}
+
+function computeInsights() {
+  if (!allOrders.length) return;
+
+  // ── Avg order time (peak hour) ──
+  const hourCounts = Array(24).fill(0);
+  allOrders.forEach(o => { if(o.createdAt) hourCounts[new Date(o.createdAt).getHours()]++; });
+  const peakHour = hourCounts.indexOf(Math.max(...hourCounts));
+  const ph12 = peakHour%12||12, phAmpm = peakHour>=12?'PM':'AM';
+  document.getElementById('ins-avgtime').textContent = `${ph12}${phAmpm}`;
+  document.getElementById('ins-avgtime').nextElementSibling && (document.querySelector('#ins-avgtime + .ins-sub').textContent = `peak: ${hourCounts[peakHour]} orders`);
+
+  // ── After 12PM orders ──
+  const pmOrders = allOrders.filter(o => isAfterNoon(o.createdAt));
+  const pmPct = allOrders.length ? Math.round(pmOrders.length/allOrders.length*100) : 0;
+  document.getElementById('ins-pm').textContent = pmOrders.length;
+  document.getElementById('ins-pm-pct').textContent = `${pmPct}% of all orders`;
+
+  // ── Conversion rate (orders ÷ visitors, using last known visitor count) ──
+  const visCount = liveVisitorCount || 1;
+  const totalOrders = allOrders.length;
+  // Rough conversion: orders today vs visitors today
+  const todayOrders = allOrders.filter(o => {
+    if (!o.createdAt) return false;
+    const od = new Date(o.createdAt); const now = new Date();
+    return od.toDateString() === now.toDateString();
+  }).length;
+  const convPct = visCount > 0 ? Math.min(Math.round(todayOrders/Math.max(visCount,1)*100),100) : 0;
+  document.getElementById('ins-conv').textContent = convPct + '%';
+  document.getElementById('convBar').style.width = convPct + '%';
+
+  // ── Avg address score ──
+  const avgScore = Math.round(allOrders.reduce((s,o)=>s+scoreAddress(o),0)/allOrders.length);
+  document.getElementById('ins-adrscore').textContent = avgScore + '/100';
 }
 
 // ─── ORDERS ───────────────────────────────────────────────────────────────────
@@ -522,47 +663,118 @@ async function loadOrders(){
     if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderLatest(); checkDuplicates(); }
   }catch(e){}
 }
+// ─── ADDRESS SCORE ────────────────────────────────────────────────────────────
+function scoreAddress(o) {
+  let score = 0;
+  const addr = (o.address||'').trim();
+  const pin  = (o.pincode||'').trim();
+  const city = (o.city||'').trim();
+  const name = (o.name||'').trim();
+  // Scoring rules
+  if (pin && /^\d{6}$/.test(pin))    score += 30; // valid pincode
+  if (city && city.length > 2)        score += 20; // city filled
+  if (addr.length > 15)               score += 20; // address detail
+  if (/\d/.test(addr))               score += 10; // has house/flat number
+  if (o.state && o.state.length > 2)  score += 10; // state filled
+  if (name && name.split(' ').length >= 2) score += 10; // full name
+  return Math.min(score, 100);
+}
+function scoreBadge(score) {
+  const dots = [1,2,3,4,5].map(i=>`<span class="score-dot ${i<=Math.round(score/20)?'on':''}"></span>`).join('');
+  if (score >= 70) return `<span class="score-badge score-hi">✅ ${score}<span class="score-dots">${dots}</span></span>`;
+  if (score >= 40) return `<span class="score-badge score-md">⚠️ ${score}<span class="score-dots">${dots}</span></span>`;
+  return `<span class="score-badge score-lo">❌ ${score}<span class="score-dots">${dots}</span></span>`;
+}
+
+// ─── ORDER TIME HELPERS ───────────────────────────────────────────────────────
+function fmtTime(d) {
+  if (!d) return '—';
+  const dt = new Date(d);
+  const h = dt.getHours(), m = dt.getMinutes().toString().padStart(2,'0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${m} ${ampm}`;
+}
+function isAfterNoon(d) { return d && new Date(d).getHours() >= 12; }
+
+// ─── DATE FILTER HELPERS ──────────────────────────────────────────────────────
+let pmFilter = false;
+function filterPM() {
+  pmFilter = !pmFilter;
+  document.querySelectorAll('.btn').forEach(b => { if(b.textContent.includes('12PM')) b.classList.toggle('btn-orange', pmFilter); });
+  renderOrders();
+}
+function clearDateFilter() {
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  pmFilter = false;
+  renderOrders();
+}
+function setToday() {
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('dateFrom').value = today;
+  document.getElementById('dateTo').value = today;
+  renderOrders();
+}
+
 function renderLatest(){
   const tb=document.getElementById('latestBody');
   const latest=allOrders.slice(0,5);
   if(!latest.length){ tb.innerHTML='<tr><td colspan="7"><div class="empty"><span>📭</span>No orders yet</div></td></tr>'; return; }
-  // Build phone frequency map across ALL orders (not just latest)
   const phoneCounts={};
   allOrders.forEach(o=>{ if(o.phone) phoneCounts[o.phone]=(phoneCounts[o.phone]||0)+1; });
   tb.innerHTML=latest.map(o=>{
     const isDup=phoneCounts[o.phone]>1;
     const dupBadge=isDup?` <span class="badge" style="background:#fef2f2;color:#dc2626;margin-left:4px" title="Same phone placed ${phoneCounts[o.phone]} orders">⚠️ DUP</span>`:'';
+    const isPM = isAfterNoon(o.createdAt);
     return `<tr${isDup?' style="background:#fffafa"':''}>
       <td><b>${o.name}</b></td><td>${o.phone}${dupBadge}</td><td>${o.city||'—'}</td><td>${o.size||'—'}</td>
-      <td><b>₹${o.totalAmount||o.price}</b></td><td>${statusBadge(o.status)}</td><td>${fmtDate(o.createdAt)}</td>
+      <td><b>₹${o.totalAmount||o.price}</b></td><td>${statusBadge(o.status)}</td>
+      <td><div>${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
     </tr>`;
   }).join('');
 }
+
 function renderOrders(){
   const srch=document.getElementById('srchInput').value.toLowerCase();
   const stF=document.getElementById('stFilter').value;
-  let filtered=allOrders.filter(o=>{
-    const ms=!srch||o.name?.toLowerCase().includes(srch)||o.phone?.includes(srch);
-    const mst=!stF||o.status===stF;
-    return ms&&mst;
-  });
-  // Build phone frequency map on the full order list
+  const dateFrom=document.getElementById('dateFrom').value;
+  const dateTo=document.getElementById('dateTo').value;
   const phoneCounts={};
   allOrders.forEach(o=>{ if(o.phone) phoneCounts[o.phone]=(phoneCounts[o.phone]||0)+1; });
+  let filtered=allOrders.filter((o,idx)=>{
+    // search: name, phone, or order number
+    const ms=!srch||o.name?.toLowerCase().includes(srch)||o.phone?.includes(srch)||String(allOrders.length-idx)===srch.trim();
+    const mst=!stF||o.status===stF;
+    // date range
+    let mdate=true;
+    if(dateFrom||dateTo){
+      const od=new Date(o.createdAt); od.setHours(0,0,0,0);
+      if(dateFrom){const df=new Date(dateFrom);df.setHours(0,0,0,0);if(od<df)mdate=false;}
+      if(dateTo){const dt=new Date(dateTo);dt.setHours(23,59,59,999);if(new Date(o.createdAt)>dt)mdate=false;}
+    }
+    const mpm=!pmFilter||isAfterNoon(o.createdAt);
+    return ms&&mst&&mdate&&mpm;
+  });
   const tb=document.getElementById('ordersBody');
-  if(!filtered.length){ tb.innerHTML='<tr><td colspan="10"><div class="empty"><span>📭</span>No orders found</div></td></tr>'; return; }
+  if(!filtered.length){ tb.innerHTML='<tr><td colspan="11"><div class="empty"><span>📭</span>No orders found</div></td></tr>'; return; }
   tb.innerHTML=filtered.map((o,i)=>{
     const isDup=phoneCounts[o.phone]>1;
     const dupBadge=isDup?` <span class="badge" style="background:#fef2f2;color:#dc2626" title="${phoneCounts[o.phone]} orders from this number">⚠️ DUP×${phoneCounts[o.phone]}</span>`:'';
+    const score=scoreAddress(o);
+    const isPM=isAfterNoon(o.createdAt);
+    const aiBtn=`<button class="btn-ai btn-sm" onclick="aiFixAddress('${o._id}')" title="AI fix address">🤖 Fix</button>`;
     return `<tr${isDup?' style="background:#fffafa"':''}>
-      <td>${i+1}</td><td><b>${o.name}</b></td>
+      <td style="font-size:11px;color:var(--muted);font-weight:700">#${allOrders.length-allOrders.indexOf(o)}</td>
+      <td><b>${o.name}</b></td>
       <td>${o.phone}${dupBadge}</td>
       <td>${o.city||'—'}</td>
       <td>${o.size||'—'}</td><td>${o.quantity||1}</td><td><b>₹${o.totalAmount||o.price}</b></td>
+      <td>${scoreBadge(score)} ${aiBtn}</td>
       <td><select class="st-sel" onchange="updateStatus('${o._id}',this.value)">
         ${['new','confirmed','shipped','delivered','cancelled'].map(s=>`<option value="${s}"${o.status===s?' selected':''}>${cap(s)}</option>`).join('')}
       </select></td>
-      <td style="white-space:nowrap">${fmtDate(o.createdAt)}</td>
+      <td><div style="white-space:nowrap">${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
       <td><button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button></td>
     </tr>`;
   }).join('');
@@ -1115,6 +1327,103 @@ async function syncToSelloship() {
   renderOrders(); renderLatest(); loadStats();
   toast(`Selloship sync done: ${synced} synced, ${failed} failed`, synced?'success':'error');
 }
+
+// ─── OPENAI KEY ──────────────────────────────────────────────────────────────
+function saveOpenAiKey() {
+  const key = document.getElementById('openaiKey').value.trim();
+  if (!key) return toast('Enter OpenAI API key','error');
+  localStorage.setItem('sb_openai_key', key);
+  toast('OpenAI key saved!','success');
+}
+
+// ─── AI ADDRESS FIX ──────────────────────────────────────────────────────────
+async function aiFixAddress(orderId) {
+  const apiKey = localStorage.getItem('sb_openai_key');
+  if (!apiKey) { toast('Set OpenAI key in Settings first','error'); return; }
+  const order = allOrders.find(o => o._id === orderId);
+  if (!order) return;
+  const btn = document.querySelector(`button[onclick="aiFixAddress('${orderId}')"]`);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+  try {
+    const prompt = `You are a delivery address cleaner for India.
+Clean and fix this delivery address. Return ONLY a JSON object with these fields:
+- name: cleaned full name (fix capitalization)
+- address: cleaned street address (fix spelling, remove junk, trim spaces)
+- city: city name
+- state: state name
+- pincode: 6-digit pincode (keep as-is if valid)
+
+Input address data:
+Name: ${order.name}
+Address: ${order.address}
+City: ${order.city}
+State: ${order.state}
+Pincode: ${order.pincode}
+
+Return ONLY raw JSON, no markdown, no explanation.`;
+
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer '+apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role:'user', content: prompt }],
+        max_tokens: 200, temperature: 0
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error?.message || 'OpenAI error');
+    const raw = d.choices?.[0]?.message?.content?.trim();
+    const fixed = JSON.parse(raw);
+    // Save back to server
+    const upd = await fetch(API+'/api/orders/'+orderId+'/address', {
+      method: 'PUT',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ name: fixed.name, address: fixed.address, city: fixed.city, state: fixed.state, pincode: fixed.pincode })
+    });
+    const ud = await upd.json();
+    if (ud.success) {
+      Object.assign(order, fixed);
+      renderOrders(); renderLatest(); computeInsights();
+      toast('✅ Address fixed by AI!','success');
+    } else { toast('Save failed: '+(ud.error||'error'),'error'); }
+  } catch(e) {
+    toast('AI error: '+e.message,'error');
+  }
+  if (btn) { btn.disabled = false; btn.textContent = '🤖 Fix'; }
+}
+
+// ─── JUNK CLEAN ───────────────────────────────────────────────────────────────
+async function runJunkClean() {
+  const btn = document.querySelector('.btn-junk');
+  btn.textContent = '⏳ Cleaning...'; btn.disabled = true;
+  try {
+    const r = await fetch(API+'/api/admin/junk-clean', { method:'POST' });
+    const d = await r.json();
+    const res = document.getElementById('junkResult');
+    res.style.display = 'block';
+    if (d.success) {
+      res.innerHTML = [
+        d.visitors !== undefined ? `👁️ Expired visitor sessions cleared: <b>${d.visitors}</b>` : '',
+        d.ordersFixed !== undefined ? `📦 Order fields trimmed: <b>${d.ordersFixed}</b>` : '',
+        d.emptyOrders !== undefined ? `🗑️ Junk/empty orders removed: <b>${d.emptyOrders}</b>` : '',
+        `✅ <b>Server cleaned!</b> Memory freed.`
+      ].filter(Boolean).join('<br>');
+      toast('🧹 Junk cleaned!','success');
+      loadOrders(); loadStats();
+    } else {
+      res.innerHTML = '❌ Error: ' + (d.error||'Unknown');
+      res.style.color = '#ef4444';
+      toast('Clean failed','error');
+    }
+  } catch(e) {
+    toast('Network error','error');
+  }
+  btn.textContent = '🧹 Clean Now'; btn.disabled = false;
+}
+
+// ─── OPENAI KEY INIT ──────────────────────────────────────────────────────────
+(function(){ const k=localStorage.getItem('sb_openai_key'); if(k&&document.getElementById('openaiKey')) document.getElementById('openaiKey').value=k; })();
 
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 checkAuth();
