@@ -586,28 +586,42 @@ function updateSummary() {
   document.getElementById('sumTotal').textContent = '₹' + total;
 }
 
-// ─── Pincode ─────────────────────────────────────────────────────────────────
-let pinTimer = null;
+// ─── Pincode (fast — instant on 6 digits, cached) ────────────────────────────
+const pinCache = {};  // cache so repeat-typing same PIN is instant
+
 document.getElementById('f_pincode').addEventListener('input', function() {
-  clearTimeout(pinTimer);
   const pin = this.value.trim();
   if (/^\d{6}$/.test(pin)) {
-    document.getElementById('pinSt').textContent = '⏳';
-    pinTimer = setTimeout(() => fetchPin(pin), 600);
+    if (pinCache[pin]) {
+      // Instant from cache
+      const {city, state} = pinCache[pin];
+      document.getElementById('f_city').value = city;
+      document.getElementById('f_state').value = state;
+      document.getElementById('pinSt').textContent = '✅';
+      document.getElementById('f_pincode').classList.add('ok');
+    } else {
+      document.getElementById('pinSt').textContent = '⏳';
+      fetchPin(pin);   // fire immediately — no debounce delay
+    }
   } else {
     document.getElementById('pinSt').textContent = '';
     document.getElementById('f_city').value = '';
     document.getElementById('f_state').value = '';
+    document.getElementById('f_pincode').classList.remove('ok');
   }
 });
+
 async function fetchPin(pin) {
   try {
     const r = await fetch(API_BASE + '/api/pincode/' + pin);
     const d = await r.json();
     if (d.success && d.data?.[0]?.Status === 'Success') {
       const po = d.data[0].PostOffice[0];
-      document.getElementById('f_city').value = po.District || po.Name;
-      document.getElementById('f_state').value = po.State;
+      const city = po.District || po.Name;
+      const state = po.State;
+      pinCache[pin] = { city, state };   // store in cache
+      document.getElementById('f_city').value = city;
+      document.getElementById('f_state').value = state;
       document.getElementById('pinSt').textContent = '✅';
       document.getElementById('f_pincode').classList.add('ok');
     } else { document.getElementById('pinSt').textContent = '❌'; }
