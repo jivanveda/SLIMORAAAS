@@ -157,6 +157,66 @@ textarea.finput{min-height:72px;resize:vertical}
 .ev-item{display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:12px;font-weight:700}
 .ev-dot{width:7px;height:7px;background:var(--orange);border-radius:50%}
 
+
+/* DUPLICATE CLEANER BANNER */
+.dup-banner{background:linear-gradient(135deg,#fef2f2,#fff5f5);border:2px solid #fecaca;border-radius:12px;padding:14px 18px;margin-bottom:16px;display:none;align-items:center;gap:14px;flex-wrap:wrap}
+.dup-banner.show{display:flex}
+.dup-banner-txt{flex:1;font-size:13px;font-weight:700;color:#dc2626}
+.dup-banner-txt span{font-size:20px;margin-right:6px}
+.btn-clean{background:#dc2626;color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap}
+.btn-clean:hover{background:#b91c1c}
+
+/* NOTIFICATION BELL */
+.notif-bell{position:relative;cursor:pointer;font-size:20px;padding:5px;border-radius:8px;transition:background .2s;display:flex;align-items:center}
+.notif-bell:hover{background:rgba(0,0,0,.05)}
+.notif-dot{position:absolute;top:2px;right:2px;width:9px;height:9px;background:#ef4444;border-radius:50%;border:2px solid #fff;display:none}
+.notif-dot.show{display:block;animation:notifpop .4s ease}
+@keyframes notifpop{0%{transform:scale(0)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+
+/* SOUND TOGGLE */
+.sound-tog{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:#fff;transition:all .2s}
+.sound-tog:hover{border-color:var(--orange);color:var(--orange)}
+.sound-tog.on{background:#fff7ed;color:var(--orange);border-color:var(--orange)}
+
+/* SELLOSHIP TAB */
+.sell-card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.05);max-width:640px;margin-bottom:18px}
+.sell-card h3{font-size:15px;font-weight:900;margin-bottom:5px}
+.sell-card p{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:16px;line-height:1.7}
+.sell-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;margin-bottom:14px}
+.sell-status.connected{background:#f0fdf4;color:#16a34a}
+.sell-status.disconnected{background:#fef2f2;color:#dc2626}
+.sell-orders-list{background:var(--gray);border-radius:10px;padding:14px;margin-top:14px}
+.sell-order-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;font-weight:600}
+.sell-order-row:last-child{border-bottom:none}
+.sell-order-row b{color:var(--black)}
+.sell-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px}
+.sb-pending{background:#fff7ed;color:#ea580c}
+.sb-synced{background:#f0fdf4;color:#16a34a}
+.sb-failed{background:#fef2f2;color:#dc2626}
+
+
+/* SOUND PICKER MODAL */
+.snd-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(4px)}
+.snd-overlay.active{display:flex}
+.snd-box{background:#fff;border-radius:20px;width:100%;max-width:480px;padding:26px 22px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.snd-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.snd-head h3{font-size:16px;font-weight:900}
+.snd-sub{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:18px}
+.snd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.snd-card{border:2px solid var(--border);border-radius:12px;padding:13px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;position:relative}
+.snd-card:hover{border-color:var(--orange);background:#fff7ed}
+.snd-card.selected{border-color:var(--orange);background:#fff7ed}
+.snd-card.selected::after{content:'✓';position:absolute;top:6px;right:8px;font-size:11px;font-weight:900;color:var(--orange)}
+.snd-ico{font-size:22px;flex-shrink:0}
+.snd-name{font-size:12px;font-weight:800;color:var(--black)}
+.snd-desc{font-size:10px;font-weight:600;color:var(--muted);margin-top:2px}
+.snd-preview{background:none;border:1.5px solid var(--border);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--muted);transition:all .2s;margin-top:5px;display:inline-block}
+.snd-preview:hover{border-color:var(--orange);color:var(--orange)}
+.snd-vol-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;background:var(--gray);border-radius:10px;padding:12px 14px}
+.snd-vol-row label{font-size:12px;font-weight:800;flex-shrink:0}
+.snd-vol-row input[type=range]{flex:1;accent-color:var(--orange)}
+.snd-vol-val{font-size:12px;font-weight:800;color:var(--orange);width:32px;text-align:right}
+
 /* TOAST */
 .toast{position:fixed;bottom:22px;right:22px;background:#1a1a1a;color:#fff;padding:11px 18px;border-radius:12px;font-size:12px;font-weight:700;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;max-width:300px}
 .toast.show{opacity:1}.toast.success{background:#16a34a}.toast.error{background:#dc2626}
@@ -195,6 +255,7 @@ textarea.finput{min-height:72px;resize:vertical}
       <div class="nav-item" onclick="showTab('orders')"><span class="nav-ico">📦</span>Orders</div>
       <div class="nav-item" onclick="showTab('products')"><span class="nav-ico">🛍️</span>Products</div>
       <div class="nav-item" onclick="showTab('settings')"><span class="nav-ico">⚙️</span>Settings</div>
+      <div class="nav-item" onclick="showTab('selloship')"><span class="nav-ico">🚚</span>Selloship</div>
     </nav>
     <div class="sb-foot"><button class="lout-btn" onclick="doLogout()">🚪 Logout</button></div>
   </aside>
@@ -204,6 +265,8 @@ textarea.finput{min-height:72px;resize:vertical}
       <button class="hamburger" onclick="toggleSB()">☰</button>
       <div class="topbar-title" id="topTitle">Dashboard</div>
       <div class="topbar-right">
+        <button class="sound-tog on" id="soundTogBtn" onclick="openSoundPicker()" title="Choose notification sound">🔔 Sound: <span id="soundLabel">Ding</span></button>
+        <div class="notif-bell" title="New order notification"><span>🔔</span><div class="notif-dot" id="notifDot"></div></div>
         <div class="live-badge"><div class="live-dot"></div><span id="liveVisitors">—</span> Live</div>
       </div>
     </div>
@@ -252,6 +315,11 @@ textarea.finput{min-height:72px;resize:vertical}
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
+        <div class="dup-banner" id="dupBanner">
+          <span>⚠️</span>
+          <div class="dup-banner-txt"><span id="dupCount">0</span> duplicate orders found (same phone number). Keep the latest, delete the rest.</div>
+          <button class="btn-clean" onclick="clearDuplicates()">🧹 Clear Duplicates</button>
+        </div>
         <div class="card"><div class="tbl-wrap">
           <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
           <tbody id="ordersBody"><tr><td colspan="10"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
@@ -285,6 +353,39 @@ textarea.finput{min-height:72px;resize:vertical}
     </div>
   </main>
 </div>
+
+      <!-- SELLOSHIP -->
+      <div id="tab-selloship" style="display:none">
+        <div class="sec-hdr"><h2>🚚 Selloship Integration</h2></div>
+
+        <div class="sell-card">
+          <h3>🔗 API Connection</h3>
+          <p>Connect your Selloship account to automatically push new orders for fulfillment. Once connected, each new order will be synced to Selloship as a shipment.</p>
+          <div class="sell-status disconnected" id="sellStatus">🔴 Not Connected</div>
+          <div class="fg"><label class="fl">Selloship API Key</label><input class="finput" id="sellApiKey" type="password" placeholder="Enter your Selloship API key..."/></div>
+          <div class="fg"><label class="fl">Pickup Location / Warehouse ID</label><input class="finput" id="sellWarehouse" placeholder="e.g. WH001 or your seller ID"/></div>
+          <button class="btn btn-orange" onclick="testSelloship()" id="sellTestBtn" style="margin-right:8px">🔌 Test Connection</button>
+          <button class="btn btn-out" onclick="saveSelloshipConfig()">💾 Save Config</button>
+        </div>
+
+        <div class="sell-card">
+          <h3>📦 Sync Orders to Selloship</h3>
+          <p>Push all pending (new/confirmed) orders to Selloship for pickup and delivery. Already-synced orders are skipped automatically.</p>
+          <button class="btn btn-orange" onclick="syncToSelloship()" id="sellSyncBtn">⬆️ Sync Pending Orders Now</button>
+          <div class="sell-orders-list" id="sellSyncLog">
+            <div style="font-size:12px;color:var(--muted);font-weight:600;text-align:center;padding:8px">Click "Sync" to push orders to Selloship</div>
+          </div>
+        </div>
+
+        <div class="sell-card" style="background:#fff8f5;border:1.5px solid #fde0cc">
+          <h3>ℹ️ How to Get Your API Key</h3>
+          <p>1. Login to your <b>Selloship seller panel</b> at <a href="https://app.selloship.com" target="_blank" style="color:var(--orange)">app.selloship.com</a><br>
+          2. Go to <b>Settings → API Keys</b><br>
+          3. Generate a new key and paste it above<br>
+          4. Make sure your <b>Pickup Address</b> is configured in Selloship before syncing</p>
+        </div>
+      </div>
+
 
 <!-- PRODUCT MODAL -->
 <div class="m-overlay" id="prodModal" onclick="prodOverlay(event)">
@@ -356,7 +457,7 @@ document.getElementById('lPass').addEventListener('keydown',e=>{ if(e.key==='Ent
 function doLogout(){ sessionStorage.removeItem('sb_token'); document.getElementById('loginPage').style.display='flex'; document.getElementById('appLayout').classList.remove('active'); }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); startLiveVisitors(); startAutoRefresh(); }
+function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); startLiveVisitors(); startAutoRefresh(); }
 
 // ─── LIVE VISITORS (Real API) ─────────────────────────────────────────────────
 async function fetchLiveVisitors() {
@@ -392,10 +493,10 @@ function startAutoRefresh(){ setInterval(()=>{ loadStats(); loadOrders(); }, 600
 function toggleSB(){ sbOpen=!sbOpen; document.getElementById('sidebar').classList.toggle('open',sbOpen); }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const tabTitles={dashboard:'Dashboard',orders:'Orders',products:'Products',settings:'Settings'};
+const tabTitles={dashboard:'Dashboard',orders:'Orders',products:'Products',settings:'Settings',selloship:'Selloship'};
 function showTab(name){
-  ['dashboard','orders','products','settings'].forEach(t=> document.getElementById('tab-'+t).style.display=t===name?'block':'none');
-  document.querySelectorAll('.nav-item').forEach((el,i)=> el.classList.toggle('active',['dashboard','orders','products','settings'][i]===name));
+  ['dashboard','orders','products','settings','selloship'].forEach(t=> document.getElementById('tab-'+t).style.display=t===name?'block':'none');
+  document.querySelectorAll('.nav-item').forEach((el,i)=> el.classList.toggle('active',['dashboard','orders','products','settings','selloship'][i]===name));
   document.getElementById('topTitle').textContent=tabTitles[name];
   if(window.innerWidth<=768){ document.getElementById('sidebar').classList.remove('open'); sbOpen=false; }
 }
@@ -418,7 +519,7 @@ async function loadStats(){
 async function loadOrders(){
   try{
     const r=await fetch(API+'/api/orders'); const d=await r.json();
-    if(d.success){ allOrders=d.orders; renderOrders(); renderLatest(); }
+    if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderLatest(); checkDuplicates(); }
   }catch(e){}
 }
 function renderLatest(){
@@ -623,8 +724,428 @@ function toast(msg,type=''){
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
+// ─── ORDER NOTIFICATION SOUND SYSTEM ────────────────────────────────────────
+let soundEnabled = true;
+let lastOrderCount = null;
+let selectedSound = localStorage.getItem('sb_sound') || 'ding';
+let soundVolume = parseFloat(localStorage.getItem('sb_vol') || '0.6');
+
+// ── Sound definitions — all synthesized via Web Audio API ─────────────────────
+const SOUNDS = {
+  ding: {
+    name: 'Classic Ding', icon: '🔔', desc: '3-note chime',
+    play(ctx, vol) {
+      [[880,0],[1100,.14],[1320,.28]].forEach(([f,d]) => {
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value=f; o.type='sine';
+        g.gain.setValueAtTime(0,ctx.currentTime+d);
+        g.gain.linearRampToValueAtTime(vol,ctx.currentTime+d+.02);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.55);
+        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.6);
+      });
+    }
+  },
+  cash: {
+    name: 'Cash Register', icon: '💰', desc: 'Ka-ching!',
+    play(ctx, vol) {
+      // Two quick high pings like a cash register
+      [[1800,.0],[2200,.07],[1600,.15]].forEach(([f,d]) => {
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value=f; o.type='square';
+        g.gain.setValueAtTime(0,ctx.currentTime+d);
+        g.gain.linearRampToValueAtTime(vol*.5,ctx.currentTime+d+.01);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.18);
+        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.2);
+      });
+      // Bell tail
+      const o2=ctx.createOscillator(), g2=ctx.createGain();
+      o2.connect(g2); g2.connect(ctx.destination);
+      o2.frequency.value=1047; o2.type='sine';
+      g2.gain.setValueAtTime(0,ctx.currentTime+.22);
+      g2.gain.linearRampToValueAtTime(vol*.6,ctx.currentTime+.25);
+      g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.9);
+      o2.start(ctx.currentTime+.22); o2.stop(ctx.currentTime+1);
+    }
+  },
+  pop: {
+    name: 'Bubble Pop', icon: '🫧', desc: 'Soft pop',
+    play(ctx, vol) {
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.setValueAtTime(520,ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(180,ctx.currentTime+.12);
+      o.type='sine';
+      g.gain.setValueAtTime(vol,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
+      o.start(ctx.currentTime); o.stop(ctx.currentTime+.2);
+    }
+  },
+  alert: {
+    name: 'Alert Beep', icon: '📣', desc: 'Double beep',
+    play(ctx, vol) {
+      [0, .22].forEach(d => {
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value=880; o.type='square';
+        g.gain.setValueAtTime(0,ctx.currentTime+d);
+        g.gain.linearRampToValueAtTime(vol*.4,ctx.currentTime+d+.01);
+        g.gain.linearRampToValueAtTime(vol*.4,ctx.currentTime+d+.16);
+        g.gain.linearRampToValueAtTime(0,ctx.currentTime+d+.18);
+        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.2);
+      });
+    }
+  },
+  chime: {
+    name: 'Wind Chime', icon: '🎐', desc: 'Gentle chime',
+    play(ctx, vol) {
+      [[523,.0],[659,.12],[784,.24],[1047,.36],[1319,.48]].forEach(([f,d]) => {
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value=f; o.type='sine';
+        g.gain.setValueAtTime(0,ctx.currentTime+d);
+        g.gain.linearRampToValueAtTime(vol*.45,ctx.currentTime+d+.03);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.8);
+        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.9);
+      });
+    }
+  },
+  whoosh: {
+    name: 'Whoosh', icon: '💨', desc: 'Swoosh + ding',
+    play(ctx, vol) {
+      // Noise whoosh
+      const buf=ctx.createBuffer(1,ctx.sampleRate*.3,ctx.sampleRate);
+      const data=buf.getChannelData(0);
+      for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1);
+      const src=ctx.createBufferSource();
+      src.buffer=buf;
+      const filt=ctx.createBiquadFilter(); filt.type='highpass'; filt.frequency.value=2000;
+      const g=ctx.createGain();
+      src.connect(filt); filt.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0,ctx.currentTime);
+      g.gain.linearRampToValueAtTime(vol*.3,ctx.currentTime+.05);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.3);
+      src.start(); src.stop(ctx.currentTime+.35);
+      // Ding after
+      const o=ctx.createOscillator(), g2=ctx.createGain();
+      o.connect(g2); g2.connect(ctx.destination);
+      o.frequency.value=1320; o.type='sine';
+      g2.gain.setValueAtTime(0,ctx.currentTime+.28);
+      g2.gain.linearRampToValueAtTime(vol,ctx.currentTime+.30);
+      g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.85);
+      o.start(ctx.currentTime+.28); o.stop(ctx.currentTime+.9);
+    }
+  },
+  horn: {
+    name: 'Party Horn', icon: '🎉', desc: 'Celebratory!',
+    play(ctx, vol) {
+      [[392,.0],[494,.08],[587,.16],[698,.24],[880,.32]].forEach(([f,d]) => {
+        const o=ctx.createOscillator(), g=ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value=f; o.type='sawtooth';
+        const filt=ctx.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=1200;
+        o.connect(filt); filt.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(vol*.35,ctx.currentTime+d);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.25);
+        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+.3);
+      });
+    }
+  },
+  silent: {
+    name: 'Silent', icon: '🔕', desc: 'No sound',
+    play() {}
+  }
+};
+
+// ── Sound Picker Modal ─────────────────────────────────────────────────────────
+function openSoundPicker() {
+  const grid = document.getElementById('sndGrid');
+  grid.innerHTML = Object.entries(SOUNDS).map(([key, s]) => `
+    <div class="snd-card ${selectedSound===key?'selected':''}" id="snd-${key}" onclick="selectSound('${key}')">
+      <div>
+        <div style="font-size:22px;margin-bottom:3px">${s.icon}</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="snd-name">${s.name}</div>
+        <div class="snd-desc">${s.desc}</div>
+        <button class="snd-preview" onclick="event.stopPropagation();previewSound('${key}')">▶ Preview</button>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('sndVolSlider').value = Math.round(soundVolume * 100);
+  document.getElementById('sndVolVal').textContent = Math.round(soundVolume * 100) + '%';
+  document.getElementById('muteBtn').textContent = soundEnabled ? '🔔 On' : '🔕 Off';
+  document.getElementById('muteBtn').classList.toggle('on', soundEnabled);
+  document.getElementById('sndOverlay').classList.add('active');
+}
+function closeSoundPicker() { document.getElementById('sndOverlay').classList.remove('active'); }
+function sndOverlayClick(e) { if (e.target===document.getElementById('sndOverlay')) closeSoundPicker(); }
+
+function selectSound(key) {
+  selectedSound = key;
+  document.querySelectorAll('.snd-card').forEach(el => el.classList.remove('selected'));
+  document.getElementById('snd-'+key)?.classList.add('selected');
+  previewSound(key);
+}
+
+function previewSound(key) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    SOUNDS[key]?.play(ctx, soundVolume);
+  } catch(e) {}
+}
+
+function updateVolume(val) {
+  soundVolume = val / 100;
+  document.getElementById('sndVolVal').textContent = val + '%';
+}
+
+function toggleMute() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('muteBtn');
+  btn.textContent = soundEnabled ? '🔔 On' : '🔕 Off';
+  btn.classList.toggle('on', soundEnabled);
+}
+
+function saveSoundChoice() {
+  localStorage.setItem('sb_sound', selectedSound);
+  localStorage.setItem('sb_vol', soundVolume.toString());
+  const label = SOUNDS[selectedSound]?.name || 'Ding';
+  document.getElementById('soundLabel').textContent = SOUNDS[selectedSound]?.icon + ' ' + label;
+  const togBtn = document.getElementById('soundTogBtn');
+  togBtn.classList.toggle('on', soundEnabled && selectedSound !== 'silent');
+  closeSoundPicker();
+  toast('Sound saved: ' + label, 'success');
+}
+
+function playOrderSound() {
+  if (!soundEnabled || selectedSound === 'silent') return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    SOUNDS[selectedSound]?.play(ctx, soundVolume);
+  } catch(e) {}
+}
+
+// Init sound label on load
+(function initSoundLabel(){
+  const s = SOUNDS[selectedSound];
+  if (s) document.getElementById('soundLabel').textContent = s.icon + ' ' + s.name;
+  document.getElementById('sndVolSlider') && (document.getElementById('sndVolSlider').value = Math.round(soundVolume*100));
+})();
+
+function checkNewOrders(freshOrders) {
+  if (lastOrderCount === null) { lastOrderCount = freshOrders.length; return; }
+  if (freshOrders.length > lastOrderCount) {
+    const newCount = freshOrders.length - lastOrderCount;
+    playOrderSound();
+    document.getElementById('notifDot').classList.add('show');
+    toast(`🛎️ ${newCount} new order${newCount>1?'s':''} arrived!`, 'success');
+    setTimeout(() => document.getElementById('notifDot').classList.remove('show'), 5000);
+    lastOrderCount = freshOrders.length;
+  } else {
+    lastOrderCount = freshOrders.length;
+  }
+}
+
+// ─── DUPLICATE CLEANER ────────────────────────────────────────────────────────
+function checkDuplicates() {
+  const phoneCounts = {};
+  allOrders.forEach(o => { if (o.phone) phoneCounts[o.phone] = (phoneCounts[o.phone]||0)+1; });
+  const dupPhones = Object.entries(phoneCounts).filter(([,c]) => c > 1);
+  const banner = document.getElementById('dupBanner');
+  const countEl = document.getElementById('dupCount');
+  if (dupPhones.length) {
+    // Count total extra (keepin 1 per phone)
+    const totalDups = dupPhones.reduce((sum,[,c]) => sum + c - 1, 0);
+    countEl.textContent = totalDups;
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+async function clearDuplicates() {
+  const phoneCounts = {};
+  allOrders.forEach(o => { if (o.phone) phoneCounts[o.phone] = (phoneCounts[o.phone]||0)+1; });
+  const dupPhones = new Set(Object.entries(phoneCounts).filter(([,c])=>c>1).map(([p])=>p));
+  if (!dupPhones.size) return toast('No duplicates found!','');
+
+  const totalToDelete = [...dupPhones].reduce((sum, phone) => {
+    const group = allOrders.filter(o => o.phone === phone);
+    return sum + group.length - 1;
+  }, 0);
+
+  if (!confirm(`Delete ${totalToDelete} duplicate order(s)? The LATEST order for each phone number will be kept.`)) return;
+
+  // For each duplicate phone, keep the newest (first in sorted-by-date desc array), delete rest
+  const toDelete = [];
+  dupPhones.forEach(phone => {
+    const group = allOrders.filter(o => o.phone === phone)
+      .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    group.slice(1).forEach(o => toDelete.push(o._id)); // skip index 0 (newest)
+  });
+
+  let deleted = 0, failed = 0;
+  for (const id of toDelete) {
+    try {
+      const r = await fetch(API+'/api/orders/'+id, {method:'DELETE'});
+      const d = await r.json();
+      if (d.success) { allOrders = allOrders.filter(o => o._id !== id); deleted++; }
+      else failed++;
+    } catch(e) { failed++; }
+  }
+
+  renderOrders(); renderLatest(); loadStats(); checkDuplicates();
+  toast(`✅ Cleared ${deleted} duplicates${failed?' ('+failed+' failed)':''}`, deleted?'success':'error');
+}
+
+// ─── SELLOSHIP INTEGRATION ────────────────────────────────────────────────────
+let selloshipConfig = { apiKey: '', warehouse: '' };
+
+function loadSelloshipConfig() {
+  selloshipConfig.apiKey = localStorage.getItem('sell_api_key') || '';
+  selloshipConfig.warehouse = localStorage.getItem('sell_warehouse') || '';
+  if (selloshipConfig.apiKey) {
+    document.getElementById('sellApiKey').value = selloshipConfig.apiKey;
+    document.getElementById('sellWarehouse').value = selloshipConfig.warehouse;
+    document.getElementById('sellStatus').textContent = '🟡 Config saved — click Test to verify';
+    document.getElementById('sellStatus').className = 'sell-status';
+    document.getElementById('sellStatus').style.background = '#fefce8';
+    document.getElementById('sellStatus').style.color = '#92400e';
+  }
+}
+
+function saveSelloshipConfig() {
+  const key = document.getElementById('sellApiKey').value.trim();
+  const wh  = document.getElementById('sellWarehouse').value.trim();
+  if (!key) return toast('Enter Selloship API key','error');
+  localStorage.setItem('sell_api_key', key);
+  localStorage.setItem('sell_warehouse', wh);
+  selloshipConfig = { apiKey: key, warehouse: wh };
+  toast('Selloship config saved!','success');
+}
+
+async function testSelloship() {
+  const key = document.getElementById('sellApiKey').value.trim();
+  if (!key) return toast('Enter API key first','error');
+  const btn = document.getElementById('sellTestBtn');
+  btn.textContent = '⏳ Testing...'; btn.disabled = true;
+  try {
+    // Selloship uses token-based auth: GET /api/v1/account
+    const r = await fetch('https://api.selloship.com/api/v1/account', {
+      headers: { 'Authorization': 'Bearer ' + key, 'Accept': 'application/json' }
+    });
+    const d = await r.json();
+    const statusEl = document.getElementById('sellStatus');
+    if (r.ok || d.status === 'success' || d.data) {
+      statusEl.textContent = '🟢 Connected — ' + (d.data?.name || d.data?.email || 'Account verified');
+      statusEl.className = 'sell-status connected';
+      toast('Selloship connected!','success');
+    } else {
+      statusEl.textContent = '🔴 Auth failed — check your API key';
+      statusEl.className = 'sell-status disconnected';
+      toast('Connection failed: ' + (d.message||'Invalid key'),'error');
+    }
+  } catch(e) {
+    // CORS may block direct call — inform user to configure proxy
+    document.getElementById('sellStatus').textContent = '⚠️ CORS blocked — use backend proxy';
+    document.getElementById('sellStatus').className = 'sell-status';
+    document.getElementById('sellStatus').style.cssText = 'background:#fefce8;color:#92400e';
+    toast('Direct API call blocked by CORS. See backend proxy note below.','error');
+  }
+  btn.textContent = '🔌 Test Connection'; btn.disabled = false;
+}
+
+async function syncToSelloship() {
+  const key = selloshipConfig.apiKey || localStorage.getItem('sell_api_key');
+  if (!key) return toast('Configure Selloship API key first','error');
+
+  const pending = allOrders.filter(o => o.status === 'new' || o.status === 'confirmed');
+  if (!pending.length) return toast('No pending orders to sync','');
+
+  const btn = document.getElementById('sellSyncBtn');
+  btn.textContent = `⏳ Syncing ${pending.length} orders...`; btn.disabled = true;
+
+  const log = document.getElementById('sellSyncLog');
+  log.innerHTML = '';
+  let synced = 0, failed = 0;
+
+  for (const order of pending) {
+    const payload = {
+      order_id:       order._id,
+      consignee_name: order.name,
+      consignee_phone: order.phone,
+      consignee_address: order.address,
+      consignee_pincode: order.pincode,
+      consignee_city:  order.city,
+      consignee_state: order.state,
+      payment_mode:   'COD',
+      cod_amount:     order.totalAmount || order.price,
+      weight:         0.5,
+      length: 20, width: 15, height: 5,
+      item_description: order.productName || order.product || 'Sweat Belt Pro',
+      quantity: order.quantity || 1,
+      pickup_location: localStorage.getItem('sell_warehouse') || ''
+    };
+
+    try {
+      const r = await fetch(API + '/api/selloship/create-shipment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey: key, order: payload })
+      });
+      const d = await r.json();
+      if (d.success) {
+        synced++;
+        log.innerHTML += `<div class="sell-order-row"><span><b>${order.name}</b> · ${order.phone}</span><span class="sell-badge sb-synced">✅ Synced${d.awb?' · AWB: '+d.awb:''}</span></div>`;
+        // Update status to confirmed in local list
+        const o = allOrders.find(x=>x._id===order._id); if(o) o.status='confirmed';
+      } else {
+        failed++;
+        log.innerHTML += `<div class="sell-order-row"><span><b>${order.name}</b> · ${order.phone}</span><span class="sell-badge sb-failed">❌ ${d.error||'Failed'}</span></div>`;
+      }
+    } catch(e) {
+      failed++;
+      log.innerHTML += `<div class="sell-order-row"><span><b>${order.name}</b> · ${order.phone}</span><span class="sell-badge sb-failed">❌ Network error</span></div>`;
+    }
+  }
+
+  btn.textContent = '⬆️ Sync Pending Orders Now'; btn.disabled = false;
+  renderOrders(); renderLatest(); loadStats();
+  toast(`Selloship sync done: ${synced} synced, ${failed} failed`, synced?'success':'error');
+}
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 checkAuth();
 </script>
+
+<!-- SOUND PICKER MODAL -->
+<div class="snd-overlay" id="sndOverlay" onclick="sndOverlayClick(event)">
+  <div class="snd-box" id="sndBox">
+    <div class="snd-head">
+      <h3>🎵 Choose Notification Sound</h3>
+      <button class="m-close" onclick="closeSoundPicker()">✕</button>
+    </div>
+    <div class="snd-sub">Pick a sound that plays when a new order arrives</div>
+
+    <div class="snd-grid" id="sndGrid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="snd-vol-row">
+      <label>🔊 Volume</label>
+      <input type="range" id="sndVolSlider" min="0" max="100" value="60" oninput="updateVolume(this.value)"/>
+      <div class="snd-vol-val" id="sndVolVal">60%</div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-orange" style="flex:1;justify-content:center" onclick="saveSoundChoice()">✅ Save</button>
+      <button class="btn btn-out" onclick="closeSoundPicker()">Cancel</button>
+      <button class="sound-tog" id="muteBtn" onclick="toggleMute()" style="flex-shrink:0">🔔 On</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
