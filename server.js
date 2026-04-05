@@ -46,6 +46,13 @@ const orderSchema = new mongoose.Schema({
   createdAt:   { type: Date, default: Date.now }
 });
 
+// ─── Helper: normalize string fields (trim whitespace) ────────────────────────
+function trimOrder(o) {
+  ['name','phone','address','pincode','city','state','product','productName','size'].forEach(f => {
+    if (typeof o[f] === 'string') o[f] = o[f].replace(/\s+/g,' ').trim();
+  });
+}
+
 const productSchema = new mongoose.Schema({
   name:        { type: String, required: true },
   description: { type: String },
@@ -103,7 +110,9 @@ app.post('/api/orders', async (req, res) => {
     }
     // ──────────────────────────────────────────────────────────────────────
 
-    const order = new Order(req.body);
+    const body = req.body;
+    ['name','phone','address','pincode','city','state'].forEach(f => { if(typeof body[f]==='string') body[f]=body[f].replace(/\s+/g,' ').trim(); });
+    const order = new Order(body);
     await order.save();
     res.json({ success: true, orderId: order._id });
   } catch (e) {
@@ -399,6 +408,59 @@ app.get('/api/selloship/account', async (req, res) => {
     });
     const data = await response.json();
     res.json({ success: response.ok, data });
+  } catch (e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// PUT /api/orders/:id/address — AI-fixed address update
+app.put('/api/orders/:id/address', async (req, res) => {
+  try {
+    const { name, address, city, state, pincode } = req.body;
+    const fields = {};
+    if (name)    fields.name    = name.replace(/\s+/g,' ').trim();
+    if (address) fields.address = address.replace(/\s+/g,' ').trim();
+    if (city)    fields.city    = city.replace(/\s+/g,' ').trim();
+    if (state)   fields.state   = state.replace(/\s+/g,' ').trim();
+    if (pincode) fields.pincode = pincode.trim();
+    const order = await Order.findByIdAndUpdate(req.params.id, fields, { new: true });
+    if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
+    res.json({ success: true, order });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e.message });
+  }
+});
+
+// POST /api/admin/junk-clean — trim whitespace in all orders, flush stale data
+app.post('/api/admin/junk-clean', async (req, res) => {
+  try {
+    // 1. Expire stale visitor sessions
+    const visitorsBefore = visitors.size;
+    const now = Date.now();
+    for (const [id, ts] of visitors) {
+      if (now - ts > 60000) visitors.delete(id);
+    }
+    const visitorsCleared = visitorsBefore - visitors.size;
+
+    // 2. Find and trim whitespace in all order string fields
+    const orders = await Order.find();
+    let ordersFixed = 0;
+    for (const order of orders) {
+      let changed = false;
+      ['name','phone','address','pincode','city','state','product','productName','size'].forEach(f => {
+        if (typeof order[f] === 'string') {
+          const trimmed = order[f].replace(/\s+/g,' ').trim();
+          if (trimmed !== order[f]) { order[f] = trimmed; changed = true; }
+        }
+      });
+      if (changed) { await order.save(); ordersFixed++; }
+    }
+
+    // 3. Remove junk orders (missing name AND missing phone)
+    const junkResult = await Order.deleteMany({ name: { $in: ['', null] }, phone: { $in: ['', null] } });
+    const emptyOrders = junkResult.deletedCount;
+
+    res.json({ success: true, visitors: visitorsCleared, ordersFixed, emptyOrders });
   } catch (e) {
     res.status(500).json({ success: false, error: e.message });
   }
