@@ -258,6 +258,18 @@ textarea.finput{min-height:72px;resize:vertical}
 .date-filter-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
 .date-filter-row label{font-size:11px;font-weight:800;color:var(--muted)}
 
+/* DASHBOARD DATE FILTER */
+.dash-date-filter{display:flex;gap:9px;flex-wrap:wrap;align-items:center;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:16px;border-left:3px solid var(--orange)}
+.dash-date-filter label{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap}
+.dash-date-filter .fi{padding:6px 10px;font-size:12px;border-radius:8px;border:1.5px solid #e5e7eb;font-weight:700;font-family:'Nunito',sans-serif;color:#222;background:#fafafa;outline:none;cursor:pointer}
+.dash-date-filter .fi:focus{border-color:var(--orange)}
+.dash-date-filter .ddf-presets{display:flex;gap:6px;flex-wrap:wrap}
+.dash-date-filter .ddf-btn{background:#f5f5f5;color:#444;border:1.5px solid #e5e7eb;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap}
+.dash-date-filter .ddf-btn:hover,.dash-date-filter .ddf-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.dash-date-filter .ddf-clear{background:transparent;color:var(--muted);border:1.5px solid #e5e7eb;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.dash-date-filter .ddf-clear:hover{background:#fee2e2;color:#dc2626;border-color:#fca5a5}
+.dash-stats-label{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;margin-top:2px;padding-left:2px}
+
 /* CONVERSION WIDGET */
 .conv-bar-wrap{height:8px;background:#f0f0f0;border-radius:4px;margin:8px 0;overflow:hidden}
 .conv-bar{height:100%;background:linear-gradient(90deg,var(--orange),#f97316);border-radius:4px;transition:width .6s ease}
@@ -330,6 +342,23 @@ textarea.finput{min-height:72px;resize:vertical}
           </div>
           <div class="lv-chart" id="lvChart"></div>
         </div>
+
+        <!-- DASHBOARD DATE FILTER -->
+        <div class="dash-date-filter">
+          <span style="font-size:16px">📅</span>
+          <label>From:</label>
+          <input class="fi" type="date" id="dashDateFrom" onchange="updateDashboardStats()"/>
+          <label>To:</label>
+          <input class="fi" type="date" id="dashDateTo" onchange="updateDashboardStats()"/>
+          <div class="ddf-presets">
+            <button class="ddf-btn" id="ddf-today" onclick="setDashPreset('today')">Today</button>
+            <button class="ddf-btn" id="ddf-week" onclick="setDashPreset('week')">This Week</button>
+            <button class="ddf-btn" id="ddf-month" onclick="setDashPreset('month')">This Month</button>
+            <button class="ddf-btn" id="ddf-all" onclick="setDashPreset('all')">All Time</button>
+          </div>
+          <button class="ddf-clear" onclick="clearDashFilter()">✕ Clear</button>
+        </div>
+        <div class="dash-stats-label" id="dashStatsLabel"></div>
 
         <div class="stats-grid">
           <div class="stat-card orange"><div class="stat-ico">📦</div><div class="stat-lbl">Total Orders</div><div class="stat-val" id="st-total">—</div></div>
@@ -562,7 +591,7 @@ document.getElementById('lPass').addEventListener('keydown',e=>{ if(e.key==='Ent
 function doLogout(){ sessionStorage.removeItem('sb_token'); document.getElementById('loginPage').style.display='flex'; document.getElementById('appLayout').classList.remove('active'); }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); startLiveVisitors(); startAutoRefresh(); }
+function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); startLiveVisitors(); startAutoRefresh(); document.getElementById('ddf-all').classList.add('active'); }
 
 // ─── LIVE VISITORS (Real API) ─────────────────────────────────────────────────
 async function fetchLiveVisitors() {
@@ -609,8 +638,9 @@ function showTab(name){
 // ─── STATS ────────────────────────────────────────────────────────────────────
 async function loadStats(){
   try{
+    // First load from API for initial all-time counts (fallback)
     const r=await fetch(API+'/api/stats'); const d=await r.json();
-    if(d.success){
+    if(d.success && !document.getElementById('dashDateFrom').value && !document.getElementById('dashDateTo').value){
       document.getElementById('st-total').textContent=d.totalOrders;
       document.getElementById('st-new').textContent=d.newOrders;
       document.getElementById('st-confirmed').textContent=d.confirmedOrders;
@@ -618,31 +648,111 @@ async function loadStats(){
       document.getElementById('st-revenue').textContent='₹'+(d.revenue||0).toLocaleString('en-IN');
     }
   }catch(e){}
-  computeInsights();
+  updateDashboardStats();
 }
 
-function computeInsights() {
+// ─── DASHBOARD DATE FILTER ────────────────────────────────────────────────────
+let activeDashPreset = 'all';
+
+function getDashFilteredOrders() {
+  const from = document.getElementById('dashDateFrom').value;
+  const to   = document.getElementById('dashDateTo').value;
+  if (!from && !to) return allOrders;
+  return allOrders.filter(o => {
+    if (!o.createdAt) return false;
+    const od = new Date(o.createdAt); od.setHours(0,0,0,0);
+    if (from) { const f = new Date(from); f.setHours(0,0,0,0); if (od < f) return false; }
+    if (to)   { const t = new Date(to);   t.setHours(23,59,59,999); if (od > t) return false; }
+    return true;
+  });
+}
+
+function setDashPreset(preset) {
+  activeDashPreset = preset;
+  const today = new Date();
+  const toStr = today.toISOString().slice(0,10);
+  let fromStr = '';
+  if (preset === 'today') {
+    fromStr = toStr;
+  } else if (preset === 'week') {
+    const start = new Date(today); start.setDate(today.getDate() - today.getDay());
+    fromStr = start.toISOString().slice(0,10);
+  } else if (preset === 'month') {
+    fromStr = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().slice(0,10);
+  } else {
+    fromStr = ''; // all time
+  }
+  document.getElementById('dashDateFrom').value = fromStr;
+  document.getElementById('dashDateTo').value = preset === 'all' ? '' : toStr;
+  document.querySelectorAll('.ddf-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('ddf-' + preset);
+  if (btn) btn.classList.add('active');
+  updateDashboardStats();
+}
+
+function clearDashFilter() {
+  document.getElementById('dashDateFrom').value = '';
+  document.getElementById('dashDateTo').value = '';
+  activeDashPreset = 'all';
+  document.querySelectorAll('.ddf-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ddf-all').classList.add('active');
+  updateDashboardStats();
+}
+
+function updateDashboardStats() {
   if (!allOrders.length) return;
+  const filtered = getDashFilteredOrders();
+  const from = document.getElementById('dashDateFrom').value;
+  const to   = document.getElementById('dashDateTo').value;
+
+  // Update stat cards from local filtered data
+  const total     = filtered.length;
+  const newO      = filtered.filter(o => o.status === 'new').length;
+  const confirmed = filtered.filter(o => o.status === 'confirmed').length;
+  const shipped   = filtered.filter(o => o.status === 'shipped').length;
+  const revenue   = filtered.reduce((s,o) => s + (parseFloat(o.amount)||0), 0);
+
+  document.getElementById('st-total').textContent     = total;
+  document.getElementById('st-new').textContent       = newO;
+  document.getElementById('st-confirmed').textContent = confirmed;
+  document.getElementById('st-shipped').textContent   = shipped;
+  document.getElementById('st-revenue').textContent   = '₹' + revenue.toLocaleString('en-IN');
+
+  // Update label
+  const lbl = document.getElementById('dashStatsLabel');
+  if (!from && !to) {
+    lbl.textContent = 'Showing all-time stats';
+  } else {
+    const parts = [];
+    if (from) parts.push('From: ' + from);
+    if (to)   parts.push('To: ' + to);
+    lbl.textContent = '📊 Filtered — ' + parts.join('  ·  ') + `  (${total} orders)`;
+  }
+
+  computeInsights(filtered);
+}
+
+function computeInsights(orders) {
+  const src = orders || allOrders;
+  if (!src.length) return;
 
   // ── Avg order time (peak hour) ──
   const hourCounts = Array(24).fill(0);
-  allOrders.forEach(o => { if(o.createdAt) hourCounts[new Date(o.createdAt).getHours()]++; });
+  src.forEach(o => { if(o.createdAt) hourCounts[new Date(o.createdAt).getHours()]++; });
   const peakHour = hourCounts.indexOf(Math.max(...hourCounts));
   const ph12 = peakHour%12||12, phAmpm = peakHour>=12?'PM':'AM';
   document.getElementById('ins-avgtime').textContent = `${ph12}${phAmpm}`;
   document.getElementById('ins-avgtime').nextElementSibling && (document.querySelector('#ins-avgtime + .ins-sub').textContent = `peak: ${hourCounts[peakHour]} orders`);
 
   // ── After 12PM orders ──
-  const pmOrders = allOrders.filter(o => isAfterNoon(o.createdAt));
-  const pmPct = allOrders.length ? Math.round(pmOrders.length/allOrders.length*100) : 0;
+  const pmOrders = src.filter(o => isAfterNoon(o.createdAt));
+  const pmPct = src.length ? Math.round(pmOrders.length/src.length*100) : 0;
   document.getElementById('ins-pm').textContent = pmOrders.length;
-  document.getElementById('ins-pm-pct').textContent = `${pmPct}% of all orders`;
+  document.getElementById('ins-pm-pct').textContent = `${pmPct}% of filtered orders`;
 
   // ── Conversion rate (orders ÷ visitors, using last known visitor count) ──
   const visCount = liveVisitorCount || 1;
-  const totalOrders = allOrders.length;
-  // Rough conversion: orders today vs visitors today
-  const todayOrders = allOrders.filter(o => {
+  const todayOrders = src.filter(o => {
     if (!o.createdAt) return false;
     const od = new Date(o.createdAt); const now = new Date();
     return od.toDateString() === now.toDateString();
@@ -652,7 +762,7 @@ function computeInsights() {
   document.getElementById('convBar').style.width = convPct + '%';
 
   // ── Avg address score ──
-  const avgScore = Math.round(allOrders.reduce((s,o)=>s+scoreAddress(o),0)/allOrders.length);
+  const avgScore = Math.round(src.reduce((s,o)=>s+scoreAddress(o),0)/src.length);
   document.getElementById('ins-adrscore').textContent = avgScore + '/100';
 }
 
@@ -660,7 +770,7 @@ function computeInsights() {
 async function loadOrders(){
   try{
     const r=await fetch(API+'/api/orders'); const d=await r.json();
-    if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderLatest(); checkDuplicates(); }
+    if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderLatest(); checkDuplicates(); updateDashboardStats(); }
   }catch(e){}
 }
 // ─── ADDRESS SCORE ────────────────────────────────────────────────────────────
@@ -1384,7 +1494,7 @@ Return ONLY raw JSON, no markdown, no explanation.`;
     const ud = await upd.json();
     if (ud.success) {
       Object.assign(order, fixed);
-      renderOrders(); renderLatest(); computeInsights();
+      renderOrders(); renderLatest(); updateDashboardStats();
       toast('✅ Address fixed by AI!','success');
     } else { toast('Save failed: '+(ud.error||'error'),'error'); }
   } catch(e) {
