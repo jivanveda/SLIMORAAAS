@@ -371,45 +371,54 @@ app.post('/api/meta', async (req, res) => {
 // SELLOSHIP PROXY
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// POST /api/selloship/create-shipment — proxy to avoid CORS from browser
-app.post('/api/selloship/create-shipment', async (req, res) => {
-  const { apiKey, order } = req.body;
-  if (!apiKey) return res.status(400).json({ success: false, error: 'API key required' });
+// POST /api/selloship/auth — get auth token from username + password
+app.post('/api/selloship/auth', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) return res.status(400).json({ success: false, error: 'username and password required' });
   try {
-    // Selloship shipment creation endpoint
-    const response = await fetch('https://api.selloship.com/api/v1/shipments', {
+    const response = await fetch('https://selloship.com/api/lock_actvs/channels/authToken', {
       method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + apiKey,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(order)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
     });
     const data = await response.json();
-    if (response.ok && (data.status === 'success' || data.data)) {
-      const awb = data.data?.awb_number || data.awb || '';
-      res.json({ success: true, awb, raw: data });
+    // Token may be in data.token, data.authToken, data.data.token, etc.
+    const token = data.token || data.authToken || data.data?.token || data.data?.authToken || '';
+    if (response.ok && token) {
+      res.json({ success: true, token, raw: data });
     } else {
-      res.json({ success: false, error: data.message || 'Selloship error', raw: data });
+      res.json({ success: false, error: data.message || data.error || 'Auth failed', raw: data });
     }
   } catch (e) {
     res.status(500).json({ success: false, error: 'Proxy error: ' + e.message });
   }
 });
 
-// GET /api/selloship/account — test connection via proxy
-app.get('/api/selloship/account', async (req, res) => {
-  const apiKey = req.headers['x-selloship-key'];
-  if (!apiKey) return res.status(400).json({ success: false, error: 'API key required in x-selloship-key header' });
+// POST /api/selloship/waybill — create waybill/shipment
+app.post('/api/selloship/waybill', async (req, res) => {
+  const { token, payload } = req.body;
+  if (!token) return res.status(400).json({ success: false, error: 'token required' });
+  if (!payload) return res.status(400).json({ success: false, error: 'payload required' });
   try {
-    const response = await fetch('https://api.selloship.com/api/v1/account', {
-      headers: { 'Authorization': 'Bearer ' + apiKey, 'Accept': 'application/json' }
+    const response = await fetch('https://selloship.com/api/lock_actvs/channels/waybill', {
+      method: 'POST',
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
     const data = await response.json();
-    res.json({ success: response.ok, data });
+    // AWB may be in various locations depending on Selloship response
+    const awb = data.waybill || data.awbNumber || data.awb_number || data.awb ||
+                data.data?.waybill || data.data?.awbNumber || data.data?.awb || '';
+    if (response.ok && (data.status === 'success' || data.success || awb)) {
+      res.json({ success: true, awb, raw: data });
+    } else {
+      res.json({ success: false, error: data.message || data.error || 'Waybill creation failed', raw: data });
+    }
   } catch (e) {
-    res.status(500).json({ success: false, error: e.message });
+    res.status(500).json({ success: false, error: 'Proxy error: ' + e.message });
   }
 });
 
