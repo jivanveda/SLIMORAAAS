@@ -688,7 +688,7 @@ textarea.finput{min-height:72px;resize:vertical}
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://slimoraaasbackend.onrender.com';
+const API = 'https://slimoraaas.onrender.com';
 
 let allOrders=[], allProducts=[], editingProdId=null, sbOpen=false;
 let liveVisitorCount=18, liveHistory=Array(8).fill(18);
@@ -714,7 +714,7 @@ async function doLogin() {
       document.getElementById('lErr').style.display='none';
       initApp();
     } else { document.getElementById('lErr').style.display='block'; }
-  } catch(e){ toast('Connection error. Check backend URL.','error'); }
+  } catch(e){ toast('Connection error. Check  URL.','error'); }
 }
 document.getElementById('lPass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 function doLogout(){ sessionStorage.removeItem('sb_token'); document.getElementById('loginPage').style.display='flex'; document.getElementById('appLayout').classList.remove('active'); }
