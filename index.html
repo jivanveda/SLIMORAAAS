@@ -182,10 +182,79 @@ footer p{color:#555;font-size:12px;font-weight:600}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:11px 20px;border-radius:30px;font-size:13px;font-weight:800;z-index:2000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* OFFER POPUP */
+.offer-popup{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
+.offer-popup.active{display:flex;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.offer-box{background:#fff;border-radius:24px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;animation:popUp .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popUp{from{transform:scale(.8) translateY(20px)}to{transform:scale(1) translateY(0)}}
+.offer-top{background:linear-gradient(135deg,var(--orange),#f97316);padding:28px 22px 20px;text-align:center;position:relative}
+.offer-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900}
+.offer-emoji{font-size:44px;display:block;margin-bottom:8px}
+.offer-top h2{color:#fff;font-size:22px;font-weight:900;margin-bottom:4px}
+.offer-top p{color:rgba(255,255,255,.88);font-size:13px;font-weight:700}
+.offer-body{padding:20px 22px 24px}
+.offer-code-box{background:#fff8f5;border:2.5px dashed var(--orange);border-radius:14px;padding:14px;text-align:center;margin-bottom:16px}
+.offer-code-lbl{font-size:11px;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.offer-code{font-size:26px;font-weight:900;color:var(--orange);letter-spacing:3px}
+.offer-save{font-size:12px;font-weight:700;color:#16a34a;margin-top:5px}
+.offer-cta{width:100%;background:var(--orange);color:#fff;border:none;padding:14px;border-radius:50px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:10px;transition:all .2s}
+.offer-cta:hover{background:var(--orange-dark)}
+.offer-skip{width:100%;background:none;border:none;color:#bbb;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.offer-timer{font-size:13px;font-weight:800;color:var(--orange);margin-bottom:12px;text-align:center}
+
+/* VIDEO TESTIMONIALS */
+.vid-test-section{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);padding:44px 20px}
+.vid-test-section .section-title{color:#fff}.vid-test-section .section-sub{color:#aaa}
+.vid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:860px;margin:0 auto}
+.vid-card{background:#111;border-radius:16px;overflow:hidden;border:2px solid rgba(232,93,4,.3);transition:transform .2s;cursor:pointer}
+.vid-card:hover{transform:translateY(-3px);border-color:var(--orange)}
+.vid-thumb{position:relative;aspect-ratio:9/16;background:#222;max-height:280px}
+.vid-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.vid-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)}
+.vid-play-ico{width:52px;height:52px;background:rgba(232,93,4,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;padding-left:4px}
+.vid-info{padding:12px 14px}
+.vid-name{color:#fff;font-size:13px;font-weight:800;margin-bottom:2px}
+.vid-loc{color:#888;font-size:11px;font-weight:600;margin-bottom:5px}
+.vid-stars{color:#f59e0b;font-size:12px;margin-bottom:4px}
+.vid-quote{color:#aaa;font-size:11px;font-weight:600;line-height:1.6}
+
+/* FLOAT OFFER BADGE */
+.float-offer{position:fixed;left:14px;bottom:85px;z-index:90;background:var(--orange);color:#fff;border-radius:50px;padding:8px 16px 8px 12px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;box-shadow:0 6px 20px rgba(232,93,4,.5);cursor:pointer;animation:floatPop 2s ease-in-out infinite;display:none}
+.float-offer.show{display:flex}
+@keyframes floatPop{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-5px) scale(1.03)}}
+
 @media(max-width:480px){.two-col{grid-template-columns:1fr}.qs-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
+
+<!-- OFFER POPUP -->
+<div class="offer-popup" id="offerPopup">
+  <div class="offer-box">
+    <div class="offer-top">
+      <button class="offer-close" onclick="closeOffer()">✕</button>
+      <span class="offer-emoji">🎁</span>
+      <h2>Ruko! Ek Special Gift!</h2>
+      <p>Sirf aaj ke liye — ek baar ka offer jo miss nahi karna chahiye!</p>
+    </div>
+    <div class="offer-body">
+      <div class="offer-timer">⏳ Offer expires in: <span id="offerCountdown">10:00</span></div>
+      <div class="offer-code-box">
+        <div class="offer-code-lbl">🎯 Apna Coupon Code Copy Karein</div>
+        <div class="offer-code">SLIM100</div>
+        <div class="offer-save">✅ ₹100 Extra Discount — Free Shipping Bhi!</div>
+      </div>
+      <div style="font-size:12px;color:#666;font-weight:700;margin-bottom:14px;text-align:center">
+        📦 <b>Bonus:</b> Order karo aaj aur paao <b>FREE Neoprene Grip Gloves</b> gift ke saath!
+      </div>
+      <button class="offer-cta" onclick="closeOfferAndOrder()">🛒 Haan! Mujhe Yeh Offer Chahiye</button>
+      <button class="offer-skip" onclick="closeOffer()">Nahi, mujhe discount nahi chahiye</button>
+    </div>
+  </div>
+</div>
+
+<div class="float-offer" id="floatOffer" onclick="openOffer()">🎁 Special Offer!</div>
 
 <div class="announce">🚚 FREE Shipping<span>|</span>💵 COD Available<span>|</span>⚡ Limited Stock!</div>
 
@@ -196,23 +265,23 @@ footer p{color:#555;font-size:12px;font-weight:600}
 
 <div class="urgency">
   <span class="live-dot"></span>
-  <span><b id="liveCount">24</b> लोग अभी देख रहे हैं</span>
+  <span><b id="liveCount">24</b> log abhi dekh rahe hain</span>
   <span style="opacity:.4">|</span>
-  <span>⚡ सिर्फ <b id="stockLeft">7</b> pieces बचे हैं!</span>
+  <span>⚡ Sirf <b id="stockLeft">7</b> pieces bache hain!</span>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-top-badge" id="heroBadge">🏆 India's #1 Slimming Belt</div>
   <h1 id="heroTitle">Sweat Belt Pro<br><span>Advanced Slimming Belt</span></h1>
-  <div class="hero-hindi">पेट कम करो, आत्मविश्वास बढ़ाओ</div>
-  <div class="hero-en">Reduce belly fat · Boost your confidence</div>
+  <div class="hero-hindi">Pet kam karo, confidence badhao! 💪</div>
+  <div class="hero-en">Reduce belly fat fast · Feel confident every day</div>
   <div class="social-proof">
     <div class="sp-faces">
       <div class="sp-face">P</div><div class="sp-face">R</div>
       <div class="sp-face">A</div><div class="sp-face">S</div>
     </div>
-    <div class="sp-txt"><b>4,200+</b> happy customers this month ⭐⭐⭐⭐⭐</div>
+    <div class="sp-txt"><b>4,200+</b> khush customers is mahine ⭐⭐⭐⭐⭐</div>
   </div>
 
   <!-- IMAGE SWIPER -->
@@ -233,8 +302,8 @@ footer p{color:#555;font-size:12px;font-weight:600}
   </div>
 
   <div class="hero-cta">
-    <button class="hero-btn" onclick="openModal()">🛒 अभी Order करें — COD</button>
-    <div class="cod-tag">🔒 Advance payment नहीं · Delivery पर cash दें</div>
+    <button class="hero-btn" onclick="openModal()">🛒 Abhi Order Karo — COD Free!</button>
+    <div class="cod-tag">🔒 Advance payment nahi · Delivery pe cash dena · Bilkul Free!</div>
   </div>
   <div class="trust-row">
     <span class="tbadge">💵 Cash on Delivery</span>
@@ -244,28 +313,27 @@ footer p{color:#555;font-size:12px;font-weight:600}
   </div>
 </section>
 
-<!-- BENEFITS -->
 <section class="benefits-section">
-  <h2 class="section-title">क्यों चुनें <span class="orange">Sweat Belt Pro?</span></h2>
-  <p class="section-sub">6 powerful benefits जो इसे India का favourite बनाते हैं</p>
+  <h2 class="section-title">Kyun Choose Karein <span class="orange">Sweat Belt Pro?</span></h2>
+  <p class="section-sub">6 powerful benefits jo isse India ka favourite banate hain 🔥</p>
   <div class="ben-grid" id="benGrid">
-    <div class="ben-card"><div class="ben-icon">🔥</div><div class="ben-title">Burns Belly Fat & Reduces Waist Inches</div></div>
-    <div class="ben-card"><div class="ben-icon">💧</div><div class="ben-title">Boosts Core Sweating for Faster Results</div></div>
-    <div class="ben-card"><div class="ben-icon">🦴</div><div class="ben-title">Supports Lower Back & Corrects Posture</div></div>
-    <div class="ben-card"><div class="ben-icon">😌</div><div class="ben-title">Premium Neoprene — Ultra Comfortable</div></div>
-    <div class="ben-card"><div class="ben-icon">🏃</div><div class="ben-title">Wear During Workout, Walk or Daily Use</div></div>
-    <div class="ben-card"><div class="ben-icon">📈</div><div class="ben-title">Visible Results in Just 2–4 Weeks</div></div>
+    <div class="ben-card"><div class="ben-icon">🔥</div><div class="ben-title">Pet ki Charbi Jalaata Hai & Waist Inches Ghatata Hai</div></div>
+    <div class="ben-card"><div class="ben-icon">💧</div><div class="ben-title">Core Sweating Badhata Hai — Faster Results!</div></div>
+    <div class="ben-card"><div class="ben-icon">🦴</div><div class="ben-title">Kamar Dard Mein Relief & Posture Bilkul Seedha</div></div>
+    <div class="ben-card"><div class="ben-icon">😌</div><div class="ben-title">Premium Neoprene — Skin Ko Lagta Hi Nahi!</div></div>
+    <div class="ben-card"><div class="ben-icon">🏃</div><div class="ben-title">Gym, Walk Ya Ghar Mein — Kahin Bhi Pehno</div></div>
+    <div class="ben-card"><div class="ben-icon">📈</div><div class="ben-title">Sirf 2–4 Weeks Mein Visible Fark Dikhega!</div></div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how-section">
-  <h2 class="section-title">कैसे <span class="orange">इस्तेमाल करें?</span></h2>
-  <p class="section-sub">3 आसान steps में शुरू करें अपना transformation</p>
+  <h2 class="section-title">Kaise <span class="orange">Use Karein?</span></h2>
+  <p class="section-sub">3 aasaan steps mein shuru karo apna transformation 💪</p>
   <div class="steps-row">
-    <div class="step"><div class="step-num">1</div><div class="step-ico">📦</div><h3>Unbox & Adjust</h3><p>Box खोलें और velcro straps को अपनी waist size के अनुसार adjust करें।</p></div>
-    <div class="step"><div class="step-num">2</div><div class="step-ico">🎯</div><h3>Wrap & Wear</h3><p id="howToUseText">पेट/कमर के आसपास tight wrap करें। Exercise या daily activities के दौरान 45–60 min पहनें।</p></div>
-    <div class="step"><div class="step-num">3</div><div class="step-ico">✨</div><h3>See Results</h3><p>रोज़ regular use करें। 2–4 weeks में waist पतली और पेट कम होते देखें!</p></div>
+    <div class="step"><div class="step-num">1</div><div class="step-ico">📦</div><h3>Unbox & Adjust Karo</h3><p>Box kholo aur velcro straps ko apni waist size ke hisaab se adjust karo — ekdum simple hai!</p></div>
+    <div class="step"><div class="step-num">2</div><div class="step-ico">🎯</div><h3>Wrap & Pehno</h3><p id="howToUseText">Pet/kamar ke around tight wrap karo. Exercise ya daily activities ke dauran 45–60 min pehno aur pasina bahaao!</p></div>
+    <div class="step"><div class="step-num">3</div><div class="step-ico">✨</div><h3>Results Dekho!</h3><p>Roz regular use karo. 2–4 weeks mein waist patli aur pet clearly kam hote dekho — guaranteed!</p></div>
   </div>
 </section>
 
@@ -288,12 +356,57 @@ footer p{color:#555;font-size:12px;font-weight:600}
 
 <!-- REVIEWS -->
 <section class="reviews-section">
-  <h2 class="section-title">Customers का <span class="orange">क्या कहना है?</span></h2>
-  <p class="section-sub">Real results — Real people across India</p>
-  <div class="rev-grid">
-    <div class="rev-card"><div class="rev-hd"><div class="rev-av">P</div><div><div class="rev-name">Priya Sharma</div><div class="rev-loc">📍 Mumbai, Maharashtra</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"3 हफ्ते में 2 इंच कम हुआ! रोज़ वर्कआउट के साथ पहनती हूँ, पसीना बहुत आता है। बहुत खुश हूँ। Highly recommended!"</p><div class="verified">✅ Verified Purchase · 3 weeks ago</div></div>
-    <div class="rev-card"><div class="rev-hd"><div class="rev-av">R</div><div><div class="rev-name">Rahul Verma</div><div class="rev-loc">📍 Delhi, NCR</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"Amazing product! 1 month में almost 3 inches loss हुआ waist से। Quality excellent है और very comfortable है पहनना। Worth every rupee!"</p><div class="verified">✅ Verified Purchase · 1 month ago</div></div>
-    <div class="rev-card"><div class="rev-hd"><div class="rev-av">A</div><div><div class="rev-name">Anjali Patel</div><div class="rev-loc">📍 Ahmedabad, Gujarat</div></div></div><div class="stars">★★★★☆</div><p class="rev-txt">"Belt की quality बहुत अच्छी है। पीठ दर्द में भी relief मिला। 4 weeks में पेट visible कम हुआ। COD से order किया — smooth delivery!"</p><div class="verified">✅ Verified Purchase · 2 weeks ago</div></div>
+  <h2 class="section-title">Real Customers ka <span class="orange">Dil Se Review!</span></h2>
+  <p class="section-sub">Inke results dekho — phir decide karo! India bhar ke satisfied customers 🙏</p>
+  <div class="rev-grid" id="testimonialsContainer">
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">P</div><div><div class="rev-name">Priya Sharma</div><div class="rev-loc">📍 Mumbai, Maharashtra</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"3 hafte mein 2 inch kam hua! Roz workout ke saath pehnti hoon, pasina bahut aata hai. Yaar itna zyada fark padega socha nahi tha — ab main recommend karti hoon sab ko!"</p><div class="verified">✅ Verified Purchase · 3 weeks ago</div></div>
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">R</div><div><div class="rev-name">Rahul Verma</div><div class="rev-loc">📍 Delhi, NCR</div></div></div><div class="stars">★★★★★</div><p class="rev-txt">"Bhai ek mahine mein almost 3 inches loss hua waist se! Quality ekdum mast hai aur bahut comfortable hai. COD se liya tha, koi risk nahi. Worth every rupee!"</p><div class="verified">✅ Verified Purchase · 1 month ago</div></div>
+    <div class="rev-card"><div class="rev-hd"><div class="rev-av">A</div><div><div class="rev-name">Anjali Patel</div><div class="rev-loc">📍 Ahmedabad, Gujarat</div></div></div><div class="stars">★★★★☆</div><p class="rev-txt">"Belt ki quality top-notch hai. Peeth dard mein bhi relief mila — yeh to expect hi nahi tha! 4 weeks mein pet clearly kam hua. Smooth delivery COD se."</p><div class="verified">✅ Verified Purchase · 2 weeks ago</div></div>
+  </div>
+</section>
+
+<!-- VIDEO TESTIMONIALS -->
+<section class="vid-test-section">
+  <h2 class="section-title" style="color:#fff">Video Reviews — <span class="orange">Dekhke Mano!</span></h2>
+  <p class="section-sub">Real customers, real results — koi script nahi, seedha dil se!</p>
+  <div class="vid-grid" id="videoTestimonialsContainer">
+    <!-- Static default video testimonials -->
+    <div class="vid-card" onclick="playVid(this)">
+      <div class="vid-thumb">
+        <video src="" poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=500&fit=crop" preload="none" loop playsinline></video>
+        <div class="vid-play-btn"><div class="vid-play-ico">▶</div></div>
+      </div>
+      <div class="vid-info">
+        <div class="vid-name">Sunita Mehra</div>
+        <div class="vid-loc">📍 Jaipur, Rajasthan</div>
+        <div class="vid-stars">★★★★★</div>
+        <div class="vid-quote">"2 mahine mein 4 inch less! Yeh kya hua yaar! 😱"</div>
+      </div>
+    </div>
+    <div class="vid-card" onclick="playVid(this)">
+      <div class="vid-thumb">
+        <video src="" poster="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=500&fit=crop" preload="none" loop playsinline></video>
+        <div class="vid-play-btn"><div class="vid-play-ico">▶</div></div>
+      </div>
+      <div class="vid-info">
+        <div class="vid-name">Manish Gupta</div>
+        <div class="vid-loc">📍 Pune, Maharashtra</div>
+        <div class="vid-stars">★★★★★</div>
+        <div class="vid-quote">"Gym ke saath pehna — results double ho gaye bhai!"</div>
+      </div>
+    </div>
+    <div class="vid-card" onclick="playVid(this)">
+      <div class="vid-thumb">
+        <video src="" poster="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=300&h=500&fit=crop" preload="none" loop playsinline></video>
+        <div class="vid-play-btn"><div class="vid-play-ico">▶</div></div>
+      </div>
+      <div class="vid-info">
+        <div class="vid-name">Deepika Singh</div>
+        <div class="vid-loc">📍 Lucknow, UP</div>
+        <div class="vid-stars">★★★★★</div>
+        <div class="vid-quote">"COD pe mangaaya, risk zero tha — aur results amazing nikle!"</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -310,14 +423,14 @@ footer p{color:#555;font-size:12px;font-weight:600}
 
 <!-- FAQ -->
 <section class="faq-section">
-  <h2 class="section-title">अक्सर पूछे जाने वाले <span class="orange">सवाल</span></h2>
-  <p class="section-sub">Order करने से पहले जानें सब कुछ</p>
+  <h2 class="section-title">Aksar Pooche Jaane Waale <span class="orange">Sawaal</span></h2>
+  <p class="section-sub">Order karne se pehle sab kuch jan lo — no confusion!</p>
   <div class="faq-list">
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">क्या यह belt safe है?<span class="faq-tog">+</span></div><div class="faq-a">हाँ, 100% safe है। Premium neoprene से बना है जो skin-friendly है। रोज़ 45–60 minutes तक पहनें। कोई side effect नहीं है।</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">कितने समय में results दिखेंगे?<span class="faq-tog">+</span></div><div class="faq-a">Regular use और proper diet के साथ 2–4 weeks में visible results। Best results के लिए daily workout के साथ use करें।</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">क्या COD (Cash on Delivery) available है?<span class="faq-tog">+</span></div><div class="faq-a">हाँ! पूरे India में COD available है। Order करें, delivery पर cash दें — कोई advance payment नहीं।</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Delivery कितने दिन में होगी?<span class="faq-tog">+</span></div><div class="faq-a">4–7 business days में delivery। Metro cities में 3–5 days। हम पूरे India में deliver करते हैं।</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">मेरा size क्या होगा?<span class="faq-tog">+</span></div><div class="faq-a">अपनी waist measure करें: 26-30" = S, 30-34" = M, 34-38" = L, 38-44" = XL। Belt adjustable velcro के साथ आती है इसलिए एक size ऊपर-नीचे भी work करता है।</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Kya yeh belt safe hai?<span class="faq-tog">+</span></div><div class="faq-a">Haan, 100% safe hai bhai! Premium neoprene se bana hai jo skin-friendly hai. Roz 45–60 minutes pehno. Koi side effect nahi — lakho Indians use kar rahe hain!</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Kitne time mein results dikhenge?<span class="faq-tog">+</span></div><div class="faq-a">Regular use aur sahi diet ke saath 2–4 weeks mein visible results. Best results ke liye daily workout ke saath use karo — results double ho jaate hain!</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Kya COD (Cash on Delivery) available hai?<span class="faq-tog">+</span></div><div class="faq-a">Bilkul haan! Pure India mein COD available hai. Order karo, delivery pe cash do — koi advance payment nahi, zero risk!</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Delivery kitne din mein hogi?<span class="faq-tog">+</span></div><div class="faq-a">4–7 business days mein delivery. Metro cities mein 3–5 days. Hum pure India mein deliver karte hain — chahe kahaan bhi ho!</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Mera size kya hoga?<span class="faq-tog">+</span></div><div class="faq-a">Apni waist measure karo: 26-30" = S, 30-34" = M, 34-38" = L, 38-44" = XL. Belt adjustable velcro ke saath aati hai isliye ek size upar-neeche bhi kaam karta hai!</div></div>
   </div>
 </section>
 
@@ -348,11 +461,11 @@ footer p{color:#555;font-size:12px;font-weight:600}
     <div id="formView">
       <div class="modal-hd">
         <div>
-          <h2>🛒 Order करें — COD</h2>
+          <h2>🛒 Order Karo — COD</h2>
         </div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
-      <div class="modal-hd-sub">Delivery पर cash payment करें · Free shipping · 4–7 days delivery</div>
+      <div class="modal-hd-sub">Delivery pe cash payment karo · Free shipping · 4–7 days delivery</div>
 
       <!-- QTY + SIZE first (most important) -->
       <div class="qs-row">
@@ -385,7 +498,7 @@ footer p{color:#555;font-size:12px;font-weight:600}
 
       <div class="fg">
         <label class="fl">Full Name <span class="req">*</span></label>
-        <input class="fi" id="f_name" type="text" placeholder="अपना पूरा नाम लिखें"/>
+        <input class="fi" id="f_name" type="text" placeholder="Apna poora naam likho"/>
       </div>
       <div class="fg">
         <label class="fl">Phone Number <span class="req">*</span></label>
@@ -410,35 +523,32 @@ footer p{color:#555;font-size:12px;font-weight:600}
       </div>
       <div class="fg">
         <label class="fl">Full Address <span class="req">*</span></label>
-        <input class="fi" id="f_address" type="text" placeholder="घर नंबर, गली, मोहल्ला, इलाका"/>
+        <input class="fi" id="f_address" type="text" placeholder="Ghar number, gali, mohalla, ilaaka"/>
       </div>
-      <div class="fg">
-        <label class="fl">Landmark <span class="opt">(optional — आस पास की जगह)</span></label>
-        <input class="fi" id="f_landmark" type="text" placeholder="जैसे: पास में मंदिर, स्कूल, बैंक..."/>
-      </div>
+      <input type="hidden" id="f_landmark" value=""/>
 
       <button class="sub-btn" id="submitBtn" onclick="submitOrder()">
-        🚀 Confirm Order — Pay on Delivery
+        🚀 Order Confirm Karo — Delivery Pe Pay Karo
       </button>
-      <div class="sub-note">🔒 आपकी जानकारी 100% safe है · No spam calls</div>
+      <div class="sub-note">🔒 Aapki info 100% safe hai · No spam calls</div>
     </div>
 
     <!-- SUCCESS VIEW -->
     <div id="successView" style="display:none">
       <div class="success-view">
         <div class="suc-ico">🎉</div>
-        <h2>Order Placed!</h2>
-        <div class="suc-hindi">बधाई हो! आपका ऑर्डर हो गया है 🙏</div>
+        <h2>Order Ho Gaya!</h2>
+        <div class="suc-hindi">Badhaai ho! Aapka order place ho gaya hai 🙏</div>
         <div class="oid-box">
           <div class="oid-lbl">Your Order ID</div>
           <div class="oid-val" id="sucOrderId">—</div>
         </div>
         <div class="suc-steps">
-          <div class="suc-step">📞 जल्द ही आपको call आएगा confirm करने के लिए</div>
-          <div class="suc-step">🚚 4–7 दिनों में delivery होगी</div>
-          <div class="suc-step">💵 Delivery पर cash payment करें</div>
+          <div class="suc-step">📞 Jald hi aapko call aayega confirm karne ke liye</div>
+          <div class="suc-step">🚚 4–7 dinon mein delivery hogi</div>
+          <div class="suc-step">💵 Delivery pe cash payment karo — bilkul safe!</div>
         </div>
-        <button class="suc-close" onclick="closeModal()">✓ Done — घर बैठे wait करें!</button>
+        <button class="suc-close" onclick="closeModal()">✓ Done — Ghar baithe wait karo!</button>
       </div>
     </div>
 
@@ -628,20 +738,142 @@ async function fetchPin(pin) {
   } catch(e) { document.getElementById('pinSt').textContent = '❌'; }
 }
 
-// ─── Validate ─────────────────────────────────────────────────────────────────
+// ─── OFFER POPUP ──────────────────────────────────────────────────────────────
+let offerShown = false;
+let offerTimerInterval = null;
+let offerSecondsLeft = 600; // 10 min
+
+function startOfferCountdown() {
+  offerTimerInterval = setInterval(() => {
+    offerSecondsLeft--;
+    if (offerSecondsLeft <= 0) { clearInterval(offerTimerInterval); closeOffer(); return; }
+    const m = Math.floor(offerSecondsLeft/60).toString().padStart(2,'0');
+    const s = (offerSecondsLeft%60).toString().padStart(2,'0');
+    const el = document.getElementById('offerCountdown');
+    if (el) el.textContent = m + ':' + s;
+  }, 1000);
+}
+
+function openOffer() {
+  document.getElementById('offerPopup').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  if (!offerTimerInterval) startOfferCountdown();
+}
+
+function closeOffer() {
+  document.getElementById('offerPopup').classList.remove('active');
+  document.body.style.overflow = '';
+  // Show float badge after dismissal
+  setTimeout(() => {
+    const fb = document.getElementById('floatOffer');
+    if (fb) fb.classList.add('show');
+  }, 2000);
+}
+
+function closeOfferAndOrder() {
+  closeOffer();
+  setTimeout(openModal, 300);
+}
+
+// Show popup after 8 seconds on first visit
+setTimeout(() => {
+  if (!offerShown && !sessionStorage.getItem('offer_seen')) {
+    offerShown = true;
+    sessionStorage.setItem('offer_seen', '1');
+    openOffer();
+  }
+}, 8000);
+
+// ─── VIDEO TESTIMONIALS ───────────────────────────────────────────────────────
+function playVid(card) {
+  const video = card.querySelector('video');
+  const overlay = card.querySelector('.vid-play-btn');
+  if (!video.src || video.src === window.location.href) {
+    // No video src — show toast
+    showToast('📹 Video loading...');
+    return;
+  }
+  if (video.paused) {
+    // Pause all others
+    document.querySelectorAll('.vid-card video').forEach(v => { if (v !== video) { v.pause(); v.closest('.vid-card').querySelector('.vid-play-btn').style.display = 'flex'; }});
+    video.play();
+    overlay.style.display = 'none';
+  } else {
+    video.pause();
+    overlay.style.display = 'flex';
+  }
+}
+
+// ─── VALIDATE (Hinglish) ──────────────────────────────────────────────────────
 function validate() {
   const name = document.getElementById('f_name').value.trim();
   const phone = document.getElementById('f_phone').value.trim();
   const pincode = document.getElementById('f_pincode').value.trim();
   const address = document.getElementById('f_address').value.trim();
-  if (!name)                    { showToast('⚠️ कृपया अपना नाम लिखें'); document.getElementById('f_name').focus(); return false; }
-  if (!/^\d{10}$/.test(phone))  { showToast('⚠️ 10-digit phone number दर्ज करें'); document.getElementById('f_phone').focus(); return false; }
-  if (!/^\d{6}$/.test(pincode)) { showToast('⚠️ 6-digit pincode दर्ज करें'); document.getElementById('f_pincode').focus(); return false; }
-  if (!address)                 { showToast('⚠️ कृपया पूरा address लिखें'); document.getElementById('f_address').focus(); return false; }
+  if (!name)                    { showToast('⚠️ Kripya apna naam likho'); document.getElementById('f_name').focus(); return false; }
+  if (!/^\d{10}$/.test(phone))  { showToast('⚠️ 10-digit phone number daalo'); document.getElementById('f_phone').focus(); return false; }
+  if (!/^\d{6}$/.test(pincode)) { showToast('⚠️ 6-digit pincode daalo'); document.getElementById('f_pincode').focus(); return false; }
+  if (!address)                 { showToast('⚠️ Kripya poora address likho'); document.getElementById('f_address').focus(); return false; }
   return true;
 }
 
-// ─── Submit (DOUBLE ORDER FIX) ────────────────────────────────────────────────
+// ─── LOAD TESTIMONIALS FROM API ───────────────────────────────────────────────
+async function loadTestimonials() {
+  try {
+    const r = await fetch(API_BASE + '/api/testimonials');
+    const d = await r.json();
+    if (d.success && d.testimonials && d.testimonials.length) {
+      renderTextTestimonials(d.testimonials.filter(t => !t.videoUrl));
+      renderVideoTestimonials(d.testimonials.filter(t => t.videoUrl));
+    }
+  } catch(e) {}
+}
+
+function renderTextTestimonials(list) {
+  if (!list.length) return;
+  const container = document.getElementById('testimonialsContainer');
+  if (!container) return;
+  container.innerHTML = list.map(t => `
+    <div class="rev-card">
+      <div class="rev-hd">
+        <div class="rev-av">${(t.name||'?')[0].toUpperCase()}</div>
+        <div>
+          <div class="rev-name">${t.name||'Customer'}</div>
+          <div class="rev-loc">📍 ${t.location||'India'}</div>
+        </div>
+      </div>
+      <div class="stars">${'★'.repeat(t.rating||5)}${'☆'.repeat(5-(t.rating||5))}</div>
+      <p class="rev-txt">"${t.review||''}"</p>
+      <div class="verified">✅ Verified Purchase</div>
+    </div>
+  `).join('');
+}
+
+function renderVideoTestimonials(list) {
+  if (!list.length) return;
+  const container = document.getElementById('videoTestimonialsContainer');
+  if (!container) return;
+  container.innerHTML = list.map(t => `
+    <div class="vid-card" onclick="playVid(this)">
+      <div class="vid-thumb">
+        <video src="${t.videoUrl||''}" poster="${t.thumbnail||''}" preload="none" loop playsinline></video>
+        <div class="vid-play-btn"><div class="vid-play-ico">▶</div></div>
+      </div>
+      <div class="vid-info">
+        <div class="vid-name">${t.name||'Customer'}</div>
+        <div class="vid-loc">📍 ${t.location||'India'}</div>
+        <div class="vid-stars">${'★'.repeat(t.rating||5)}</div>
+        <div class="vid-quote">"${t.review||''}"</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+loadMeta();
+loadProduct();
+loadTestimonials();
+animateViewers();
 async function submitOrder() {
   if (isSubmitting) return; // ← PREVENT DOUBLE SUBMIT
   if (!validate()) return;

@@ -282,6 +282,44 @@ textarea.finput{min-height:72px;resize:vertical}
 .empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;font-weight:700}
 .empty span{display:block;font-size:36px;margin-bottom:8px}
 
+/* TESTIMONIAL CARDS */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:18px}
+.test-card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:4px solid var(--orange)}
+.test-card-vid{border-left-color:#8b5cf6}
+.test-meta{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.test-av{width:40px;height:40px;background:var(--orange);color:#fff;border-radius:50%;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.test-av-vid{background:#8b5cf6}
+.test-name{font-size:13px;font-weight:800}
+.test-loc{font-size:11px;color:var(--muted);font-weight:600}
+.test-stars{color:#f59e0b;font-size:12px;margin-bottom:5px}
+.test-review{font-size:12px;color:#555;line-height:1.6;margin-bottom:8px}
+.test-vid-tag{font-size:10px;font-weight:800;color:#8b5cf6;background:#f5f3ff;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px}
+.test-thumb{width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;cursor:pointer}
+.test-acts{display:flex;gap:8px}
+
+/* ORDERS SUB-TABS */
+.orders-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border)}
+.order-tab-btn{padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Nunito',sans-serif;transition:all .2s}
+.order-tab-btn.active{color:var(--orange);border-bottom-color:var(--orange)}
+.order-tab-btn:hover{color:var(--orange)}
+
+/* AVG ORDER TIME CARD */
+.avg-time-card{background:linear-gradient(135deg,#fff7ed,#fff);border:2px solid #fed7aa;border-radius:14px;padding:16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.avg-time-info h3{font-size:14px;font-weight:900;margin-bottom:3px}
+.avg-time-info p{font-size:11px;color:var(--muted);font-weight:600}
+.avg-time-val{font-size:28px;font-weight:900;color:var(--orange)}
+.avg-time-sub{font-size:11px;color:var(--muted);font-weight:600}
+
+/* AUTOREFRESH BUTTON */
+.autorefresh-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;border:2px solid var(--border);background:#fff;color:var(--muted);font-family:'Nunito',sans-serif;transition:all .2s}
+.autorefresh-btn.active{border-color:#22c55e;color:#16a34a;background:#f0fdf4}
+.autorefresh-btn .spin{display:none}
+.autorefresh-btn.active .spin{display:inline-block;animation:spin360 1s linear infinite}
+@keyframes spin360{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* TESTIMONIAL MODAL */
+.test-form-section{margin-bottom:16px}
+
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
   .main{margin-left:0}.hamburger{display:block}
@@ -310,9 +348,11 @@ textarea.finput{min-height:72px;resize:vertical}
     <nav class="sb-nav">
       <div class="nav-item active" onclick="showTab('dashboard')"><span class="nav-ico">📊</span>Dashboard</div>
       <div class="nav-item" onclick="showTab('orders')"><span class="nav-ico">📦</span>Orders</div>
+      <div class="nav-item" onclick="showTab('shipped')"><span class="nav-ico">🚚</span>Shipped Orders</div>
       <div class="nav-item" onclick="showTab('products')"><span class="nav-ico">🛍️</span>Products</div>
+      <div class="nav-item" onclick="showTab('testimonials')"><span class="nav-ico">⭐</span>Testimonials</div>
       <div class="nav-item" onclick="showTab('settings')"><span class="nav-ico">⚙️</span>Settings</div>
-      <div class="nav-item" onclick="showTab('selloship')"><span class="nav-ico">🚚</span>Selloship</div>
+      <div class="nav-item" onclick="showTab('selloship')"><span class="nav-ico">📬</span>Selloship</div>
     </nav>
     <div class="sb-foot"><button class="lout-btn" onclick="doLogout()">🚪 Logout</button></div>
   </aside>
@@ -372,9 +412,15 @@ textarea.finput{min-height:72px;resize:vertical}
         <div class="insights-grid">
           <div class="ins-card">
             <div class="ins-ico">⏱️</div>
-            <div class="ins-lbl">Avg Order Time</div>
+            <div class="ins-lbl">Avg Between Orders</div>
             <div class="ins-val" id="ins-avgtime">—</div>
-            <div class="ins-sub">peak hour of day</div>
+            <div class="ins-sub" id="ins-avgtime-sub">avg gap between orders</div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-ico">🕛</div>
+            <div class="ins-lbl">Peak Order Hour</div>
+            <div class="ins-val" id="ins-peakhour">—</div>
+            <div class="ins-sub" id="ins-peakhour-sub">busiest hour of day</div>
           </div>
           <div class="ins-card">
             <div class="ins-ico">🌙</div>
@@ -407,10 +453,18 @@ textarea.finput{min-height:72px;resize:vertical}
       <!-- ORDERS -->
       <div id="tab-orders" style="display:none">
         <div class="sec-hdr"><h2>All Orders</h2>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button class="autorefresh-btn" id="autoRefreshBtn" onclick="toggleAutoRefresh()">
+              <span class="spin">🔄</span><span class="ar-ico">🔄</span> Auto Refresh
+            </button>
             <button class="btn btn-out btn-sm" onclick="filterPM()">🌙 After 12PM</button>
-            <button class="btn btn-orange" onclick="exportCsv()">⬇️ Export CSV</button>
+            <button class="btn btn-orange" onclick="exportCsvCurrentPage()">⬇️ Export CSV (This Page)</button>
           </div>
+        </div>
+        <!-- Orders sub-tabs -->
+        <div class="orders-tabs">
+          <button class="order-tab-btn active" id="otab-active" onclick="switchOrderTab('active')">📦 Active Orders <span id="badge-active" style="background:var(--orange);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
+          <button class="order-tab-btn" id="otab-shipped" onclick="switchOrderTab('shipped')">🚚 Shipped <span id="badge-shipped" style="background:#f59e0b;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
         </div>
         <div class="filters">
           <input class="fi" id="srchInput" placeholder="🔍 Name, phone or #..." oninput="renderOrders()"/>
@@ -418,7 +472,6 @@ textarea.finput{min-height:72px;resize:vertical}
             <option value="">All Status</option>
             <option value="new">New</option>
             <option value="confirmed">Confirmed</option>
-            <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
           </select>
@@ -438,7 +491,29 @@ textarea.finput{min-height:72px;resize:vertical}
         </div>
         <div class="card"><div class="tbl-wrap">
           <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
-          <tbody id="ordersBody"><tr><td colspan="10"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
+          <tbody id="ordersBody"><tr><td colspan="11"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
+        </div></div>
+        <div id="paginationRow" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap"></div>
+      </div>
+
+      <!-- SHIPPED ORDERS TAB -->
+      <div id="tab-shipped" style="display:none">
+        <div class="sec-hdr"><h2>🚚 Shipped Orders</h2>
+          <button class="btn btn-orange" onclick="exportCsvCurrentPage('shipped')">⬇️ Export CSV (Shipped)</button>
+        </div>
+        <div class="filters">
+          <input class="fi" id="srchShipped" placeholder="🔍 Name, phone..." oninput="renderShipped()"/>
+        </div>
+        <div class="date-filter-row">
+          <label>📅 From:</label>
+          <input class="fi" type="date" id="shippedDateFrom" style="width:auto;padding:7px 10px" onchange="renderShipped()"/>
+          <label>To:</label>
+          <input class="fi" type="date" id="shippedDateTo" style="width:auto;padding:7px 10px" onchange="renderShipped()"/>
+          <button class="btn btn-out btn-sm" onclick="document.getElementById('shippedDateFrom').value='';document.getElementById('shippedDateTo').value='';renderShipped()">✕ Clear</button>
+        </div>
+        <div class="card"><div class="tbl-wrap">
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Address</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Shipped On</th><th>Actions</th></tr></thead>
+          <tbody id="shippedBody"><tr><td colspan="11"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
         </div></div>
       </div>
 
@@ -446,6 +521,17 @@ textarea.finput{min-height:72px;resize:vertical}
       <div id="tab-products" style="display:none">
         <div class="sec-hdr"><h2>Products</h2><button class="btn btn-orange" onclick="openProdModal()">+ Add Product</button></div>
         <div class="prod-grid" id="prodGrid"><div class="empty"><span>⏳</span>Loading...</div></div>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div id="tab-testimonials" style="display:none">
+        <div class="sec-hdr">
+          <h2>⭐ Testimonials</h2>
+          <button class="btn btn-orange" onclick="openTestimonialModal()">+ Add Testimonial</button>
+        </div>
+        <div class="test-grid" id="testGrid">
+          <div class="empty"><span>⏳</span>Loading...</div>
+        </div>
       </div>
 
       <!-- SETTINGS -->
@@ -483,10 +569,6 @@ textarea.finput{min-height:72px;resize:vertical}
           <div class="junk-result" id="junkResult"></div>
         </div>
       </div>
-
-    </div>
-  </main>
-</div>
 
       <!-- SELLOSHIP -->
       <div id="tab-selloship" style="display:none">
@@ -564,6 +646,9 @@ textarea.finput{min-height:72px;resize:vertical}
         </div>
       </div>
 
+    </div><!-- end .content -->
+  </main><!-- end .main -->
+</div><!-- end .app -->
 
 <!-- PRODUCT MODAL -->
 <div class="m-overlay" id="prodModal" onclick="prodOverlay(event)">
@@ -635,7 +720,7 @@ document.getElementById('lPass').addEventListener('keydown',e=>{ if(e.key==='Ent
 function doLogout(){ sessionStorage.removeItem('sb_token'); document.getElementById('loginPage').style.display='flex'; document.getElementById('appLayout').classList.remove('active'); }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); startLiveVisitors(); startAutoRefresh(); document.getElementById('ddf-all').classList.add('active'); }
+function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); loadTestimonials(); startLiveVisitors(); startAutoRefresh(); document.getElementById('ddf-all').classList.add('active'); }
 
 // ─── LIVE VISITORS (Real API) ─────────────────────────────────────────────────
 async function fetchLiveVisitors() {
@@ -664,20 +749,58 @@ function updateLiveDisplay() {
   ).join('');
 }
 
-// ─── AUTO REFRESH STATS ───────────────────────────────────────────────────────
-function startAutoRefresh(){ setInterval(()=>{ loadStats(); loadOrders(); }, 60000); }
+// ─── AUTO REFRESH STATS (10s, toggleable) ─────────────────────────────────────
+let autoRefreshInterval = null;
+let autoRefreshActive = false;
+
+function startAutoRefresh() {
+  // Start ON by default
+  enableAutoRefresh();
+}
+
+function enableAutoRefresh() {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = setInterval(() => { loadStats(); loadOrders(); }, 10000);
+  autoRefreshActive = true;
+  const btn = document.getElementById('autoRefreshBtn');
+  if (btn) { btn.classList.add('active'); btn.querySelector('.ar-ico').textContent = '🔄'; }
+}
+
+function disableAutoRefresh() {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = null;
+  autoRefreshActive = false;
+  const btn = document.getElementById('autoRefreshBtn');
+  if (btn) { btn.classList.remove('active'); btn.querySelector('.ar-ico').textContent = '🔄'; }
+}
+
+function toggleAutoRefresh() {
+  if (autoRefreshActive) {
+    disableAutoRefresh();
+    toast('Auto-refresh OFF', '');
+  } else {
+    enableAutoRefresh();
+    toast('Auto-refresh ON — every 10 seconds', 'success');
+  }
+}
 
 // ─── SIDEBAR ──────────────────────────────────────────────────────────────────
 function toggleSB(){ sbOpen=!sbOpen; document.getElementById('sidebar').classList.toggle('open',sbOpen); }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
-const tabTitles={dashboard:'Dashboard',orders:'Orders',products:'Products',settings:'Settings',selloship:'Selloship'};
+const tabTitles={dashboard:'Dashboard',orders:'Orders',shipped:'Shipped Orders',products:'Products',testimonials:'Testimonials',settings:'Settings',selloship:'Selloship'};
+const ALL_TABS=['dashboard','orders','shipped','products','testimonials','settings','selloship'];
 function showTab(name){
-  ['dashboard','orders','products','settings','selloship'].forEach(t=> document.getElementById('tab-'+t).style.display=t===name?'block':'none');
-  document.querySelectorAll('.nav-item').forEach((el,i)=> el.classList.toggle('active',['dashboard','orders','products','settings','selloship'][i]===name));
-  document.getElementById('topTitle').textContent=tabTitles[name];
+  ALL_TABS.forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el) el.style.display=t===name?'block':'none';
+  });
+  document.querySelectorAll('.nav-item').forEach((el,i)=> el.classList.toggle('active',ALL_TABS[i]===name));
+  document.getElementById('topTitle').textContent=tabTitles[name]||name;
   if(window.innerWidth<=768){ document.getElementById('sidebar').classList.remove('open'); sbOpen=false; }
   if(name==='selloship') renderSelloshipOrders();
+  if(name==='shipped') renderShipped();
+  if(name==='testimonials') renderTestimonials();
 }
 
 // ─── STATS ────────────────────────────────────────────────────────────────────
@@ -781,21 +904,39 @@ function computeInsights(orders) {
   const src = orders || allOrders;
   if (!src.length) return;
 
-  // ── Avg order time (peak hour) ──
+  // ── Avg time BETWEEN consecutive orders ──
+  const sorted = src.filter(o=>o.createdAt).map(o=>new Date(o.createdAt).getTime()).sort((a,b)=>a-b);
+  let avgIntervalStr = '—';
+  if (sorted.length >= 2) {
+    let totalGap = 0;
+    for (let i=1; i<sorted.length; i++) totalGap += sorted[i]-sorted[i-1];
+    const avgMs = totalGap/(sorted.length-1);
+    const avgMins = Math.round(avgMs/60000);
+    if (avgMins < 60) avgIntervalStr = avgMins + ' min';
+    else if (avgMins < 1440) avgIntervalStr = Math.round(avgMins/60) + ' hr';
+    else avgIntervalStr = Math.round(avgMins/1440) + ' days';
+  }
+  document.getElementById('ins-avgtime').textContent = avgIntervalStr;
+  const atSub = document.getElementById('ins-avgtime-sub');
+  if (atSub) atSub.textContent = 'avg gap between ' + src.length + ' orders';
+
+  // ── Peak order hour ──
   const hourCounts = Array(24).fill(0);
   src.forEach(o => { if(o.createdAt) hourCounts[new Date(o.createdAt).getHours()]++; });
   const peakHour = hourCounts.indexOf(Math.max(...hourCounts));
   const ph12 = peakHour%12||12, phAmpm = peakHour>=12?'PM':'AM';
-  document.getElementById('ins-avgtime').textContent = `${ph12}${phAmpm}`;
-  document.getElementById('ins-avgtime').nextElementSibling && (document.querySelector('#ins-avgtime + .ins-sub').textContent = `peak: ${hourCounts[peakHour]} orders`);
+  const phEl = document.getElementById('ins-peakhour');
+  if (phEl) { phEl.textContent = ph12+':00 '+phAmpm; }
+  const phSub = document.getElementById('ins-peakhour-sub');
+  if (phSub) phSub.textContent = hourCounts[peakHour] + ' orders at peak';
 
   // ── After 12PM orders ──
   const pmOrders = src.filter(o => isAfterNoon(o.createdAt));
   const pmPct = src.length ? Math.round(pmOrders.length/src.length*100) : 0;
   document.getElementById('ins-pm').textContent = pmOrders.length;
-  document.getElementById('ins-pm-pct').textContent = `${pmPct}% of filtered orders`;
+  document.getElementById('ins-pm-pct').textContent = pmPct + '% of filtered orders';
 
-  // ── Conversion rate (orders ÷ visitors, using last known visitor count) ──
+  // ── Conversion rate ──
   const visCount = liveVisitorCount || 1;
   const todayOrders = src.filter(o => {
     if (!o.createdAt) return false;
@@ -815,7 +956,7 @@ function computeInsights(orders) {
 async function loadOrders(){
   try{
     const r=await fetch(API+'/api/orders'); const d=await r.json();
-    if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderLatest(); checkDuplicates(); updateDashboardStats(); }
+    if(d.success){ checkNewOrders(d.orders); allOrders=d.orders; renderOrders(); renderShipped(); renderLatest(); checkDuplicates(); updateDashboardStats(); }
   }catch(e){}
 }
 // ─── ADDRESS SCORE ────────────────────────────────────────────────────────────
@@ -890,6 +1031,27 @@ function renderLatest(){
   }).join('');
 }
 
+// ─── ORDERS SUB-TAB STATE ─────────────────────────────────────────────────────
+let currentOrderSubTab = 'active'; // 'active' or 'shipped'
+let currentPage = 1;
+const PAGE_SIZE = 50;
+let currentPageOrders = []; // orders currently visible on screen
+
+function switchOrderTab(tab) {
+  currentOrderSubTab = tab;
+  currentPage = 1;
+  document.getElementById('otab-active').classList.toggle('active', tab==='active');
+  document.getElementById('otab-shipped').classList.toggle('active', tab==='shipped');
+  // Update status filter options
+  const stF = document.getElementById('stFilter');
+  if (tab === 'active') {
+    stF.innerHTML = `<option value="">All Status</option><option value="new">New</option><option value="confirmed">Confirmed</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option>`;
+  } else {
+    stF.innerHTML = `<option value="">All Shipped</option><option value="shipped">Shipped</option>`;
+  }
+  renderOrders();
+}
+
 function renderOrders(){
   const srch=document.getElementById('srchInput').value.toLowerCase();
   const stF=document.getElementById('stFilter').value;
@@ -897,11 +1059,18 @@ function renderOrders(){
   const dateTo=document.getElementById('dateTo').value;
   const phoneCounts={};
   allOrders.forEach(o=>{ if(o.phone) phoneCounts[o.phone]=(phoneCounts[o.phone]||0)+1; });
-  let filtered=allOrders.filter((o,idx)=>{
-    // search: name, phone, or order number
-    const ms=!srch||o.name?.toLowerCase().includes(srch)||o.phone?.includes(srch)||String(allOrders.length-idx)===srch.trim();
+
+  // Filter based on sub-tab
+  let pool = allOrders;
+  if (currentOrderSubTab === 'active') {
+    pool = allOrders.filter(o => o.status !== 'shipped');
+  } else {
+    pool = allOrders.filter(o => o.status === 'shipped');
+  }
+
+  let filtered=pool.filter((o,idx)=>{
+    const ms=!srch||o.name?.toLowerCase().includes(srch)||o.phone?.includes(srch)||String(pool.length-idx)===srch.trim();
     const mst=!stF||o.status===stF;
-    // date range
     let mdate=true;
     if(dateFrom||dateTo){
       const od=new Date(o.createdAt); od.setHours(0,0,0,0);
@@ -911,45 +1080,162 @@ function renderOrders(){
     const mpm=!pmFilter||isAfterNoon(o.createdAt);
     return ms&&mst&&mdate&&mpm;
   });
+
+  // Update badge counts
+  const activeCount = allOrders.filter(o=>o.status!=='shipped').length;
+  const shippedCount = allOrders.filter(o=>o.status==='shipped').length;
+  document.getElementById('badge-active').textContent = activeCount;
+  document.getElementById('badge-shipped').textContent = shippedCount;
+
+  // Pagination
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+  const paged = filtered.slice((currentPage-1)*PAGE_SIZE, currentPage*PAGE_SIZE);
+  currentPageOrders = paged; // save for CSV export
+
   const tb=document.getElementById('ordersBody');
-  if(!filtered.length){ tb.innerHTML='<tr><td colspan="11"><div class="empty"><span>📭</span>No orders found</div></td></tr>'; return; }
-  tb.innerHTML=filtered.map((o,i)=>{
+  if(!filtered.length){ tb.innerHTML='<tr><td colspan="11"><div class="empty"><span>📭</span>No orders found</div></td></tr>'; renderPagination(0,0); return; }
+
+  tb.innerHTML=paged.map((o,i)=>{
     const isDup=phoneCounts[o.phone]>1;
     const dupBadge=isDup?` <span class="badge" style="background:#fef2f2;color:#dc2626" title="${phoneCounts[o.phone]} orders from this number">⚠️ DUP×${phoneCounts[o.phone]}</span>`:'';
     const score=scoreAddress(o);
     const isPM=isAfterNoon(o.createdAt);
     const aiBtn=`<button class="btn-ai btn-sm" onclick="aiFixAddress('${o._id}')" title="AI fix address">🤖 Fix</button>`;
+    const statusOptions = currentOrderSubTab === 'active'
+      ? ['new','confirmed','shipped','delivered','cancelled']
+      : ['shipped','delivered'];
     return `<tr${isDup?' style="background:#fffafa"':''}>
-      <td style="font-size:11px;color:var(--muted);font-weight:700">#${allOrders.length-allOrders.indexOf(o)}</td>
+      <td style="font-size:11px;color:var(--muted);font-weight:700">#${pool.length-pool.indexOf(o)}</td>
       <td><b>${o.name}</b></td>
       <td>${o.phone}${dupBadge}</td>
       <td>${o.city||'—'}</td>
       <td>${o.size||'—'}</td><td>${o.quantity||1}</td><td><b>₹${o.totalAmount||o.price}</b></td>
       <td>${scoreBadge(score)} ${aiBtn}</td>
       <td><select class="st-sel" onchange="updateStatus('${o._id}',this.value)">
-        ${['new','confirmed','shipped','delivered','cancelled'].map(s=>`<option value="${s}"${o.status===s?' selected':''}>${cap(s)}</option>`).join('')}
+        ${statusOptions.map(s=>`<option value="${s}"${o.status===s?' selected':''}>${cap(s)}</option>`).join('')}
       </select></td>
       <td><div style="white-space:nowrap">${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
       <td><button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button></td>
     </tr>`;
   }).join('');
+  renderPagination(currentPage, totalPages);
 }
+
+function renderPagination(page, total) {
+  const row = document.getElementById('paginationRow');
+  if (!row) return;
+  if (total <= 1) { row.innerHTML=''; return; }
+  let html = '';
+  if (page > 1) html += `<button class="btn btn-out btn-sm" onclick="goPage(${page-1})">← Prev</button>`;
+  html += `<span style="font-size:12px;font-weight:800;color:var(--muted)">Page ${page} / ${total}</span>`;
+  if (page < total) html += `<button class="btn btn-out btn-sm" onclick="goPage(${page+1})">Next →</button>`;
+  row.innerHTML = html;
+}
+function goPage(p) { currentPage = p; renderOrders(); }
+
+// ─── SHIPPED TAB RENDER ───────────────────────────────────────────────────────
+function renderShipped() {
+  const srch = (document.getElementById('srchShipped')?.value||'').toLowerCase();
+  const dateFrom = document.getElementById('shippedDateFrom')?.value;
+  const dateTo   = document.getElementById('shippedDateTo')?.value;
+  let shipped = allOrders.filter(o => o.status === 'shipped');
+  if (srch) shipped = shipped.filter(o => o.name?.toLowerCase().includes(srch)||o.phone?.includes(srch));
+  if (dateFrom||dateTo) shipped = shipped.filter(o => {
+    const od=new Date(o.createdAt); od.setHours(0,0,0,0);
+    if(dateFrom){const df=new Date(dateFrom);df.setHours(0,0,0,0);if(od<df)return false;}
+    if(dateTo){const dt=new Date(dateTo);dt.setHours(23,59,59,999);if(new Date(o.createdAt)>dt)return false;}
+    return true;
+  });
+  const tb = document.getElementById('shippedBody');
+  if (!tb) return;
+  if (!shipped.length) { tb.innerHTML='<tr><td colspan="11"><div class="empty"><span>🚚</span>No shipped orders yet</div></td></tr>'; return; }
+  tb.innerHTML = shipped.map((o,i) => {
+    const score = scoreAddress(o);
+    const isPM = isAfterNoon(o.createdAt);
+    return `<tr>
+      <td style="font-size:11px;color:var(--muted);font-weight:700">#${i+1}</td>
+      <td><b>${o.name}</b></td><td>${o.phone}</td>
+      <td>${o.city||'—'}</td>
+      <td style="max-width:160px;font-size:11px">${o.address||'—'}</td>
+      <td>${o.size||'—'}</td><td>${o.quantity||1}</td>
+      <td><b>₹${o.totalAmount||o.price}</b></td>
+      <td>${scoreBadge(score)}</td>
+      <td><div style="white-space:nowrap">${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
+      <td><button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button></td>
+    </tr>`;
+  }).join('');
+}
+
 async function updateStatus(id,status){
   try{
     const r=await fetch(API+'/api/orders/'+id+'/status',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
     const d=await r.json();
-    if(d.success){ toast('Status updated to '+status,'success'); const o=allOrders.find(x=>x._id===id); if(o) o.status=status; renderLatest(); loadStats(); }
+    if(d.success){
+      toast('Status updated to '+status,'success');
+      const o=allOrders.find(x=>x._id===id);
+      if(o) o.status=status;
+      renderOrders(); renderLatest(); loadStats();
+      // If status changed to shipped, refresh shipped tab badge
+      const shippedCount = allOrders.filter(o=>o.status==='shipped').length;
+      const badge = document.getElementById('badge-shipped');
+      if (badge) badge.textContent = shippedCount;
+    }
     else toast('Failed to update','error');
   }catch(e){ toast('Network error','error'); }
 }
+
 async function delOrder(id){
   if(!confirm('Delete this order?')) return;
   try{
     const r=await fetch(API+'/api/orders/'+id,{method:'DELETE'}); const d=await r.json();
-    if(d.success){ allOrders=allOrders.filter(o=>o._id!==id); renderOrders(); renderLatest(); loadStats(); toast('Order deleted','success'); }
+    if(d.success){ allOrders=allOrders.filter(o=>o._id!==id); renderOrders(); renderShipped(); renderLatest(); loadStats(); toast('Order deleted','success'); }
   }catch(e){ toast('Error','error'); }
 }
-function exportCsv(){ window.open(API+'/api/orders/export/csv','_blank'); }
+
+// ─── EXPORT CSV (current page only) ──────────────────────────────────────────
+function exportCsvCurrentPage(mode) {
+  const orders = mode === 'shipped'
+    ? allOrders.filter(o=>o.status==='shipped')
+    : (currentPageOrders.length ? currentPageOrders : allOrders.slice(0,PAGE_SIZE));
+
+  const headers = ['#','Name','Phone','Address','Pincode','City','State','Product','Size','Qty','Price','Total','Status','Address Score','Date','Time'];
+  const rows = orders.map((o,i) => {
+    const score = scoreAddress(o);
+    const scoreLabel = score>=70?'High':score>=40?'Medium':'Low';
+    return [
+      i+1,
+      '"'+(o.name||'').replace(/"/g,'""')+'"',
+      o.phone||'',
+      '"'+(o.address||'').replace(/"/g,'""')+'"',
+      o.pincode||'',
+      o.city||'',
+      o.state||'',
+      '"'+(o.productName||o.product||'').replace(/"/g,'""')+'"',
+      o.size||'',
+      o.quantity||1,
+      o.price||0,
+      o.totalAmount||0,
+      o.status||'',
+      score+'/100 ('+scoreLabel+')',
+      fmtDate(o.createdAt),
+      fmtTime(o.createdAt)
+    ].join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (mode==='shipped'?'shipped-orders':'orders-page-'+currentPage)+'-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV downloaded ('+orders.length+' orders)', 'success');
+}
+// Legacy alias
+function exportCsv(){ exportCsvCurrentPage(); }
+
+
 
 // ─── PRODUCTS ─────────────────────────────────────────────────────────────────
 async function loadProducts(){
@@ -1773,9 +2059,126 @@ async function runJunkClean() {
 // ─── OPENAI KEY INIT ──────────────────────────────────────────────────────────
 (function(){ const k=localStorage.getItem('sb_openai_key'); if(k&&document.getElementById('openaiKey')) document.getElementById('openaiKey').value=k; })();
 
+
+// ─── TESTIMONIALS ────────────────────────────────────────────────────────────
+let allTestimonials = [];
+let editingTestId = null;
+
+async function loadTestimonials() {
+  try {
+    const r = await fetch(API + '/api/testimonials');
+    const d = await r.json();
+    if (d.success) { allTestimonials = d.testimonials || []; renderTestimonials(); }
+  } catch(e) {}
+}
+
+function renderTestimonials() {
+  const grid = document.getElementById('testGrid');
+  if (!grid) return;
+  if (!allTestimonials.length) {
+    grid.innerHTML = '<div class="empty"><span>⭐</span>No testimonials yet. Add some to display on your store!</div>';
+    return;
+  }
+  grid.innerHTML = allTestimonials.map(t => `
+    <div class="test-card ${t.videoUrl?'test-card-vid':''}">
+      ${t.videoUrl ? `<div class="test-vid-tag">🎬 Video Review</div>` : ''}
+      ${t.thumbnail ? `<img class="test-thumb" src="${t.thumbnail}" alt="thumbnail" onclick="window.open('${t.videoUrl||t.thumbnail}','_blank')"/>` : ''}
+      <div class="test-meta">
+        <div class="test-av ${t.videoUrl?'test-av-vid':''}">${(t.name||'?')[0].toUpperCase()}</div>
+        <div>
+          <div class="test-name">${t.name||'Customer'}</div>
+          <div class="test-loc">📍 ${t.location||'India'}</div>
+        </div>
+      </div>
+      <div class="test-stars">${'★'.repeat(t.rating||5)}${'☆'.repeat(5-(t.rating||5))}</div>
+      <div class="test-review">"${t.review||''}"</div>
+      <div class="test-acts">
+        <button class="btn btn-out btn-sm" onclick="openTestimonialModal('${t._id}')">✏️ Edit</button>
+        <button class="btn btn-red btn-sm" onclick="deleteTestimonial('${t._id}')">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTestimonialModal(id) {
+  editingTestId = id || null;
+  const t = id ? allTestimonials.find(x=>x._id===id) : null;
+  document.getElementById('tm_name').value   = t?.name||'';
+  document.getElementById('tm_loc').value    = t?.location||'';
+  document.getElementById('tm_rating').value = t?.rating||5;
+  document.getElementById('tm_review').value = t?.review||'';
+  document.getElementById('tm_videoUrl').value   = t?.videoUrl||'';
+  document.getElementById('tm_thumbnail').value  = t?.thumbnail||'';
+  document.getElementById('testModalTitle').textContent = id ? 'Edit Testimonial' : 'Add Testimonial';
+  document.getElementById('testModal').classList.add('active');
+}
+function closeTestimonialModal() { document.getElementById('testModal').classList.remove('active'); }
+function testModalOverlay(e) { if(e.target===document.getElementById('testModal')) closeTestimonialModal(); }
+
+async function saveTestimonial() {
+  const payload = {
+    name:      document.getElementById('tm_name').value.trim(),
+    location:  document.getElementById('tm_loc').value.trim(),
+    rating:    parseInt(document.getElementById('tm_rating').value)||5,
+    review:    document.getElementById('tm_review').value.trim(),
+    videoUrl:  document.getElementById('tm_videoUrl').value.trim(),
+    thumbnail: document.getElementById('tm_thumbnail').value.trim(),
+  };
+  if (!payload.name || !payload.review) return toast('Name and review are required','error');
+  try {
+    const url = editingTestId ? API+'/api/testimonials/'+editingTestId : API+'/api/testimonials';
+    const method = editingTestId ? 'PUT' : 'POST';
+    const r = await fetch(url, {method, headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const d = await r.json();
+    if (d.success) {
+      toast(editingTestId?'Testimonial updated!':'Testimonial added!','success');
+      closeTestimonialModal();
+      loadTestimonials();
+    } else toast(d.error||'Failed','error');
+  } catch(e) { toast('Network error','error'); }
+}
+
+async function deleteTestimonial(id) {
+  if (!confirm('Delete this testimonial?')) return;
+  try {
+    const r = await fetch(API+'/api/testimonials/'+id, {method:'DELETE'});
+    const d = await r.json();
+    if (d.success) { toast('Deleted','success'); loadTestimonials(); }
+    else toast(d.error||'Failed','error');
+  } catch(e) { toast('Error','error'); }
+}
+
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 checkAuth();
 </script>
+
+<!-- TESTIMONIAL MODAL -->
+<div class="m-overlay" id="testModal" onclick="testModalOverlay(event)">
+  <div class="m-box">
+    <div class="m-head"><h3 id="testModalTitle">Add Testimonial</h3><button class="m-close" onclick="closeTestimonialModal()">✕</button></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Customer Name *</label><input class="finput" id="tm_name" placeholder="e.g. Priya Sharma"/></div>
+      <div class="fg"><label class="fl">Location</label><input class="finput" id="tm_loc" placeholder="e.g. Mumbai, Maharashtra"/></div>
+    </div>
+    <div class="fg"><label class="fl">Rating (1–5)</label>
+      <select class="finput" id="tm_rating">
+        <option value="5">★★★★★ (5)</option>
+        <option value="4">★★★★☆ (4)</option>
+        <option value="3">★★★☆☆ (3)</option>
+        <option value="2">★★☆☆☆ (2)</option>
+        <option value="1">★☆☆☆☆ (1)</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Review Text *</label><textarea class="finput" id="tm_review" placeholder="Customer's review in their words..." style="min-height:90px"></textarea></div>
+    <div style="background:#f5f3ff;border-radius:10px;padding:14px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;color:#8b5cf6;margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">🎬 Video Testimonial (Optional)</div>
+      <div class="fg" style="margin-bottom:10px"><label class="fl">Video URL</label><input class="finput" id="tm_videoUrl" placeholder="https://... (YouTube, direct MP4, etc.)"/></div>
+      <div class="fg" style="margin-bottom:0"><label class="fl">Thumbnail Image URL</label><input class="finput" id="tm_thumbnail" placeholder="https://... (preview image for video)"/></div>
+    </div>
+    <button class="btn btn-orange" style="width:100%;justify-content:center;padding:13px;font-size:14px" onclick="saveTestimonial()">💾 Save Testimonial</button>
+  </div>
+</div>
 
 <!-- SOUND PICKER MODAL -->
 <div class="snd-overlay" id="sndOverlay" onclick="sndOverlayClick(event)">
