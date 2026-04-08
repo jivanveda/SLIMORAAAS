@@ -525,7 +525,9 @@ footer p{color:#555;font-size:12px;font-weight:600}
         <label class="fl">Full Address <span class="req">*</span></label>
         <input class="fi" id="f_address" type="text" placeholder="Ghar number, gali, mohalla, ilaaka"/>
       </div>
-      <input type="hidden" id="f_landmark" value=""/>
+      <div class="fg">
+        <input class="fi" id="f_landmark" type="text" placeholder="Aas paas ki jagah (optional)" style="color:#888"/>
+      </div>
 
       <button class="sub-btn" id="submitBtn" onclick="submitOrder()">
         🚀 Order Confirm Karo — Delivery Pe Pay Karo
@@ -806,15 +808,27 @@ function playVid(card) {
 
 // ─── VALIDATE (Hinglish) ──────────────────────────────────────────────────────
 function validate() {
-  const name = document.getElementById('f_name').value.trim();
-  const phone = document.getElementById('f_phone').value.trim();
+  const name    = document.getElementById('f_name').value.trim();
+  const phone   = document.getElementById('f_phone').value.trim();
   const pincode = document.getElementById('f_pincode').value.trim();
+  const city    = document.getElementById('f_city').value.trim();
   const address = document.getElementById('f_address').value.trim();
   if (!name)                    { showToast('⚠️ Kripya apna naam likho'); document.getElementById('f_name').focus(); return false; }
   if (!/^\d{10}$/.test(phone))  { showToast('⚠️ 10-digit phone number daalo'); document.getElementById('f_phone').focus(); return false; }
   if (!/^\d{6}$/.test(pincode)) { showToast('⚠️ 6-digit pincode daalo'); document.getElementById('f_pincode').focus(); return false; }
+  if (!city) { showToast('⚠️ Valid pincode daalo — city auto-fill hogi'); document.getElementById('f_pincode').focus(); return false; }
   if (!address)                 { showToast('⚠️ Kripya poora address likho'); document.getElementById('f_address').focus(); return false; }
   return true;
+}
+
+// ─── Phone-based duplicate guard (frontend) ───────────────────────────────────
+const _orderedPhones = new Set();
+function checkDuplicatePhone(phone) {
+  if (_orderedPhones.has(phone)) {
+    showToast('⚠️ Is number se pehle se order hai! Delivery ka intezaar karein.');
+    return true; // duplicate
+  }
+  return false;
 }
 
 // ─── LOAD TESTIMONIALS FROM API ───────────────────────────────────────────────
@@ -877,6 +891,10 @@ animateViewers();
 async function submitOrder() {
   if (isSubmitting) return; // ← PREVENT DOUBLE SUBMIT
   if (!validate()) return;
+
+  // ← FRONTEND PHONE DUPLICATE GUARD
+  const phoneVal = document.getElementById('f_phone').value.trim();
+  if (checkDuplicatePhone(phoneVal)) return;
   isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
@@ -913,6 +931,7 @@ async function submitOrder() {
     });
     const d = await r.json();
     if (d.success) {
+      _orderedPhones.add(phoneVal); // ← mark this phone as ordered
       document.getElementById('sucOrderId').textContent = d.orderId;
       document.getElementById('formView').style.display = 'none';
       document.getElementById('successView').style.display = 'block';
