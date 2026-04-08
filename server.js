@@ -75,17 +75,6 @@ const Order   = mongoose.model('Order',   orderSchema);
 const Product = mongoose.model('Product', productSchema);
 const Setting = mongoose.model('Setting', settingSchema);
 
-const testimonialSchema = new mongoose.Schema({
-  name:      { type: String, required: true },
-  location:  { type: String, default: 'India' },
-  rating:    { type: Number, default: 5, min: 1, max: 5 },
-  review:    { type: String, required: true },
-  videoUrl:  { type: String, default: '' },
-  thumbnail: { type: String, default: '' },
-  active:    { type: Boolean, default: true },
-}, { timestamps: true });
-const Testimonial = mongoose.model('Testimonial', testimonialSchema);
-
 // ─── Helper ───────────────────────────────────────────────────────────────────
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
@@ -97,25 +86,6 @@ function fetchUrl(url) {
     }).on('error', reject);
   });
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// KEEP-ALIVE — Pings this server every 10 minutes so Render never sleeps it
-// ═══════════════════════════════════════════════════════════════════════════════
-const SELF_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
-
-setInterval(async () => {
-  try {
-    const res = await fetch(`${SELF_URL}/health`);
-    console.log(`🔄 Keep-alive ping → ${res.status}`);
-  } catch (e) {
-    console.warn('⚠️  Keep-alive ping failed:', e.message);
-  }
-}, 10 * 60 * 1000); // every 10 minutes
-
-// ─── Health check endpoint (used by keep-alive & Render uptime check) ─────────
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
-});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ORDERS
@@ -528,52 +498,6 @@ app.get('/api/visitors/count', (req, res) => {
     if (now - ts > 60000) visitors.delete(id);
   }
   res.json({ success: true, count: visitors.size });
-});
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// TESTIMONIALS
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// GET /api/testimonials — public (for storefront)
-app.get('/api/testimonials', async (req, res) => {
-  try {
-    const testimonials = await Testimonial.find({ active: true }).sort({ createdAt: -1 });
-    res.json({ success: true, testimonials });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// GET /api/testimonials/all — admin (includes inactive)
-app.get('/api/testimonials/all', async (req, res) => {
-  try {
-    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
-    res.json({ success: true, testimonials });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// POST /api/testimonials — create
-app.post('/api/testimonials', async (req, res) => {
-  try {
-    const t = new Testimonial(req.body);
-    await t.save();
-    res.json({ success: true, testimonial: t });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// PUT /api/testimonials/:id — update
-app.put('/api/testimonials/:id', async (req, res) => {
-  try {
-    const t = await Testimonial.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!t) return res.status(404).json({ success: false, error: 'Not found' });
-    res.json({ success: true, testimonial: t });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// DELETE /api/testimonials/:id — delete
-app.delete('/api/testimonials/:id', async (req, res) => {
-  try {
-    await Testimonial.findByIdAndDelete(req.params.id);
-    res.json({ success: true });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
