@@ -99,6 +99,25 @@ function fetchUrl(url) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// KEEP-ALIVE — Pings this server every 10 minutes so Render never sleeps it
+// ═══════════════════════════════════════════════════════════════════════════════
+const SELF_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
+
+setInterval(async () => {
+  try {
+    const res = await fetch(`${SELF_URL}/health`);
+    console.log(`🔄 Keep-alive ping → ${res.status}`);
+  } catch (e) {
+    console.warn('⚠️  Keep-alive ping failed:', e.message);
+  }
+}, 10 * 60 * 1000); // every 10 minutes
+
+// ─── Health check endpoint (used by keep-alive & Render uptime check) ─────────
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ORDERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
