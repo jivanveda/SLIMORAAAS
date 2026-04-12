@@ -43,6 +43,8 @@ const orderSchema = new mongoose.Schema({
   price:       { type: Number, default: 599 },
   totalAmount: { type: Number, default: 599 },
   status:      { type: String, enum: ['new','confirmed','shipped','delivered','cancelled'], default: 'new' },
+  awb:         { type: String, default: '' },
+  shippedAt:   { type: Date, default: null },
   createdAt:   { type: Date, default: Date.now }
 });
 
@@ -135,7 +137,7 @@ app.post('/api/orders', async (req, res) => {
 app.get('/api/orders/export/csv', async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
-    const headers = ['ID','Name','Phone','Address','Pincode','City','State','Product','Size','Qty','Price','Total','Status','Date'];
+    const headers = ['ID','Name','Phone','Address','Pincode','City','State','Product','Size','Qty','Price','Total','Status','AWB','ShippedAt','Date'];
     const rows = orders.map(o => [
       o._id,
       `"${(o.name||'').replace(/"/g,'""')}"`,
@@ -150,6 +152,8 @@ app.get('/api/orders/export/csv', async (req, res) => {
       o.price,
       o.totalAmount,
       o.status,
+      o.awb || '',
+      o.shippedAt ? new Date(o.shippedAt).toLocaleString('en-IN') : '',
       new Date(o.createdAt).toLocaleString('en-IN')
     ].join(','));
     const csv = [headers.join(','), ...rows].join('\n');
@@ -168,6 +172,22 @@ app.get('/api/orders', async (req, res) => {
     res.json({ success: true, orders });
   } catch (e) {
     res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// PUT /api/orders/:id/ship — mark as shipped with AWB number
+app.put('/api/orders/:id/ship', async (req, res) => {
+  try {
+    const { awb } = req.body;
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status: 'shipped', awb: awb || '', shippedAt: new Date() },
+      { new: true }
+    );
+    if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
+    res.json({ success: true, order });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e.message });
   }
 });
 
