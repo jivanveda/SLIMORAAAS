@@ -191,14 +191,29 @@ app.put('/api/orders/:id/ship', async (req, res) => {
   }
 });
 
-// PUT /api/orders/:id/status — Update status
+// PUT /api/orders/:id/status — Update status (also saves AWB + shippedAt if shipped)
 app.put('/api/orders/:id/status', async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { status: req.body.status },
-      { new: true }
-    );
+    const { status, awb } = req.body;
+    const update = { status };
+    if (awb) update.awb = awb;
+    if (status === 'shipped') update.shippedAt = new Date();
+    const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true });
+    if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
+    res.json({ success: true, order });
+  } catch (e) {
+    res.status(400).json({ success: false, error: e.message });
+  }
+});
+
+// PUT /api/orders/:id — Full order edit
+app.put('/api/orders/:id', async (req, res) => {
+  try {
+    const fields = req.body;
+    ['name','phone','address','pincode','city','state','product','productName','size'].forEach(f => {
+      if (typeof fields[f] === 'string') fields[f] = fields[f].replace(/\s+/g,' ').trim();
+    });
+    const order = await Order.findByIdAndUpdate(req.params.id, fields, { new: true });
     if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
     res.json({ success: true, order });
   } catch (e) {
