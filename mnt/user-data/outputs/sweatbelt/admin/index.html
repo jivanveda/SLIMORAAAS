@@ -1715,9 +1715,9 @@ async function clearDuplicates() {
 let selloshipToken = '';
 
 function loadSelloshipConfig() {
-  // Restore saved credentials
-  const savedUser = localStorage.getItem('sell_username') || '';
-  const savedPass = localStorage.getItem('sell_password') || '';
+  // Restore saved credentials (with defaults pre-filled)
+  const savedUser = localStorage.getItem('sell_username') || 'thevastrac@gmail.com';
+  const savedPass = localStorage.getItem('sell_password') || 'Krist@143';
   selloshipToken  = localStorage.getItem('sell_token')    || '';
 
   if (savedUser) document.getElementById('sellUsername').value = savedUser;
@@ -2348,6 +2348,44 @@ async function executeBulkShip() {
   toast(`📦 ${done} orders shipped${failed?' · '+failed+' failed':''}`, done?'success':'error');
 }
 
+async function executeBulkManualShip() {
+  const orders = allOrders.filter(o => selectedOrderIds.has(o._id));
+  if (!orders.length) return toast('No orders selected', 'error');
+  if (!confirm(`Mark ${orders.length} orders as Shipped manually (no AWB)?`)) return;
+
+  const btn = document.getElementById('bsm-manual-btn');
+  btn.disabled = true;
+  btn.textContent = `⏳ Marking ${orders.length}...`;
+
+  const log = document.getElementById('bsm-log');
+  log.style.display = 'block';
+  log.innerHTML = '';
+
+  let done = 0, failed = 0;
+  for (const order of orders) {
+    try {
+      const r = await fetch(API + '/api/orders/' + order._id + '/status', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'shipped', awb: 'MANUAL' })
+      });
+      const d = await r.json();
+      if (d.success) {
+        const o = allOrders.find(x => x._id === order._id);
+        if (o) { o.status = 'shipped'; o.awb = 'MANUAL'; }
+        done++;
+        log.innerHTML += `<div style="color:#16a34a;padding:3px 0;border-bottom:1px solid #e5e7eb">✅ ${order.name} · ${order.phone} → Marked shipped</div>`;
+      } else { failed++; log.innerHTML += `<div style="color:#dc2626;padding:3px 0">❌ ${order.name} — ${d.error||'Failed'}</div>`; }
+    } catch(e) { failed++; log.innerHTML += `<div style="color:#dc2626;padding:3px 0">❌ ${order.name} — Network error</div>`; }
+    log.scrollTop = log.scrollHeight;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '✏️ Mark All as Shipped';
+  clearBulkSelection();
+  renderOrders(); renderShipped(); loadStats(); updateDashboardStats();
+  toast(`✅ ${done} marked shipped${failed?' · '+failed+' failed':''}`, done?'success':'error');
+}
+
 function buildWaybillPayloadWithDims(order, dims) {
   const pa = getPickupAddress();
   return {
@@ -2366,12 +2404,11 @@ function buildWaybillPayloadWithDims(order, dims) {
   };
 }
 
-// Quick ship single order from orders table
+// Quick ship single order from orders table — shows choice modal
 async function quickShipOrder(orderId) {
-  if (!selloshipToken) return toast('Connect Selloship in Settings first', 'error');
-  const pa = getPickupAddress();
-  if (!pa.name||!pa.addr1) return toast('Save pickup address in Settings first', 'error');
-  await createSingleShipment(orderId);
+  const order = allOrders.find(o => o._id === orderId);
+  if (!order) return;
+  openShipChoiceModal(orderId);
 }
 
 // ─── ORDER EDIT MODAL ─────────────────────────────────────────────────────────
@@ -2451,6 +2488,83 @@ async function saveOrderEdit() {
   } catch(e) { toast('Network error: '+e.message, 'error'); }
 }
 
+// ─── SHIP CHOICE MODAL ───────────────────────────────────────────────────────
+let shipChoiceOrderId = null;
+
+function openShipChoiceModal(orderId) {
+  shipChoiceOrderId = orderId;
+  const o = allOrders.find(x => x._id === orderId);
+  if (!o) return;
+  const info = document.getElementById('scm-order-info');
+  info.innerHTML = `<b>${o.name}</b> · ${o.phone}<br><span style="font-weight:600;color:#666">${o.address||''}, ${o.city||''}, ${o.pincode||''}</span><br><span style="color:var(--orange);font-weight:800">₹${o.totalAmount||o.price||0} · COD</span>`;
+  document.getElementById('shipChoiceModal').classList.add('active');
+}
+
+function closeShipChoiceModal() {
+  document.getElementById('shipChoiceModal').classList.remove('active');
+  shipChoiceOrderId = null;
+}
+
+async function shipViaSelloshipChoice() {
+  if (!selloshipToken) {
+    toast('Not connected to Selloship — go to Settings to connect first', 'error');
+    closeShipChoiceModal();
+    showTab('settings');
+    return;
+  }
+  const pa = getPickupAddress();
+  if (!pa.name||!pa.addr1) {
+    toast('Pickup address not saved — fill it in Settings', 'error');
+    closeShipChoiceModal();
+    showTab('settings');
+    return;
+  }
+  const savedId = shipChoiceOrderId;
+  closeShipChoiceModal();
+  shipChoiceOrderId = savedId; // keep for createSingleShipment
+  await createSingleShipment(savedId);
+  shipChoiceOrderId = null;
+}
+
+function openManualShipModal() {
+  document.getElementById('shipChoiceModal').classList.remove('active');
+  const o = allOrders.find(x => x._id === shipChoiceOrderId);
+  if (!o) return;
+  const info = document.getElementById('msm-order-info');
+  info.innerHTML = `<b>${o.name}</b> · ${o.phone}<br><span style="font-weight:600;color:#666">${o.address||''}, ${o.city||''}</span>`;
+  document.getElementById('msm-courier').value = '';
+  document.getElementById('msm-awb').value = '';
+  document.getElementById('msm-remarks').value = '';
+  document.getElementById('manualShipModal').classList.add('active');
+}
+
+function closeManualShipModal() {
+  document.getElementById('manualShipModal').classList.remove('active');
+}
+
+async function confirmManualShip() {
+  const orderId = shipChoiceOrderId;
+  if (!orderId) return;
+  const awb     = document.getElementById('msm-awb').value.trim();
+  const courier = document.getElementById('msm-courier').value.trim();
+  const awbFinal = awb || (courier ? courier.toUpperCase().slice(0,3)+'-MANUAL' : 'MANUAL');
+  try {
+    const r = await fetch(API + '/api/orders/' + orderId + '/status', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'shipped', awb: awbFinal })
+    });
+    const d = await r.json();
+    if (d.success) {
+      const o = allOrders.find(x => x._id === orderId);
+      if (o) { o.status = 'shipped'; o.awb = awbFinal; }
+      toast(`✅ Marked as shipped${awb?' · AWB: '+awb:''}${courier?' via '+courier:''}`, 'success');
+      closeManualShipModal();
+      shipChoiceOrderId = null;
+      renderOrders(); renderShipped(); loadStats(); updateDashboardStats();
+    } else { toast('Failed: '+(d.error||'error'), 'error'); }
+  } catch(e) { toast('Network error', 'error'); }
+}
+
 // ─── SETTINGS SELLOSHIP SYNC ──────────────────────────────────────────────────
 function syncSettingsToSelloshipTab() {
   // Keep both credential inputs in sync
@@ -2497,8 +2611,8 @@ function savePickupAddressFromSettings() {
 
 // Populate settings fields from localStorage on load
 function initSettingsFields() {
-  const savedUser = localStorage.getItem('sell_username')||'';
-  const savedPass = localStorage.getItem('sell_password')||'';
+  const savedUser = localStorage.getItem('sell_username') || 'thevastrac@gmail.com';
+  const savedPass = localStorage.getItem('sell_password') || 'Krist@143';
   if (savedUser && document.getElementById('settSellUser')) document.getElementById('settSellUser').value = savedUser;
   if (savedPass && document.getElementById('settSellPass')) document.getElementById('settSellPass').value = savedPass;
   const el = document.getElementById('settSellStatus');
@@ -2579,6 +2693,41 @@ checkAuth();
   </div>
 </div>
 
+<!-- SHIP CHOICE MODAL -->
+<div class="m-overlay" id="shipChoiceModal" onclick="if(event.target===this)closeShipChoiceModal()">
+  <div class="m-box" style="max-width:460px">
+    <div class="m-head">
+      <h3>🚚 Ship This Order</h3>
+      <button class="m-close" onclick="closeShipChoiceModal()">✕</button>
+    </div>
+    <div id="scm-order-info" style="background:var(--gray);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12px;font-weight:700;color:var(--black)"></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button class="btn btn-orange" style="padding:16px;font-size:14px;justify-content:center;width:100%" onclick="shipViaSelloshipChoice()">
+        🚀 Ship via Selloship (Auto AWB)
+      </button>
+      <button class="btn btn-out" style="padding:16px;font-size:14px;justify-content:center;width:100%;border:2px solid var(--border)" onclick="openManualShipModal()">
+        ✏️ Ship Manually (Enter AWB / Courier)
+      </button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);font-weight:600;text-align:center">Ship via Selloship to auto-generate AWB · Manual for other couriers</div>
+  </div>
+</div>
+
+<!-- MANUAL SHIP MODAL -->
+<div class="m-overlay" id="manualShipModal" onclick="if(event.target===this)closeManualShipModal()">
+  <div class="m-box" style="max-width:440px">
+    <div class="m-head">
+      <h3>✏️ Manual Shipment</h3>
+      <button class="m-close" onclick="closeManualShipModal()">✕</button>
+    </div>
+    <div id="msm-order-info" style="background:var(--gray);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;font-weight:700;color:var(--black)"></div>
+    <div class="fg"><label class="fl">Courier Name</label><input class="finput" id="msm-courier" placeholder="e.g. Delhivery, DTDC, Bluedart..."/></div>
+    <div class="fg"><label class="fl">AWB / Tracking Number</label><input class="finput" id="msm-awb" placeholder="e.g. 1234567890 (leave blank if not available yet)"/></div>
+    <div class="fg"><label class="fl">Remarks (optional)</label><input class="finput" id="msm-remarks" placeholder="Any notes about this shipment"/></div>
+    <button class="btn btn-orange" style="width:100%;justify-content:center;padding:13px;font-size:14px;margin-top:6px" onclick="confirmManualShip()">✅ Mark as Shipped</button>
+  </div>
+</div>
+
 <!-- ORDER EDIT MODAL -->
 <div class="m-overlay" id="orderEditModal" onclick="if(event.target===this)closeOrderEditModal()">
   <div class="m-box" style="max-width:620px">
@@ -2649,8 +2798,9 @@ checkAuth();
     <!-- Progress log -->
     <div id="bsm-log" style="display:none;background:var(--gray);border-radius:10px;padding:12px;max-height:160px;overflow-y:auto;margin-bottom:14px;font-size:11px;font-weight:700"></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-orange" style="flex:1;justify-content:center;padding:13px;font-size:14px" id="bsm-go-btn" onclick="executeBulkShip()">🚚 Ship All Selected</button>
-      <button class="btn btn-out" onclick="closeBulkShipModal()">Cancel</button>
+      <button class="btn btn-orange" style="flex:1;justify-content:center;padding:13px;font-size:14px" id="bsm-go-btn" onclick="executeBulkShip()">🚀 Ship via Selloship</button>
+      <button class="btn btn-out" style="flex:1;justify-content:center;padding:13px;font-size:14px" id="bsm-manual-btn" onclick="executeBulkManualShip()">✏️ Mark All as Shipped</button>
+      <button class="btn btn-out" onclick="closeBulkShipModal()" style="padding:13px">Cancel</button>
     </div>
   </div>
 </div>
