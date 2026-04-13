@@ -1,6 +1,5 @@
 require('dotenv').config();
-// node-fetch v2 for server-side requests (npm install node-fetch@2)
-const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
+// Uses Node 18+ built-in fetch (no node-fetch package needed)
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
