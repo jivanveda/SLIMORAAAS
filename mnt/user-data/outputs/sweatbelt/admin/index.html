@@ -459,6 +459,7 @@ textarea.finput{min-height:72px;resize:vertical}
             </button>
             <button class="btn btn-out btn-sm" onclick="filterPM()">🌙 After 12PM</button>
             <button class="btn btn-orange" onclick="exportCsvCurrentPage()">⬇️ Export CSV (This Page)</button>
+            <button class="btn btn-orange" onclick="openBulkShipModal()" style="background:linear-gradient(135deg,#e85d04,#c94e00)" title="Bulk ship orders via Selloship">📦 Bulk Ship via Selloship</button>
           </div>
         </div>
         <!-- Orders sub-tabs -->
@@ -484,14 +485,21 @@ textarea.finput{min-height:72px;resize:vertical}
           <button class="btn btn-out btn-sm" onclick="clearDateFilter()">✕ Clear</button>
           <button class="btn btn-out btn-sm" onclick="setToday()">Today</button>
         </div>
+        <!-- BULK SELLOSHIP SHIP BANNER -->
+        <div id="bulkShipBar" style="display:none;background:linear-gradient(135deg,#fff7ed,#fffbf5);border:2px solid #fed7aa;border-radius:12px;padding:12px 18px;margin-bottom:12px;align-items:center;gap:14px;flex-wrap:wrap">
+          <span style="font-size:16px">📦</span>
+          <div style="flex:1;font-size:13px;font-weight:700;color:#9a3412"><span id="bulkSelCount">0</span> orders selected for bulk shipping</div>
+          <button class="btn btn-orange" onclick="bulkShipSelected()" id="bulkShipBtn">🚚 Ship Selected via Selloship</button>
+          <button class="btn btn-out btn-sm" onclick="clearBulkSelection()">✕ Clear</button>
+        </div>
         <div class="dup-banner" id="dupBanner">
           <span>⚠️</span>
           <div class="dup-banner-txt"><span id="dupCount">0</span> duplicate orders found (same phone number). Keep the latest, delete the rest.</div>
           <button class="btn-clean" onclick="clearDuplicates()">🧹 Clear Duplicates</button>
         </div>
         <div class="card"><div class="tbl-wrap">
-          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
-          <tbody id="ordersBody"><tr><td colspan="11"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
+          <table><thead><tr><th><input type="checkbox" id="selectAllChk" onclick="toggleSelectAll(this)" title="Select all"/></th><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
+          <tbody id="ordersBody"><tr><td colspan="12"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
         </div></div>
         <div id="paginationRow" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap"></div>
       </div>
@@ -512,8 +520,8 @@ textarea.finput{min-height:72px;resize:vertical}
           <button class="btn btn-out btn-sm" onclick="document.getElementById('shippedDateFrom').value='';document.getElementById('shippedDateTo').value='';renderShipped()">✕ Clear</button>
         </div>
         <div class="card"><div class="tbl-wrap">
-          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Address</th><th>Size</th><th>Qty</th><th>Amount</th><th>Score</th><th>Shipped On</th><th>Actions</th></tr></thead>
-          <tbody id="shippedBody"><tr><td colspan="11"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
+          <table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>City</th><th>Address</th><th>Size</th><th>Qty</th><th>Amount</th><th>AWB / Tracking</th><th>Score</th><th>Shipped On</th><th>Actions</th></tr></thead>
+          <tbody id="shippedBody"><tr><td colspan="12"><div class="empty"><span>⏳</span>Loading...</div></td></tr></tbody></table>
         </div></div>
       </div>
 
@@ -557,6 +565,40 @@ textarea.finput{min-height:72px;resize:vertical}
           <p>Used to auto-fix & score delivery addresses using ChatGPT. Orders with messy addresses will get cleaned and scored for delivery confidence.</p>
           <div class="fg"><label class="fl">OpenAI API Key</label><input class="finput" id="openaiKey" type="password" placeholder="sk-..."/></div>
           <button class="btn btn-orange" onclick="saveOpenAiKey()">💾 Save Key</button>
+        </div>
+
+        <!-- SELLOSHIP SETTINGS -->
+        <div class="set-card" style="border-left:4px solid var(--orange)">
+          <h3>🚚 Selloship — Shipping Credentials</h3>
+          <p>Connect your Selloship account to ship orders directly from the Orders tab. Token is saved locally in your browser.</p>
+          <div class="sell-status disconnected" id="settSellStatus" style="margin-bottom:14px">🔴 Not Connected</div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Username / Email *</label><input class="finput" id="settSellUser" type="text" placeholder="your@email.com"/></div>
+            <div class="fg"><label class="fl">Password *</label><input class="finput" id="settSellPass" type="password" placeholder="Your Selloship password"/></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-orange" onclick="loginSelloshipFromSettings()">🔑 Connect Selloship</button>
+            <button class="btn btn-out btn-sm" onclick="clearSelloshipToken()" style="margin-left:auto">🗑️ Disconnect</button>
+          </div>
+          <div id="settTokenPreview" style="display:none;margin-top:10px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:9px 12px;font-size:11px;font-weight:700;color:#16a34a;word-break:break-all"></div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+            <div style="font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">📍 Pickup / Sender Address</div>
+            <div class="fr2" style="margin-bottom:10px">
+              <div class="fg" style="margin:0"><label class="fl">Full Name *</label><input class="finput" id="ssp-name" placeholder="RAVINDER SAINI"/></div>
+              <div class="fg" style="margin:0"><label class="fl">Phone *</label><input class="finput" id="ssp-phone" placeholder="9876543210"/></div>
+            </div>
+            <div class="fr2" style="margin-bottom:10px">
+              <div class="fg" style="margin:0"><label class="fl">City *</label><input class="finput" id="ssp-city" placeholder="Surat"/></div>
+              <div class="fg" style="margin:0"><label class="fl">State *</label><input class="finput" id="ssp-state" placeholder="Gujarat"/></div>
+            </div>
+            <div class="fr2" style="margin-bottom:10px">
+              <div class="fg" style="margin:0"><label class="fl">Pincode *</label><input class="finput" id="ssp-pin" placeholder="395009"/></div>
+              <div class="fg" style="margin:0"><label class="fl">Email</label><input class="finput" id="ssp-email" placeholder="email@example.com"/></div>
+            </div>
+            <div class="fg" style="margin-bottom:10px"><label class="fl">Address Line 1 *</label><input class="finput" id="ssp-addr1" placeholder="Plot No 40, Udhyog Vihar Phase 1"/></div>
+            <div class="fg"><label class="fl">Address Line 2</label><input class="finput" id="ssp-addr2" placeholder="(optional)"/></div>
+            <button class="btn btn-out" onclick="savePickupAddressFromSettings()">💾 Save Pickup Address</button>
+          </div>
         </div>
 
         <!-- JUNK CLEANER -->
@@ -720,7 +762,7 @@ document.getElementById('lPass').addEventListener('keydown',e=>{ if(e.key==='Ent
 function doLogout(){ sessionStorage.removeItem('sb_token'); document.getElementById('loginPage').style.display='flex'; document.getElementById('appLayout').classList.remove('active'); }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); loadTestimonials(); startLiveVisitors(); startAutoRefresh(); document.getElementById('ddf-all').classList.add('active'); }
+function initApp(){ loadStats(); loadOrders(); loadProducts(); loadSettings(); loadSelloshipConfig(); loadTestimonials(); startLiveVisitors(); startAutoRefresh(); document.getElementById('ddf-all').classList.add('active'); initSettingsFields(); }
 
 // ─── LIVE VISITORS (Real API) ─────────────────────────────────────────────────
 async function fetchLiveVisitors() {
@@ -1102,10 +1144,15 @@ function renderOrders(){
     const score=scoreAddress(o);
     const isPM=isAfterNoon(o.createdAt);
     const aiBtn=`<button class="btn-ai btn-sm" onclick="aiFixAddress('${o._id}')" title="AI fix address">🤖 Fix</button>`;
+    const isChecked = selectedOrderIds.has(o._id);
     const statusOptions = currentOrderSubTab === 'active'
       ? ['new','confirmed','shipped','delivered','cancelled']
       : ['shipped','delivered'];
+    const shipBtn = (o.status==='new'||o.status==='confirmed')
+      ? `<button class="btn btn-orange btn-sm" onclick="quickShipOrder('${o._id}')" title="Ship via Selloship" style="padding:4px 8px;font-size:10px">🚀 Ship</button>`
+      : '';
     return `<tr${isDup?' style="background:#fffafa"':''}>
+      <td><input type="checkbox" class="order-sel" data-id="${o._id}" ${isChecked?'checked':''} onchange="updateBulkBar()"/></td>
       <td style="font-size:11px;color:var(--muted);font-weight:700">#${pool.length-pool.indexOf(o)}</td>
       <td><b>${o.name}</b></td>
       <td>${o.phone}${dupBadge}</td>
@@ -1116,7 +1163,11 @@ function renderOrders(){
         ${statusOptions.map(s=>`<option value="${s}"${o.status===s?' selected':''}>${cap(s)}</option>`).join('')}
       </select></td>
       <td><div style="white-space:nowrap">${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
-      <td><button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button></td>
+      <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+        <button class="btn btn-out btn-sm" onclick="openOrderEditModal('${o._id}')" title="Edit order">✏️</button>
+        ${shipBtn}
+        <button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button>
+      </td>
     </tr>`;
   }).join('');
   renderPagination(currentPage, totalPages);
@@ -1153,6 +1204,9 @@ function renderShipped() {
   tb.innerHTML = shipped.map((o,i) => {
     const score = scoreAddress(o);
     const isPM = isAfterNoon(o.createdAt);
+    const awbDisplay = o.awb
+      ? `<span style="font-family:monospace;font-size:11px;font-weight:800;color:#1d4ed8;background:#eff6ff;padding:2px 7px;border-radius:6px;border:1px solid #bfdbfe">${o.awb}</span>`
+      : `<span style="color:var(--muted);font-size:11px">—</span>`;
     return `<tr>
       <td style="font-size:11px;color:var(--muted);font-weight:700">#${i+1}</td>
       <td><b>${o.name}</b></td><td>${o.phone}</td>
@@ -1160,9 +1214,13 @@ function renderShipped() {
       <td style="max-width:160px;font-size:11px">${o.address||'—'}</td>
       <td>${o.size||'—'}</td><td>${o.quantity||1}</td>
       <td><b>₹${o.totalAmount||o.price}</b></td>
+      <td>${awbDisplay}</td>
       <td>${scoreBadge(score)}</td>
-      <td><div style="white-space:nowrap">${fmtDate(o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.createdAt)}</div></td>
-      <td><button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button></td>
+      <td><div style="white-space:nowrap">${fmtDate(o.shippedAt||o.createdAt)}</div><div class="${isPM?'time-pm':'time-hi'} order-time">${fmtTime(o.shippedAt||o.createdAt)}</div></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-out btn-sm" onclick="openOrderEditModal('${o._id}')" title="Edit order">✏️</button>
+        <button class="btn btn-red btn-sm" onclick="delOrder('${o._id}')">🗑️</button>
+      </td>
     </tr>`;
   }).join('');
 }
@@ -1870,15 +1928,16 @@ async function createSingleShipment(orderId) {
         row.querySelector('.ship-status').innerHTML = `<span class="sell-badge sb-synced">✅ AWB: ${awb}</span>`;
         if (btn) { btn.textContent = '✅ Done'; btn.disabled = true; }
       }
-      // Auto-update order status to confirmed
+      // Auto-update order status to SHIPPED and save AWB
       const o = allOrders.find(x => x._id === orderId);
-      if (o && o.status === 'new') {
+      if (o) {
         await fetch(API + '/api/orders/' + orderId + '/status', {
           method: 'PUT', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: 'confirmed' })
+          body: JSON.stringify({ status: 'shipped', awb: d.awb || '' })
         });
-        o.status = 'confirmed';
-        renderOrders(); renderLatest();
+        o.status = 'shipped';
+        o.awb = d.awb || '';
+        renderOrders(); renderShipped(); loadStats();
       }
       if (d.raw) console.log('Selloship waybill raw:', d.raw);
     } else {
@@ -1921,7 +1980,14 @@ async function syncAllToSelloship() {
         const awb = d.awb || '—';
         log.innerHTML += `<div class="sell-order-row"><span><b>${order.name}</b> · ${order.phone} · #${order._id.toString().slice(-6)}</span><span class="sell-badge sb-synced">✅ AWB: ${awb}</span></div>`;
         const o = allOrders.find(x => x._id === order._id);
-        if (o) o.status = 'confirmed';
+        if (o) {
+          await fetch(API + '/api/orders/' + order._id + '/status', {
+            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'shipped', awb: d.awb || '' })
+          });
+          o.status = 'shipped';
+          o.awb = d.awb || '';
+        }
       } else {
         failed++;
         log.innerHTML += `<div class="sell-order-row"><span><b>${order.name}</b> · ${order.phone}</span><span class="sell-badge sb-failed">❌ ${d.error || 'Failed'}</span></div>`;
@@ -2149,6 +2215,312 @@ async function deleteTestimonial(id) {
 }
 
 
+// ─── BULK SHIP ────────────────────────────────────────────────────────────────
+let selectedOrderIds = new Set();
+
+function updateBulkBar() {
+  document.querySelectorAll('.order-sel:checked').forEach(cb => selectedOrderIds.add(cb.dataset.id));
+  document.querySelectorAll('.order-sel:not(:checked)').forEach(cb => selectedOrderIds.delete(cb.dataset.id));
+  const count = selectedOrderIds.size;
+  const bar = document.getElementById('bulkShipBar');
+  document.getElementById('bulkSelCount').textContent = count;
+  bar.style.display = count > 0 ? 'flex' : 'none';
+}
+
+function toggleSelectAll(cb) {
+  document.querySelectorAll('.order-sel').forEach(el => { el.checked = cb.checked; });
+  updateBulkBar();
+}
+
+function clearBulkSelection() {
+  selectedOrderIds.clear();
+  document.querySelectorAll('.order-sel').forEach(el => el.checked = false);
+  const chk = document.getElementById('selectAllChk');
+  if (chk) chk.checked = false;
+  document.getElementById('bulkShipBar').style.display = 'none';
+}
+
+function openBulkShipModal() {
+  if (!selectedOrderIds.size) {
+    // Auto-select all new+confirmed if nothing selected
+    allOrders.filter(o => o.status==='new'||o.status==='confirmed').forEach(o => selectedOrderIds.add(o._id));
+  }
+  const orders = allOrders.filter(o => selectedOrderIds.has(o._id));
+  const modal = document.getElementById('bulkShipModal');
+  document.getElementById('bsm-count').textContent = orders.length;
+  document.getElementById('bsm-log').style.display = 'none';
+  document.getElementById('bsm-log').innerHTML = '';
+
+  // Status check
+  const statusWrap = document.getElementById('bsm-status-wrap');
+  if (!selloshipToken) {
+    statusWrap.innerHTML = `<div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;color:#dc2626">🔴 Not connected to Selloship. Go to <b>Settings → Selloship</b> and connect first.</div>`;
+  } else {
+    const pa = getPickupAddress();
+    if (!pa.name||!pa.addr1) {
+      statusWrap.innerHTML = `<div style="background:#fefce8;border:1.5px solid #fef08a;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;color:#92400e">⚠️ Pickup address not saved. Fill it in Settings or the Selloship tab.</div>`;
+    } else {
+      statusWrap.innerHTML = `<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:10px 14px;font-size:12px;font-weight:700;color:#16a34a">🟢 Connected · Pickup: ${pa.name}, ${pa.city}</div>`;
+    }
+  }
+
+  document.getElementById('bsm-order-list').innerHTML = orders.length
+    ? orders.map(o => `
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:800">${o.name} <span style="font-size:11px;font-weight:600;color:var(--muted)">· ${o.phone}</span></div>
+          <div style="font-size:11px;color:#666;margin-top:2px">${o.city||''}, ${o.pincode||''} · ₹${o.totalAmount||o.price||0}</div>
+        </div>
+        <span class="badge b-${o.status}">${cap(o.status)}</span>
+      </div>`).join('')
+    : '<div style="text-align:center;color:var(--muted);font-size:12px;padding:20px">No orders selected. Close and select orders from the Orders tab.</div>';
+
+  const goBtn = document.getElementById('bsm-go-btn');
+  goBtn.disabled = false;
+  goBtn.textContent = `🚚 Ship All ${orders.length} Orders`;
+  modal.classList.add('active');
+}
+
+function closeBulkShipModal() {
+  document.getElementById('bulkShipModal').classList.remove('active');
+}
+
+async function executeBulkShip() {
+  if (!selloshipToken) return toast('Connect to Selloship first in Settings', 'error');
+  const pa = getPickupAddress();
+  if (!pa.name||!pa.addr1) return toast('Save pickup address first', 'error');
+
+  const orders = allOrders.filter(o => selectedOrderIds.has(o._id));
+  if (!orders.length) return toast('No orders to ship', 'error');
+
+  const btn = document.getElementById('bsm-go-btn');
+  btn.disabled = true;
+  btn.textContent = `⏳ Shipping 0/${orders.length}...`;
+
+  const log = document.getElementById('bsm-log');
+  log.style.display = 'block';
+  log.innerHTML = '';
+
+  // Use modal dimension fields
+  const dims = {
+    length:  document.getElementById('bsm-l')?.value || '100',
+    breadth: document.getElementById('bsm-b')?.value || '100',
+    height:  document.getElementById('bsm-h')?.value || '100',
+    weight:  document.getElementById('bsm-w')?.value || '500',
+  };
+
+  let done = 0, failed = 0;
+  for (const order of orders) {
+    const payload = buildWaybillPayloadWithDims(order, dims);
+    try {
+      const r = await fetch(API + '/api/selloship/waybill', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: selloshipToken, payload })
+      });
+      const d = await r.json();
+      if (d.success) {
+        const awb = d.awb || '';
+        await fetch(API + '/api/orders/' + order._id + '/status', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'shipped', awb })
+        });
+        const o = allOrders.find(x => x._id === order._id);
+        if (o) { o.status = 'shipped'; o.awb = awb; }
+        done++;
+        log.innerHTML += `<div style="color:#16a34a;padding:3px 0;border-bottom:1px solid #e5e7eb">✅ ${order.name} · ${order.phone} → AWB: <b>${awb||'—'}</b></div>`;
+      } else {
+        failed++;
+        log.innerHTML += `<div style="color:#dc2626;padding:3px 0;border-bottom:1px solid #e5e7eb">❌ ${order.name} · ${order.phone} — ${d.error||'Failed'}</div>`;
+      }
+    } catch(e) {
+      failed++;
+      log.innerHTML += `<div style="color:#dc2626;padding:3px 0;border-bottom:1px solid #e5e7eb">❌ ${order.name} — Network error</div>`;
+    }
+    btn.textContent = `⏳ Shipped ${done+failed}/${orders.length}...`;
+    log.scrollTop = log.scrollHeight;
+  }
+
+  btn.disabled = false;
+  btn.textContent = `✅ Done — ${done} shipped, ${failed} failed`;
+  clearBulkSelection();
+  renderOrders(); renderShipped(); loadStats(); updateDashboardStats();
+  toast(`📦 ${done} orders shipped${failed?' · '+failed+' failed':''}`, done?'success':'error');
+}
+
+function buildWaybillPayloadWithDims(order, dims) {
+  const pa = getPickupAddress();
+  return {
+    Shipment: {
+      orderCode: order._id.toString().slice(-8).toUpperCase(),
+      items: [{ name: order.productName||order.product||'Product', skuCode:'SKU-001', category:'', quantity: order.quantity||1, itemPrice: String(order.price||order.totalAmount||0) }],
+      height: dims.height, length: dims.length, breadth: dims.breadth, weight: dims.weight
+    },
+    isLablePdf: false, courierId:'', courierName:'',
+    paymentMode: 'COD', serviceType:'Air',
+    totalAmount: String(order.totalAmount||order.price||0),
+    collectableAmount: String(order.totalAmount||order.price||0),
+    pickupAddressDetails:  { name:pa.name||'', email:pa.email||'', phone:pa.phone||'', address1:pa.addr1||'', address2:pa.addr2||'', city:pa.city||'', state:pa.state||'', pincode:pa.pin||'', country:'India' },
+    returnAddressDetails:  { name:pa.name||'', email:pa.email||'', phone:pa.phone||'', address1:pa.addr1||'', address2:pa.addr2||'', city:pa.city||'', state:pa.state||'', pincode:pa.pin||'', country:'India' },
+    deliveryAddressDetails:{ name:order.name||'', email:'', phone:order.phone||'', alternatePhone:'', address1:order.address||'', address2:'', city:order.city||'', state:order.state||'', pincode:order.pincode||'', country:'India' }
+  };
+}
+
+// Quick ship single order from orders table
+async function quickShipOrder(orderId) {
+  if (!selloshipToken) return toast('Connect Selloship in Settings first', 'error');
+  const pa = getPickupAddress();
+  if (!pa.name||!pa.addr1) return toast('Save pickup address in Settings first', 'error');
+  await createSingleShipment(orderId);
+}
+
+// ─── ORDER EDIT MODAL ─────────────────────────────────────────────────────────
+let editingOrderId = null;
+
+function openOrderEditModal(id) {
+  editingOrderId = id;
+  const o = allOrders.find(x => x._id === id);
+  if (!o) return;
+  document.getElementById('oem-id').textContent = '#' + o._id.toString().slice(-8);
+  document.getElementById('oem-name').value    = o.name    || '';
+  document.getElementById('oem-phone').value   = o.phone   || '';
+  document.getElementById('oem-address').value = o.address || '';
+  document.getElementById('oem-pincode').value = o.pincode || '';
+  document.getElementById('oem-city').value    = o.city    || '';
+  document.getElementById('oem-state').value   = o.state   || '';
+  document.getElementById('oem-size').value    = o.size    || 'M';
+  document.getElementById('oem-qty').value     = o.quantity || 1;
+  document.getElementById('oem-amount').value  = o.totalAmount || o.price || '';
+  document.getElementById('oem-status').value  = o.status  || 'new';
+  document.getElementById('oem-awb').value     = o.awb     || '';
+  document.getElementById('orderEditModal').classList.add('active');
+}
+
+function closeOrderEditModal() {
+  document.getElementById('orderEditModal').classList.remove('active');
+  editingOrderId = null;
+}
+
+async function oemPinLookup(pin) {
+  if (pin.length !== 6) return;
+  try {
+    const r = await fetch(API + '/api/pincode/' + pin);
+    const d = await r.json();
+    const info = d.data?.[0]?.PostOffice?.[0];
+    if (info) {
+      document.getElementById('oem-city').value  = info.District || info.Name || '';
+      document.getElementById('oem-state').value = info.State || '';
+    }
+  } catch(e) {}
+}
+
+async function saveOrderEdit() {
+  if (!editingOrderId) return;
+  const name    = document.getElementById('oem-name').value.trim();
+  const phone   = document.getElementById('oem-phone').value.trim();
+  const address = document.getElementById('oem-address').value.trim();
+  const pincode = document.getElementById('oem-pincode').value.trim();
+  const city    = document.getElementById('oem-city').value.trim();
+  const state   = document.getElementById('oem-state').value.trim();
+  if (!name||!phone||!address||!pincode) return toast('Name, phone, address and pincode are required','error');
+
+  const payload = {
+    name, phone, address, pincode, city, state,
+    size:        document.getElementById('oem-size').value,
+    quantity:    parseInt(document.getElementById('oem-qty').value)||1,
+    totalAmount: parseFloat(document.getElementById('oem-amount').value)||0,
+    status:      document.getElementById('oem-status').value,
+    awb:         document.getElementById('oem-awb').value.trim(),
+  };
+  if (payload.status === 'shipped' && payload.awb) payload.shippedAt = new Date();
+
+  try {
+    const r = await fetch(API + '/api/orders/' + editingOrderId, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const d = await r.json();
+    if (d.success) {
+      // Update local cache
+      const o = allOrders.find(x => x._id === editingOrderId);
+      if (o) Object.assign(o, payload);
+      toast('✅ Order updated!', 'success');
+      closeOrderEditModal();
+      renderOrders(); renderShipped(); renderLatest(); updateDashboardStats();
+    } else { toast('Save failed: '+(d.error||'error'), 'error'); }
+  } catch(e) { toast('Network error: '+e.message, 'error'); }
+}
+
+// ─── SETTINGS SELLOSHIP SYNC ──────────────────────────────────────────────────
+function syncSettingsToSelloshipTab() {
+  // Keep both credential inputs in sync
+  const settUser = document.getElementById('settSellUser')?.value;
+  const settPass = document.getElementById('settSellPass')?.value;
+  if (settUser) document.getElementById('sellUsername').value = settUser;
+  if (settPass) document.getElementById('sellPassword').value = settPass;
+}
+
+async function loginSelloshipFromSettings() {
+  const username = document.getElementById('settSellUser').value.trim();
+  const password = document.getElementById('settSellPass').value.trim();
+  if (!username||!password) return toast('Enter username and password','error');
+  // Mirror to selloship tab inputs
+  document.getElementById('sellUsername').value = username;
+  document.getElementById('sellPassword').value = password;
+  // Call the main login function
+  await loginSelloship();
+  // Update settings status badge
+  const el = document.getElementById('settSellStatus');
+  if (selloshipToken) {
+    el.textContent = '🟢 Connected';
+    el.className = 'sell-status connected';
+    const prev = document.getElementById('settTokenPreview');
+    const preview = selloshipToken.length>40 ? selloshipToken.slice(0,20)+'...'+selloshipToken.slice(-10) : selloshipToken;
+    prev.textContent = '🔑 Token: '+preview;
+    prev.style.display = 'block';
+  } else {
+    el.textContent = '🔴 Login failed';
+    el.className = 'sell-status disconnected';
+  }
+}
+
+function savePickupAddressFromSettings() {
+  // Mirror settings fields to selloship tab fields and save
+  const map = { 'ssp-name':'sp-name','ssp-phone':'sp-phone','ssp-email':'sp-email','ssp-addr1':'sp-addr1','ssp-addr2':'sp-addr2','ssp-city':'sp-city','ssp-state':'sp-state','ssp-pin':'sp-pin' };
+  Object.entries(map).forEach(([from,to]) => {
+    const v = document.getElementById(from)?.value||'';
+    const t = document.getElementById(to);
+    if (t) t.value = v;
+  });
+  savePickupAddress(); // calls original which saves to localStorage
+}
+
+// Populate settings fields from localStorage on load
+function initSettingsFields() {
+  const savedUser = localStorage.getItem('sell_username')||'';
+  const savedPass = localStorage.getItem('sell_password')||'';
+  if (savedUser && document.getElementById('settSellUser')) document.getElementById('settSellUser').value = savedUser;
+  if (savedPass && document.getElementById('settSellPass')) document.getElementById('settSellPass').value = savedPass;
+  const el = document.getElementById('settSellStatus');
+  if (el && selloshipToken) {
+    el.textContent = '🟢 Connected';
+    el.className = 'sell-status connected';
+    const prev = document.getElementById('settTokenPreview');
+    if (prev) {
+      const preview = selloshipToken.length>40 ? selloshipToken.slice(0,20)+'...'+selloshipToken.slice(-10) : selloshipToken;
+      prev.textContent = '🔑 Token: '+preview;
+      prev.style.display = 'block';
+    }
+  }
+  // Populate pickup address fields in settings from localStorage
+  const pa = JSON.parse(localStorage.getItem('sell_pickup')||'{}');
+  const settMap = { 'ssp-name':'name','ssp-phone':'phone','ssp-email':'email','ssp-addr1':'addr1','ssp-addr2':'addr2','ssp-city':'city','ssp-state':'state','ssp-pin':'pin' };
+  Object.entries(settMap).forEach(([id,key]) => {
+    const el = document.getElementById(id);
+    if (el && pa[key]) el.value = pa[key];
+  });
+}
+
 // ─── BOOT ─────────────────────────────────────────────────────────────────────
 checkAuth();
 </script>
@@ -2203,6 +2575,82 @@ checkAuth();
       <button class="btn btn-orange" style="flex:1;justify-content:center" onclick="saveSoundChoice()">✅ Save</button>
       <button class="btn btn-out" onclick="closeSoundPicker()">Cancel</button>
       <button class="sound-tog" id="muteBtn" onclick="toggleMute()" style="flex-shrink:0">🔔 On</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER EDIT MODAL -->
+<div class="m-overlay" id="orderEditModal" onclick="if(event.target===this)closeOrderEditModal()">
+  <div class="m-box" style="max-width:620px">
+    <div class="m-head">
+      <h3>✏️ Edit Order <span id="oem-id" style="font-size:12px;font-weight:600;color:var(--muted)"></span></h3>
+      <button class="m-close" onclick="closeOrderEditModal()">✕</button>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Full Name *</label><input class="finput" id="oem-name" placeholder="Customer name"/></div>
+      <div class="fg"><label class="fl">Phone *</label><input class="finput" id="oem-phone" placeholder="10-digit mobile"/></div>
+    </div>
+    <div class="fg"><label class="fl">Address *</label><textarea class="finput" id="oem-address" style="min-height:60px" placeholder="House/flat no, street, locality..."></textarea></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Pincode *</label><input class="finput" id="oem-pincode" placeholder="6-digit pincode" maxlength="6" oninput="oemPinLookup(this.value)"/></div>
+      <div class="fg"><label class="fl">City *</label><input class="finput" id="oem-city" placeholder="City"/></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">State *</label><input class="finput" id="oem-state" placeholder="State"/></div>
+      <div class="fg"><label class="fl">Size</label>
+        <select class="finput" id="oem-size">
+          <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+          <option value="XL">XL</option><option value="XXL">XXL</option><option value="Free Size">Free Size</option>
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Quantity</label><input class="finput" id="oem-qty" type="number" min="1" placeholder="1"/></div>
+      <div class="fg"><label class="fl">Total Amount (₹)</label><input class="finput" id="oem-amount" type="number" placeholder="599"/></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Status</label>
+        <select class="finput" id="oem-status">
+          <option value="new">New</option><option value="confirmed">Confirmed</option>
+          <option value="shipped">Shipped</option><option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">AWB / Tracking No</label><input class="finput" id="oem-awb" placeholder="(leave blank if not shipped)"/></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn btn-orange" style="flex:1;justify-content:center;padding:13px;font-size:14px" onclick="saveOrderEdit()">💾 Save Changes</button>
+      <button class="btn btn-out" onclick="closeOrderEditModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- BULK SHIP MODAL -->
+<div class="m-overlay" id="bulkShipModal" onclick="if(event.target===this)closeBulkShipModal()">
+  <div class="m-box" style="max-width:660px">
+    <div class="m-head">
+      <h3>📦 Bulk Ship via Selloship</h3>
+      <button class="m-close" onclick="closeBulkShipModal()">✕</button>
+    </div>
+    <div id="bsm-status-wrap" style="margin-bottom:14px"></div>
+    <!-- Dimensions -->
+    <div style="background:var(--gray);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px">📐 Package Dimensions (applies to all selected)</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px"><label style="font-size:11px;font-weight:800">L (mm)</label><input class="finput" id="bsm-l" style="width:70px;padding:6px 8px" value="100"/></div>
+        <div style="display:flex;align-items:center;gap:6px"><label style="font-size:11px;font-weight:800">B (mm)</label><input class="finput" id="bsm-b" style="width:70px;padding:6px 8px" value="100"/></div>
+        <div style="display:flex;align-items:center;gap=6px"><label style="font-size:11px;font-weight:800">H (mm)</label><input class="finput" id="bsm-h" style="width:70px;padding:6px 8px" value="100"/></div>
+        <div style="display:flex;align-items:center;gap:6px"><label style="font-size:11px;font-weight:800">Wt (g)</label><input class="finput" id="bsm-w" style="width:70px;padding:6px 8px" value="500"/></div>
+      </div>
+    </div>
+    <!-- Order list -->
+    <div style="font-size:12px;font-weight:800;color:var(--muted);margin-bottom:8px">ORDERS TO SHIP (<span id="bsm-count">0</span>)</div>
+    <div id="bsm-order-list" style="max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:14px"></div>
+    <!-- Progress log -->
+    <div id="bsm-log" style="display:none;background:var(--gray);border-radius:10px;padding:12px;max-height:160px;overflow-y:auto;margin-bottom:14px;font-size:11px;font-weight:700"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-orange" style="flex:1;justify-content:center;padding:13px;font-size:14px" id="bsm-go-btn" onclick="executeBulkShip()">🚚 Ship All Selected</button>
+      <button class="btn btn-out" onclick="closeBulkShipModal()">Cancel</button>
     </div>
   </div>
 </div>
